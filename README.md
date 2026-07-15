@@ -8,6 +8,37 @@ Each page is fully independent — its own URL, never embedded inside another pa
 is a fixed template you never hand-edit; it reads its list from `pages.js`, which is regenerated
 by `build.js` on every deploy.
 
+## Private access (login)
+
+The whole site is gated by a single username/password. `middleware.js` runs on Vercel's edge
+*before* any file is served, so **every** page is protected — the homepage, each `.html` page,
+and even direct URLs like `/RBB-Level6-Notes.html`. Visitors see a login page first; nothing
+loads until they sign in. (This is light protection for a personal site, not enterprise auth.)
+
+**One-time setup** — in Vercel → your project → **Settings → Environment Variables**, add three
+variables (Environments: Production + Preview), then **redeploy**:
+
+- `AUTH_USER` — the username you'll type
+- `AUTH_PASS` — the password you'll type
+- `AUTH_SECRET` — a long random string used to sign the login cookie (see below)
+
+Generate a strong `AUTH_SECRET` (run in PowerShell, copy the output):
+
+```powershell
+[guid]::NewGuid().ToString('N') + [guid]::NewGuid().ToString('N')
+```
+
+(Or in any browser's dev console: `crypto.randomUUID() + crypto.randomUUID()`.)
+
+Notes:
+
+- The password is **only** in Vercel's env vars — never in this repo or in the browser, so
+  "inspect" reveals nothing useful.
+- **Change the password:** edit `AUTH_PASS` in Vercel and redeploy.
+- **Log out everywhere / revoke old sessions:** change `AUTH_SECRET` and redeploy.
+- You stay signed in for 30 days per device.
+- Local preview (double-clicking `index.html`) skips the login — the gate only runs on Vercel.
+
 ## Everyday use
 
 1. Add a new `.html` file to this folder, or edit an existing one.
