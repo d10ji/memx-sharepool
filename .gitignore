@@ -1,0 +1,10 @@
+# OS / editor cruft
+desktop.ini
+Thumbs.db
+.DS_Store
+
+# Vercel
+.vercel
+
+# Node (no dependencies expected, but just in case)
+node_modules/

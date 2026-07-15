@@ -1,0 +1,1308 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RBB Level 5 (IT) — Practice Question Bank</title>
+<style>
+  :root{
+    --paper:#f4f3ef; --paper-2:#eceae3; --panel:#faf9f5;
+    --ink:#23262b; --ink-2:#585650; --ink-3:#8c887e;
+    --rule:#d9d5cb; --rule-2:#e7e3d9;
+    --spot:#1f3d6e; --spot-2:#16305a; --spot-tint:#e8ecf3; --on-spot:#ffffff;
+    --warn:#8a5410; --code-bg:#eceae3; --sel:#cddbef;
+    --serif:"Constantia","Cambria",Georgia,"Palatino Linotype",Palatino,"Times New Roman",serif;
+    --sans:"Segoe UI","Calibri",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+    --mono:"Cascadia Code",Consolas,"SFMono-Regular",Menlo,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --paper:#17191c; --paper-2:#1e2124; --panel:#1c1f22;
+      --ink:#e8e5de; --ink-2:#aca89f; --ink-3:#7e7a72;
+      --rule:#32353a; --rule-2:#292c30;
+      --spot:#8fb0e0; --spot-2:#a9c3ea; --spot-tint:#1a2536; --on-spot:#12161f;
+      --warn:#d7a250; --code-bg:#1e2124; --sel:#28374f;
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f3ef; --paper-2:#eceae3; --panel:#faf9f5;
+    --ink:#23262b; --ink-2:#585650; --ink-3:#8c887e;
+    --rule:#d9d5cb; --rule-2:#e7e3d9;
+    --spot:#1f3d6e; --spot-2:#16305a; --spot-tint:#e8ecf3; --on-spot:#ffffff;
+    --warn:#8a5410; --code-bg:#eceae3; --sel:#cddbef;
+  }
+  :root[data-theme="dark"]{
+    --paper:#17191c; --paper-2:#1e2124; --panel:#1c1f22;
+    --ink:#e8e5de; --ink-2:#aca89f; --ink-3:#7e7a72;
+    --rule:#32353a; --rule-2:#292c30;
+    --spot:#8fb0e0; --spot-2:#a9c3ea; --spot-tint:#1a2536; --on-spot:#12161f;
+    --warn:#d7a250; --code-bg:#1e2124; --sel:#28374f;
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:var(--serif);font-size:18px;line-height:1.72;
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  ::selection{background:var(--sel)}
+
+  .app{display:grid;grid-template-columns:280px minmax(0,1fr)}
+
+  /* ---------- Contents (book-style, not a dashboard) ---------- */
+  .toc{position:sticky;top:0;align-self:start;height:100vh;overflow:auto;
+    background:var(--paper-2);border-right:1px solid var(--rule);padding:26px 14px 48px}
+  .toc-brand{font-family:var(--serif);font-size:18px;color:var(--ink);font-weight:700;
+    padding:0 10px 12px;line-height:1.25}
+  .toc-brand span{display:block;font-family:var(--sans);font-size:11.5px;font-weight:600;
+    letter-spacing:.03em;color:var(--ink-3);margin-top:4px;text-transform:uppercase}
+  .toc-lead{font-family:var(--sans);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--ink-3);padding:0 10px;margin:6px 0 10px;border-top:1px solid var(--rule);padding-top:14px}
+  .toc-nav{display:flex;flex-direction:column}
+  .toc-nav a{text-decoration:none;color:var(--ink-2);font-family:var(--sans);font-size:12.5px;
+    line-height:1.35;padding:3px 8px 3px 12px;border-left:2px solid transparent;transition:color .12s}
+  .toc-nav a.lv2{font-weight:700;color:var(--ink);text-transform:uppercase;letter-spacing:.05em;
+    font-size:11px;margin-top:18px}
+  .toc-nav a.lv3{padding-left:16px}
+  .toc-nav a.lv3group{color:var(--spot);font-weight:700;font-variant:small-caps;
+    letter-spacing:.02em;font-size:12.5px;padding-left:12px;margin-top:10px}
+  .toc-nav a:hover{color:var(--ink)}
+  .toc-nav a.active{color:var(--spot);font-weight:700;border-left-color:var(--spot)}
+
+  /* ---------- Reading column ---------- */
+  .content{padding:0 clamp(22px,5vw,70px) 96px;min-width:0}
+  .topbar{max-width:46rem;margin:0 auto;display:flex;justify-content:space-between;align-items:center;
+    padding:14px 0 10px}
+  .crumb{font-family:var(--sans);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3)}
+  .theme{appearance:none;border:1px solid var(--rule);background:var(--panel);color:var(--ink-2);
+    width:34px;height:34px;border-radius:3px;cursor:pointer;font-size:15px;line-height:1}
+  .theme:hover{color:var(--spot);border-color:var(--spot)}
+  .theme:focus-visible{outline:2px solid var(--spot);outline-offset:2px}
+
+  .doc-head{max-width:46rem;margin:0 auto;padding:14px 0 6px;border-bottom:1px solid var(--rule)}
+  .eyebrow{font-family:var(--sans);font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--spot);font-weight:700}
+  .doc-head h1{font-family:var(--sans);font-size:clamp(27px,4.4vw,38px);font-weight:700;
+    margin:14px 0 12px;line-height:1.14;letter-spacing:-.015em;color:var(--ink);text-wrap:balance}
+  .doc-head .sub{color:var(--ink-2);font-size:17.5px;max-width:40em}
+  .doc-head .disc{margin:16px 0 6px;font-family:var(--sans);font-size:13px;line-height:1.55;color:var(--ink-2);
+    background:var(--panel);border:1px solid var(--rule);padding:12px 15px 12px 16px;max-width:40em}
+  .doc-head .disc strong{font-family:var(--sans);text-transform:uppercase;letter-spacing:.08em;
+    font-size:11px;color:var(--spot);display:block;margin-bottom:4px}
+  .doc-head .disc em{color:var(--warn);font-style:italic;font-weight:400}
+
+  .body-wrap{max-width:46rem;margin:0 auto}
+
+  /* ---------- Chapter (h2) & section (h3) headings ---------- */
+  .body-wrap h2{font-family:var(--sans);font-weight:700;font-size:clamp(22px,3vw,28px);color:var(--ink);
+    letter-spacing:-.01em;margin:0;padding:0 0 .34em;border-bottom:3px solid var(--spot);
+    text-wrap:balance;scroll-margin-top:16px}
+  .sec{margin-top:64px}
+  .sec:first-of-type{margin-top:34px}
+  .body-wrap h3{font-family:var(--sans);font-weight:700;font-size:19.5px;color:var(--spot);
+    margin:38px 0 .35em;padding-bottom:.28em;border-bottom:1px solid var(--rule);
+    line-height:1.3;text-wrap:balance;scroll-margin-top:16px}
+  .body-wrap h3.groupdiv{color:var(--ink-2);font-variant:small-caps;letter-spacing:.04em;font-size:16px;
+    text-align:center;border-bottom:none;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
+    padding:.5em 0;margin:52px 0 8px;background:none}
+  .body-wrap h4{font-family:var(--sans);font-weight:700;font-size:15px;color:var(--ink);margin:22px 0 4px}
+  .secno{color:var(--spot);font-weight:700;margin-right:.45em}
+
+  /* ---------- Body text: book setting (justified, first-line indent) ---------- */
+  .body-wrap p{margin:.15em 0 .55em;text-align:justify;hyphens:auto;text-indent:1.4em}
+  .body-wrap h2 + p,.body-wrap h3 + p,.body-wrap h4 + p,.body-wrap p:first-child,
+  .body-wrap blockquote + p,.body-wrap ul + p,.body-wrap ol + p,.body-wrap .tbl-scroll + p{text-indent:0}
+  .body-wrap strong{color:var(--ink);font-weight:700}
+  .body-wrap em{color:var(--warn);font-style:italic}
+  .body-wrap a{color:var(--spot);text-underline-offset:2px}
+
+  /* chapter-intro paragraph with a drop cap */
+  .lede{font-size:17px;color:var(--ink-2);text-indent:0 !important;margin-top:14px}
+  .lede::first-letter{font-family:var(--serif);float:left;font-size:3.05em;line-height:.82;
+    font-weight:700;color:var(--spot);padding:.02em .1em 0 0}
+
+  /* ---------- Normal lists ---------- */
+  .body-wrap ul,.body-wrap ol{margin:.5em 0 1em;padding-left:1.5em}
+  .body-wrap li{margin:.28em 0}
+  .body-wrap li::marker{color:var(--spot)}
+
+  /* ---------- "Exam pointers" key-box (built by JS) ---------- */
+  .kp{list-style:none;margin:1.15em 0 1.4em;padding:0;border:1px solid var(--spot);background:var(--spot-tint)}
+  .kp li{margin:0}
+  .kp li.kp-h{background:var(--spot);color:var(--on-spot);font-family:var(--sans);font-weight:700;
+    text-transform:uppercase;letter-spacing:.11em;font-size:11px;padding:.5em 1.1em}
+  .kp li:not(.kp-h){display:list-item;list-style:square;margin:.34em 0 .34em 2.5em;padding-right:1.1em;
+    font-size:16.5px;line-height:1.55}
+  .kp li:not(.kp-h)::marker{color:var(--spot)}
+  .kp li:not(.kp-h):first-of-type{margin-top:.6em}
+  .kp li:not(.kp-h):last-of-type{margin-bottom:.7em}
+
+  /* ---------- Tables (ruled, print-style) ---------- */
+  .tbl-scroll{overflow-x:auto;margin:1.1em 0 1.3em}
+  .body-wrap table{border-collapse:collapse;width:100%;font-family:var(--sans);font-size:14.5px;
+    line-height:1.5;border-top:2px solid var(--ink-2)}
+  .body-wrap th,.body-wrap td{text-align:left;padding:.5em .85em;border-bottom:1px solid var(--rule);vertical-align:top}
+  .body-wrap thead th{border-bottom:2px solid var(--spot);color:var(--spot);font-size:12px;
+    letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
+
+  .body-wrap blockquote{margin:1em 0;padding:.2em 0 .2em 1.1em;border-left:3px solid var(--rule);
+    color:var(--ink-2);font-style:italic}
+  /* ---------- Practice question bank ---------- */
+  .tb-actions{display:flex;gap:8px;align-items:center}
+  .btn{appearance:none;border:1px solid var(--spot);background:transparent;color:var(--spot);
+    font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.03em;
+    padding:8px 12px;border-radius:3px;cursor:pointer;line-height:1}
+  .btn:hover{background:var(--spot);color:var(--on-spot)}
+  .btn:focus-visible{outline:2px solid var(--spot);outline-offset:2px}
+  .body-wrap .q{margin:20px 0 22px}
+  .body-wrap p.qtext{margin:0 0 .45em;text-indent:0;text-align:left;font-size:17.5px;line-height:1.55}
+  .qn{font-family:var(--sans);font-weight:700;color:var(--spot);margin-right:.4em}
+  .marks{font-family:var(--sans);font-size:11.5px;font-weight:700;color:var(--ink-3);
+    border:1px solid var(--rule);border-radius:3px;padding:1px 6px;margin-right:.35em;white-space:nowrap;letter-spacing:.03em}
+  .body-wrap ol.opts{margin:.35em 0 .55em;padding-left:1.8em}
+  .body-wrap ol.opts li{margin:.18em 0;font-family:var(--sans);font-size:15.5px;line-height:1.5;text-align:left}
+  .body-wrap ol.opts li::marker{color:var(--spot);font-weight:700}
+  .body-wrap details.ans{margin:.3em 0 0}
+  .body-wrap details.ans>summary{cursor:pointer;display:inline-block;font-family:var(--sans);font-size:11.5px;
+    font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--spot);padding:.3em 0;
+    list-style:none;-webkit-user-select:none;user-select:none}
+  .body-wrap details.ans>summary::-webkit-details-marker{display:none}
+  .body-wrap details.ans>summary::before{content:"\25B8";margin-right:.45em}
+  .body-wrap details.ans[open]>summary::before{content:"\25BE"}
+  .body-wrap details.ans[open]{background:var(--spot-tint);border:1px solid var(--rule);border-radius:4px;
+    padding:.15em 1em .7em;margin-top:.4em}
+  .body-wrap details.ans[open]>summary{color:var(--ink-2)}
+  .body-wrap .ans .key{display:inline-block;font-family:var(--sans);font-weight:700;font-size:13px;
+    background:var(--spot);color:var(--on-spot);border-radius:3px;padding:0 .5em;margin-right:.45em}
+  .body-wrap .ans p{margin:.5em 0;text-indent:0;text-align:left}
+  .body-wrap .ans ul,.body-wrap .ans ol{margin:.5em 0 .3em;padding-left:1.4em}
+  .body-wrap .ans li{margin:.25em 0}
+  .body-wrap code{font-family:var(--mono);font-size:.84em;background:var(--code-bg);
+    padding:.1em .42em;border-radius:2px}
+
+  .doc-foot{max-width:46rem;margin:66px auto 0;padding-top:18px;border-top:1px solid var(--rule);
+    font-family:var(--sans);color:var(--ink-3);font-size:12.5px;line-height:1.6}
+
+  .totop{position:fixed;right:20px;bottom:20px;z-index:30;appearance:none;
+    border:1px solid var(--rule);background:var(--panel);color:var(--ink-2);border-radius:3px;
+    padding:7px 13px;font-family:var(--sans);font-size:12px;font-weight:600;cursor:pointer;
+    opacity:0;pointer-events:none;transition:opacity .2s}
+  .totop.show{opacity:1;pointer-events:auto}
+  .totop:hover{color:var(--spot);border-color:var(--spot)}
+
+  @media (max-width:900px){
+    .app{grid-template-columns:1fr}
+    .toc{position:static;height:auto;max-height:46vh;border-right:none;border-bottom:1px solid var(--rule)}
+    body{font-size:17px}
+    .body-wrap p{text-align:left;text-indent:0;margin:.4em 0 .7em}
+    .lede::first-letter{font-size:2.6em}
+  }
+  @media print{
+    .toc,.totop,.topbar{display:none}
+    .app{display:block}.content{padding:0}
+    body{font-size:11pt;background:#fff;color:#000}
+    :root{--paper:#fff;--ink:#000;--spot:#1f3d6e;--rule:#bbb}
+    .body-wrap h2,.body-wrap h3,.body-wrap h4{break-after:avoid}
+    .kp,.tbl-scroll,.body-wrap li,.body-wrap p{break-inside:avoid}
+    .sec{margin-top:34px}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="toc" id="toc">
+    <div class="toc-brand">RBB Practice Bank<span>Level 5 · वरिष्ठ सहायक (सूचना प्रविधि)</span></div>
+    <div class="toc-lead">Contents</div>
+    <nav class="toc-nav" id="toc-nav" aria-label="Contents"></nav>
+  </aside>
+  <main class="content" id="content">
+    <div class="topbar">
+      <div class="crumb">Level 5 · Practice Bank</div>
+      <div class="tb-actions">
+        <button class="btn" id="revealAll" type="button">Reveal all answers</button>
+        <button class="theme" id="theme" type="button" aria-label="Toggle light / dark reading mode" title="Reading mode">◐</button>
+      </div>
+    </div>
+    <header class="doc-head">
+      <div class="eyebrow">Rastriya Banijya Bank — IT Recruitment</div>
+      <h1>Level 5 — Practice Question Bank</h1>
+      <p class="sub">Self-test questions across the whole syllabus. Try each one first, then click <em>Answer</em> to check — or use <strong>Reveal all answers</strong> (top-right) for review mode.</p>
+      <p class="disc"><strong>Exam pattern &amp; self-test rules</strong>Paper&nbsp;I = 50 IT MCQs (45&nbsp;min, <em>20% negative marking</em>, write answers in CAPITAL A/B/C/D, no calculator) + Banking &amp; Organizational Management subjective 50 (1&nbsp;hr&nbsp;15&nbsp;min). Paper&nbsp;II = IT subjective 100 (2&nbsp;hr&nbsp;30&nbsp;min). Time yourself, and confirm any current figure from nrb.org.np.</p>
+    </header>
+    <div class="body-wrap">
+<section class="sec"><h2>Paper I &middot; Section B &mdash; IT Objective (MCQ)</h2>
+<p class="lede">Fifty of these carry 50 marks in Paper&nbsp;I (45 minutes). In the real exam, answer in CAPITAL letters only, expect <em>20% negative marking</em>, and use no calculator. Attempt each question before revealing the answer.</p>
+<h3>Types of Computers</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> Which of the following is the primary distinguishing feature of a supercomputer compared to a mainframe computer?</p>
+<ol class="opts" type="A"><li>It supports thousands of simultaneous users for transaction processing</li><li>It is optimized for extremely high-speed numerical and scientific computation</li><li>It uses only analog signal processing</li><li>It has no operating system</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">B</span> Supercomputers are built for massive parallel numerical/scientific workloads, while mainframes focus on high-volume, high-reliability transaction processing for many users.</p></details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">2.</span> A computer that accepts continuously varying (analog) input such as a patient's vital signs, processes it digitally, and displays a digital output — as in an ICU monitor — is classified as a:</p>
+<ol class="opts" type="A"><li>Digital computer</li><li>Analog computer</li><li>Hybrid computer</li><li>Mainframe computer</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">C</span> Hybrid computers combine analog input/sensing with digital processing and output, a classic example being medical monitoring equipment.</p></details>
+</div>
+
+<h3>Internet, Email &amp; Web Basics</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> Which protocol is used by an email client to send an outgoing message to a mail server?</p>
+<ol class="opts" type="A"><li>POP3</li><li>IMAP</li><li>SMTP</li><li>FTP</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">C</span> SMTP (Simple Mail Transfer Protocol) handles outgoing mail delivery; POP3 and IMAP are used only to retrieve mail.</p></details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">2.</span> Which email retrieval protocol keeps messages synchronized on the server, allowing the same mailbox to be accessed consistently from multiple devices?</p>
+<ol class="opts" type="A"><li>SMTP</li><li>POP3</li><li>IMAP</li><li>ICMP</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">C</span> IMAP leaves mail on the server and syncs read/folder state across devices, unlike POP3 which typically downloads and removes it.</p></details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">3.</span> The service that translates a human-readable domain name (e.g., www.rbb.com.np) into its corresponding numeric IP address is:</p>
+<ol class="opts" type="A"><li>DHCP</li><li>DNS</li><li>HTTP</li><li>SNMP</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">B</span> DNS (Domain Name System) resolves domain names to IP addresses; DHCP instead assigns IP addresses to devices.</p></details>
+</div>
+
+<h3>Physical Security of IT Infrastructure</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> Which of the following is an example of a physical security control for a data center, as opposed to a logical/technical control?</p>
+<ol class="opts" type="A"><li>Firewall rules</li><li>Antivirus software</li><li>Biometric access control at the entry door</li><li>Data encryption</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">C</span> Biometric door access restricts physical entry to premises; the other options protect data/systems logically, not the premises itself.</p></details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">2.</span> Data centers typically use clean/inert gas fire-suppression systems (e.g., FM-200) instead of water sprinklers mainly because:</p>
+<ol class="opts" type="A"><li>Gas is cheaper than water</li><li>Gas extinguishes fire without damaging live electronic equipment</li><li>Water cannot put out any type of fire</li><li>Gas systems require no maintenance</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">B</span> Clean-agent gas suppresses fire while leaving servers and wiring undamaged, unlike water which can short-circuit live equipment.</p></details>
+</div>
+
+<h3>AI, ML &amp; Blockchain Basics</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> An algorithm trained on a dataset containing both inputs and their correct output labels, so it can predict outputs for new inputs, is using:</p>
+<ol class="opts" type="A"><li>Unsupervised learning</li><li>Supervised learning</li><li>Reinforcement learning</li><li>Genetic algorithms</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">B</span> Supervised learning uses labeled input-output pairs to train a predictive model.</p></details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">2.</span> An agent that learns optimal behaviour by receiving rewards or penalties for its actions within an environment, without labeled training data, is using:</p>
+<ol class="opts" type="A"><li>Supervised learning</li><li>Unsupervised learning</li><li>Reinforcement learning</li><li>Deep clustering</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">C</span> Reinforcement learning improves behaviour through trial-and-error feedback (rewards/penalties) rather than labeled examples.</p></details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">3.</span> In a blockchain, tamper resistance is primarily achieved because each block contains:</p>
+<ol class="opts" type="A"><li>A copy of the entire ledger in plain text only</li><li>A cryptographic hash of the previous block, chaining blocks together</li><li>The private keys of all users</li><li>A centrally issued digital certificate</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">B</span> Each block stores the hash of the prior block, so altering any block breaks the chain of hashes and is easily detected.</p></details>
+</div>
+
+<h3>Computer Architecture &amp; Registers</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> Which CPU register holds the memory address of the next instruction to be fetched?</p>
+<ol class="opts" type="A"><li>Accumulator</li><li>Program Counter (PC)</li><li>Instruction Register (IR)</li><li>Stack Pointer (SP)</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">B</span> The Program Counter tracks the address of the next instruction; the Instruction Register instead holds the instruction currently being executed.</p></details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">2.</span> The register that temporarily holds data being transferred to or from main memory during a read/write cycle is the:</p>
+<ol class="opts" type="A"><li>Program Counter</li><li>Memory Data Register (MDR)</li><li>Status Register</li><li>Instruction Register</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">B</span> The MDR (also called Memory Buffer Register) buffers data moving between the CPU and memory during each memory access.</p></details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">3.</span> In the classic von Neumann architecture, the "von Neumann bottleneck" arises because:</p>
+<ol class="opts" type="A"><li>Instructions and data are stored in separate memories with separate buses</li><li>Instructions and data share the same memory and the same bus, limiting simultaneous access</li><li>There is no memory at all, only registers</li><li>The CPU has no control unit</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">B</span> A single shared memory and bus for both instructions and data (unlike the Harvard architecture) limits throughput between CPU and memory.</p></details>
+</div>
+
+<h3>Memory Management</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> Which memory management technique divides a process into fixed-size blocks that can be loaded into any available frame in physical memory, eliminating external fragmentation?</p>
+<ol class="opts" type="A"><li>Segmentation</li><li>Paging</li><li>Swapping</li><li>Overlaying</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">B</span> Paging splits both memory and processes into fixed-size units (pages/frames), so pages need not be contiguous in physical memory.</p></details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">2.</span> A condition in which the CPU spends most of its time swapping pages in and out of memory rather than executing useful instructions is called:</p>
+<ol class="opts" type="A"><li>Deadlock</li><li>Starvation</li><li>Thrashing</li><li>Fragmentation</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">C</span> Thrashing occurs when insufficient physical memory forces excessive paging activity, drastically reducing useful CPU work.</p></details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">3.</span> Virtual memory allows a process to use more address space than physically available RAM chiefly by:</p>
+<ol class="opts" type="A"><li>Compressing all data before storing it in RAM</li><li>Using a portion of disk storage as an extension of RAM, transferred via paging</li><li>Adding an extra physical RAM module automatically</li><li>Storing data only in CPU registers</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">B</span> Virtual memory maps disk space as if it were extra RAM, moving pages between disk and memory as needed.</p></details>
+</div>
+
+<h3>Hard-Disk Organization</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> The time required for the disk read/write head to move to the correct track is called:</p>
+<ol class="opts" type="A"><li>Rotational latency</li><li>Seek time</li><li>Transfer time</li><li>Burst time</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">B</span> Seek time is the head's movement delay; rotational latency is the additional wait for the target sector to rotate under the head.</p></details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">2.</span> A set of tracks located at the same position across all platters of a hard disk stack is called a:</p>
+<ol class="opts" type="A"><li>Sector</li><li>Cylinder</li><li>Cluster</li><li>Partition</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">B</span> A cylinder is the collection of identically-positioned tracks on every platter, accessible without moving the read/write heads further.</p></details>
+</div>
+
+<h3>CPU Architecture &amp; I/O Management</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> Which I/O technique allows a peripheral device to transfer data directly to or from main memory with minimal CPU involvement, freeing the CPU for other tasks?</p>
+<ol class="opts" type="A"><li>Programmed I/O</li><li>Polling</li><li>Direct Memory Access (DMA)</li><li>Interrupt-driven I/O only</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">C</span> DMA lets a controller move data straight between device and memory over the bus, bypassing the CPU for the actual data transfer.</p></details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">2.</span> Pipelining improves CPU throughput mainly by:</p>
+<ol class="opts" type="A"><li>Increasing the clock speed of the CPU</li><li>Overlapping the fetch, decode and execute stages of multiple instructions simultaneously</li><li>Adding more cache memory</li><li>Reducing the instruction set size</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">B</span> Pipelining overlaps different instruction-processing stages across successive instructions, increasing instruction throughput without raising clock speed.</p></details>
+</div>
+
+<h3>Networking Devices</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> Which networking device operates purely at the Physical layer, regenerating and amplifying a signal to extend cable length, with no addressing intelligence?</p>
+<ol class="opts" type="A"><li>Switch</li><li>Router</li><li>Repeater</li><li>Bridge</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">C</span> A repeater simply regenerates the electrical/optical signal to overcome attenuation; it has no concept of addresses or frames.</p></details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">2.</span> Which device connects two or more different networks, forwarding packets based on logical (IP) addresses and choosing the best path between them?</p>
+<ol class="opts" type="A"><li>Hub</li><li>Repeater</li><li>Router</li><li>Switch</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">C</span> Routers work at the Network layer, using IP addresses and routing tables to forward packets between distinct networks.</p></details>
+</div>
+
+<h3>Switching Techniques &amp; Modems</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> In circuit switching, a dedicated communication path is reserved for the entire call duration. Packet switching differs mainly in that:</p>
+<ol class="opts" type="A"><li>No physical medium is needed at all</li><li>Data is divided into packets that may take different paths and share links using statistical multiplexing</li><li>A permanent dedicated circuit is always reserved</li><li>It can only carry voice traffic</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">B</span> Packet switching breaks data into packets that share links dynamically rather than reserving an end-to-end dedicated circuit.</p></details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">2.</span> The primary function of a modem is to:</p>
+<ol class="opts" type="A"><li>Route data between different IP networks</li><li>Modulate digital signals into analog form for transmission and demodulate them back to digital at the receiving end</li><li>Filter malicious network traffic</li><li>Assign IP addresses to devices on a network</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">B</span> "Modem" is short for modulator-demodulator, converting between digital computer signals and analog transmission signals.</p></details>
+</div>
+
+<h3>Error Detection &amp; Correction</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> Which error-detection technique, based on polynomial division of the transmitted data, is widely used in Ethernet frames and is highly effective at detecting burst errors?</p>
+<ol class="opts" type="A"><li>Parity check</li><li>Checksum</li><li>Cyclic Redundancy Check (CRC)</li><li>Hamming code</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">C</span> CRC treats data as a polynomial and divides it by a generator polynomial, giving strong burst-error detection used in the Ethernet FCS field.</p></details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">2.</span> Unlike a simple parity bit, which can only detect an error, a Hamming code is significant because it can:</p>
+<ol class="opts" type="A"><li>Compress transmitted data</li><li>Detect and correct single-bit errors</li><li>Encrypt transmitted data</li><li>Only work on analog signals</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">B</span> Hamming codes add multiple parity bits at calculated positions so that a single-bit error can be located and automatically corrected.</p></details>
+</div>
+
+<h3>IP Addressing &amp; Subnetting</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> How many usable host addresses are available in a subnet with mask 255.255.255.240 (/28)?</p>
+<ol class="opts" type="A"><li>16</li><li>14</li><li>30</li><li>62</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">B</span> A /28 mask leaves 4 host bits (2^4 = 16 addresses); subtracting the network and broadcast addresses leaves 14 usable hosts.</p></details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">2.</span> The IPv4 address 172.16.5.10 belongs to which address class, with what default subnet mask?</p>
+<ol class="opts" type="A"><li>Class A, 255.0.0.0</li><li>Class B, 255.255.0.0</li><li>Class C, 255.255.255.0</li><li>Class D, not applicable</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">B</span> Addresses from 128.0.0.0 to 191.255.255.255 fall in Class B, whose default mask is 255.255.0.0.</p></details>
+</div>
+
+<h3>Network Security &amp; Cryptography</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> In asymmetric (public-key) cryptography, data encrypted using the recipient's public key can be decrypted only by:</p>
+<ol class="opts" type="A"><li>Anyone holding any public key</li><li>The recipient's corresponding private key</li><li>The sender's own private key</li><li>A shared symmetric key</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">B</span> Public and private keys are mathematically paired, so only the matching private key held by the recipient can decrypt data encrypted with its public key.</p></details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">2.</span> A network security device/software that inspects and filters incoming and outgoing traffic according to a defined rule set, acting as a barrier between trusted and untrusted networks, is called a:</p>
+<ol class="opts" type="A"><li>Router</li><li>Firewall</li><li>Switch</li><li>Modem</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">B</span> A firewall enforces access-control rules on traffic crossing the boundary between networks of differing trust levels.</p></details>
+</div>
+<h3>Operating System Fundamentals</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> What is the primary function of an operating system?</p>
+<ol class="opts" type="A"><li>Compile high-level source code into machine code</li><li>Manage and allocate hardware and software resources between users and applications</li><li>Design and normalize database schemas</li><li>Render and style web pages for browsers</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">B</span> The OS acts as an intermediary that manages CPU, memory, storage, and I/O devices on behalf of users and programs.</p></details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">2.</span> Which OS component directly manages the CPU, memory, and hardware communication?</p>
+<ol class="opts" type="A"><li>Shell — the command-line interpreter for user commands</li><li>Compiler — translates source code into executable code</li><li>Utility software — performs routine maintenance tasks</li><li>Kernel — the core component that directly manages CPU, memory, and hardware</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">D</span> The kernel is the core of the OS, running in privileged mode and controlling hardware resources directly.</p></details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">3.</span> What is the defining characteristic of a real-time operating system (RTOS)?</p>
+<ol class="opts" type="A"><li>It guarantees task completion or response within strict, predictable time deadlines</li><li>It allows an unlimited number of users to log in simultaneously</li><li>It runs only one application at a time with no scheduling</li><li>It requires manual intervention for every process switch</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">A</span> RTOS design centers on deterministic, bounded response times, essential for control and embedded systems.</p></details>
+</div>
+
+<h3>Process Management &amp; CPU Scheduling</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> In First-Come-First-Served (FCFS) CPU scheduling, a long process arriving before several short processes causes which problem?</p>
+<ol class="opts" type="A"><li>Starvation of high-priority processes</li><li>Thrashing due to excessive paging</li><li>Convoy effect — short processes wait behind the long process that arrived first</li><li>Deadlock among the waiting processes</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">C</span> Because FCFS is non-preemptive, one long process at the head of the queue delays all shorter processes behind it.</p></details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">2.</span> What key advantage does Shortest Job First (SJF) scheduling offer over FCFS?</p>
+<ol class="opts" type="A"><li>It always prevents starvation of long processes</li><li>It gives the minimum average waiting time among non-preemptive algorithms when burst times are known</li><li>It requires no estimate of CPU burst time</li><li>It assigns a fixed time quantum to every process</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">B</span> SJF is provably optimal for minimizing average waiting time, though it needs advance knowledge (or estimation) of burst times.</p></details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">3.</span> In Round Robin CPU scheduling, each process is given a fixed slice of CPU time known as a...?</p>
+<ol class="opts" type="A"><li>Time quantum — a fixed small unit of CPU time given to each process in turn</li><li>Priority level — a number indicating process importance</li><li>Burst cycle — the total CPU time a process needs</li><li>Dispatch latency — time to switch from kernel to user mode</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">A</span> Round Robin cycles through the ready queue, giving each process one time quantum before preempting it, favoring responsiveness.</p></details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">4.</span> Priority scheduling can cause indefinite postponement (starvation) of low-priority processes. Which technique resolves this?</p>
+<ol class="opts" type="A"><li>Reducing the time quantum for all processes</li><li>Switching permanently to FCFS scheduling</li><li>Disabling all hardware interrupts</li><li>Aging — gradually increasing the priority of processes that wait too long</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">D</span> Aging raises a waiting process's priority over time so it eventually gets scheduled, preventing indefinite starvation.</p></details>
+</div>
+
+<h3>DOS, UNIX &amp; Windows</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> In MS-DOS, which command displays the list of files and folders in the current directory?</p>
+<ol class="opts" type="A"><li>LS</li><li>DIR — lists files and subdirectories in the current directory</li><li>SHOW</li><li>LIST</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">B</span> DIR is the native MS-DOS/Windows command-line command for listing directory contents; LS is the UNIX/Linux equivalent.</p></details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">2.</span> Which of the following best describes a core characteristic of the UNIX/Linux operating system?</p>
+<ol class="opts" type="A"><li>Single-user, single-tasking design</li><li>No support for command-line scripting</li><li>Multiuser, multitasking OS with a hierarchical file system</li><li>Requires a GUI to boot the system</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">C</span> UNIX/Linux was built from the outset to support many concurrent users and processes, organized under a tree-structured file system.</p></details>
+</div>
+
+<h3>OS Security Threats</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> Which OS-level security threat conceals its presence on a system while granting an attacker continued privileged access?</p>
+<ol class="opts" type="A"><li>Rootkit — malware that hides its presence while granting an attacker privileged (root/admin) access</li><li>Firewall — a tool that filters network traffic</li><li>Cookie — a small file storing browser session data</li><li>Patch — an update that fixes software bugs</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">A</span> Rootkits modify OS components or embed at a low level to hide malicious processes and files from detection tools.</p></details>
+</div>
+
+<h3>DBMS Basics</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> In a relational database table, what is a "record"?</p>
+<ol class="opts" type="A"><li>A column definition specifying a data type</li><li>An index used to speed up searches</li><li>A stored procedure executed by the DBMS</li><li>A single row in a table representing one instance of an entity</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">D</span> A record (row/tuple) holds all field values describing one occurrence of the entity the table represents.</p></details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">2.</span> What does a "relationship" represent in a relational database model?</p>
+<ol class="opts" type="A"><li>A logical association between two or more tables established through common attributes (keys)</li><li>A physical merge of two databases into one file</li><li>A link between a query and a printed report</li><li>A connection between a view and a stored macro only</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">A</span> Relationships (one-to-one, one-to-many, many-to-many) are implemented via primary and foreign keys linking tables.</p></details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">3.</span> Which type of key uniquely identifies every record in a table and must never be NULL?</p>
+<ol class="opts" type="A"><li>Foreign key — references a primary key in another table</li><li>Primary key — uniquely identifies each record in a table and cannot contain NULL</li><li>Composite key — always spans exactly two tables</li><li>Candidate key — is automatically encrypted</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">B</span> The primary key enforces entity integrity: it is unique per row and, by definition, cannot be NULL.</p></details>
+</div>
+
+<h3>Indexing &amp; Normalization</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> What is the main purpose of creating an index on a database table?</p>
+<ol class="opts" type="A"><li>To encrypt sensitive column data automatically</li><li>To enforce foreign key constraints between tables</li><li>To speed up data retrieval by creating a fast lookup structure on one or more columns</li><li>To compress the physical storage size of a table</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">C</span> Indexes (e.g., B-tree structures) let the DBMS locate rows quickly without scanning the entire table.</p></details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">2.</span> What is the primary goal of database normalization?</p>
+<ol class="opts" type="A"><li>To reduce data redundancy and improve data integrity by organizing data into related tables</li><li>To intentionally duplicate data across multiple tables for speed</li><li>To merge all tables in a database into a single flat file</li><li>To remove all primary and foreign keys from a schema</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">A</span> Normalization applies rules (1NF, 2NF, 3NF, etc.) to eliminate redundant data and avoid update/insert/delete anomalies.</p></details>
+</div>
+
+<h3>Data Warehousing &amp; Data Mining</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> How is a data warehouse best described?</p>
+<ol class="opts" type="A"><li>A single operational database used only for daily transaction processing</li><li>A backup server that stores OS image files</li><li>A network appliance that filters incoming traffic</li><li>A subject-oriented, integrated, time-variant repository used for analysis and reporting</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">D</span> Data warehouses consolidate historical data from multiple sources for decision support, unlike transactional (OLTP) databases.</p></details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">2.</span> Which data mining technique groups similar data records together without relying on predefined class labels?</p>
+<ol class="opts" type="A"><li>Indexing — creating lookup structures for faster search</li><li>Clustering — grouping similar records together without using predefined class labels</li><li>Encryption — converting data into unreadable ciphertext</li><li>Normalization — organizing data to reduce redundancy</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">B</span> Clustering is an unsupervised technique (e.g., k-means) that discovers natural groupings in data based on similarity.</p></details>
+</div>
+
+<h3>Web Technologies</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> Which web technology is used to control the visual presentation (layout, colors, fonts) of a web page, separate from its content?</p>
+<ol class="opts" type="A"><li>CSS — controls the presentation, layout, and styling of a web page separately from its content</li><li>HTML — defines the network protocol used to transfer web pages</li><li>XML — compiles server-side scripts into executable code</li><li>HTTP — stores structured data for offline use</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">A</span> CSS (Cascading Style Sheets) separates styling rules from HTML's structural markup, enabling consistent design across pages.</p></details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">2.</span> What is the primary function of a proxy server in a network?</p>
+<ol class="opts" type="A"><li>A tool used exclusively to design database schemas</li><li>A device that permanently assigns static IP addresses to all clients</li><li>An intermediary server that relays client requests, and can cache content, filter access, or provide anonymity</li><li>A programming language used to build dynamic web pages</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">C</span> A proxy sits between client and destination server, forwarding requests while optionally caching, filtering, or masking the client's identity.</p></details>
+</div>
+
+<h3>Disaster Recovery Planning</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> What does Recovery Time Objective (RTO) measure in a disaster recovery plan?</p>
+<ol class="opts" type="A"><li>The maximum acceptable amount of data an organization can afford to lose</li><li>RTO — the maximum acceptable time to restore a system or service after a disruption</li><li>The physical distance between a primary site and its DR site</li><li>The frequency at which backups are scheduled to run</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">B</span> RTO defines the target duration within which a system or service must be restored after an outage to limit business impact.</p></details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">2.</span> What does Recovery Point Objective (RPO) measure in a disaster recovery plan?</p>
+<ol class="opts" type="A"><li>The time taken by IT staff to detect that a disaster has occurred</li><li>The total budget allocated for disaster recovery infrastructure</li><li>The number of servers replicated at the DR site</li><li>RPO — the maximum acceptable amount of data loss, measured as a point in time to which data must be restored</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">D</span> RPO determines how far back (e.g., last backup) data must be recoverable, directly driving backup frequency requirements.</p></details>
+</div>
+
+<h3>Access Control &amp; Authentication</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> Which access control model grants permissions to users based on their assigned role within an organization?</p>
+<ol class="opts" type="A"><li>Role-Based Access Control — permissions are assigned according to a user's role within the organization</li><li>Discretionary Access Control — the resource owner has no say over permissions</li><li>Mandatory Access Control — permissions are decided solely by the end user</li><li>Rule-based routing — a network traffic management technique unrelated to permissions</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">A</span> RBAC simplifies administration by tying access rights to job roles rather than to individual user accounts.</p></details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">2.</span> Multi-factor authentication (MFA) strengthens login security by requiring...?</p>
+<ol class="opts" type="A"><li>A single, very long and complex password used alone</li><li>Biometric verification used in isolation without any other factor</li><li>Two or more independent verification factors, such as a password combined with an OTP</li><li>Repeating the same username and password twice during login</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">C</span> MFA combines something you know, have, or are, so a compromised password alone is insufficient to gain access.</p></details>
+</div>
+
+<h3>Threats, Vulnerabilities &amp; Attacks</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> In cyber security terminology, what is a "vulnerability"?</p>
+<ol class="opts" type="A"><li>A tool an attacker uses to automate password guessing</li><li>A weakness in a system, application, or process that can be exploited by a threat</li><li>A network rule that blocks unauthorized traffic</li><li>An algorithm used to encrypt sensitive data</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">B</span> A vulnerability is the exploitable gap; a threat is the potential danger that can act on that gap to cause harm.</p></details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">2.</span> What does an attacker primarily do in a Man-in-the-Middle (MITM) attack?</p>
+<ol class="opts" type="A"><li>Physically steal a computer or storage device</li><li>Send large volumes of unsolicited bulk email</li><li>Systematically guess passwords using a dictionary of common words</li><li>Intercept and potentially alter communication between two parties without their knowledge</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">D</span> MITM attacks position the attacker between two communicating parties to eavesdrop on or tamper with the exchanged data.</p></details>
+</div>
+
+<h3>Malware, Social Engineering, DoS/DDoS &amp; Phishing</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> Which type of malware disguises itself as legitimate or useful software but carries out malicious actions once executed?</p>
+<ol class="opts" type="A"><li>Trojan horse — disguises itself as legitimate software but performs malicious actions once executed</li><li>Worm — a benign utility that improves system performance</li><li>Adware — a hardware component that blocks malicious traffic</li><li>Firewall — malicious code that self-replicates across a network</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">A</span> A Trojan relies on deception to get installed, unlike a worm, which self-replicates without needing to appear legitimate.</p></details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">2.</span> What is the primary objective of a Distributed Denial of Service (DDoS) attack?</p>
+<ol class="opts" type="A"><li>Silently stealing and exfiltrating encrypted data over time</li><li>Installing a hidden backdoor for future undetected access only</li><li>Overwhelming a target system with traffic from multiple sources so legitimate users cannot access it</li><li>Encrypting a victim's files and demanding a ransom for the decryption key</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">C</span> DDoS floods a target with coordinated traffic from many compromised hosts (a botnet), exhausting its resources or bandwidth.</p></details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">3.</span> Phishing is a social engineering technique that primarily works by...?</p>
+<ol class="opts" type="A"><li>Physically breaking into a secured data center</li><li>Tricking users into revealing sensitive information through fraudulent emails or fake websites</li><li>Exploiting a software buffer overflow to execute arbitrary code</li><li>Scanning a network for open ports and running services</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">B</span> Phishing manipulates human trust, using deceptive messages or spoofed sites to harvest credentials or personal data.</p></details>
+</div>
+
+<h3>Authentication &amp; Password Management</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> Which of the following is considered a password management best practice?</p>
+<ol class="opts" type="A"><li>Reusing the same password across all online accounts for convenience</li><li>Writing passwords on a sticky note kept visible near the monitor</li><li>Sharing account passwords with trusted colleagues when needed</li><li>Using unique, complex passwords for each account and changing them promptly if compromised</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">D</span> Unique, complex, per-account passwords limit the damage of any single credential leak and should be rotated after compromise.</p></details>
+</div>
+
+<h3>Nepal ICT Policy &amp; NRB Guidelines</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> What is the primary aim of the ICT Policy of Nepal, 2072 (2015)?</p>
+<ol class="opts" type="A"><li>Promoting the use of ICT for socio-economic development and good governance in Nepal</li><li>Regulating only foreign direct investment in telecom equipment</li><li>Banning the use of social media platforms in government offices</li><li>Fixing Nepal's foreign currency exchange rate</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">A</span> The policy sets a national direction for expanding ICT infrastructure, access, and e-governance to support development.</p></details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">2.</span> Nepal Rastra Bank's IT Guidelines for banks and financial institutions primarily focus on?</p>
+<ol class="opts" type="A"><li>Setting the base lending interest rates for commercial banks</li><li>Printing and distributing new currency notes</li><li>Ensuring sound IT governance, security, and risk management practices in banks and financial institutions</li><li>Regulating listed company transactions on the stock exchange</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">C</span> The guidelines direct BFIs on IT governance, infrastructure, security controls, and risk management standards.</p></details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">3.</span> What is the primary purpose of the NRB Cyber Resilience Guidelines, 2023?</p>
+<ol class="opts" type="A"><li>Eliminating the requirement for internal IT audits in banks</li><li>Strengthening banks' and financial institutions' capacity to prevent, detect, respond to, and recover from cyber incidents</li><li>Replacing the need for antivirus and endpoint protection software</li><li>Setting minimum foreign exchange reserve requirements for banks</li></ol>
+<details class="ans"><summary>Answer</summary><p><span class="key">B</span> The guidelines establish a cyber resilience framework so BFIs can withstand, respond to, and recover from cyber incidents.</p></details>
+</div>
+
+</section>
+<section class="sec"><h2>Paper I &middot; Section A &mdash; Banking &amp; Organizational Management (Subjective)</h2>
+<p class="lede">Section A is 50 marks: six short answers (5 marks each) and two long answers (10 marks each). Write a full answer first, then reveal the model key points and compare.</p>
+<p>Paper I, Section A — <strong>Banking &amp; Organizational Management</strong> (<em>Banking tatha Sangathan Byabasthapan</em>). Practice subjective question bank. Click a question's answer bar to reveal the model key points. Figures that change with policy are marked to verify from the latest Nepal Rastra Bank (NRB) source.</p>
+
+<h3>Short Answer — Financial Institutions and Key Banking Terms (5 marks each)</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> <span class="marks">[5 marks]</span> How are banks and financial institutions (BFIs) classified in Nepal under BAFIA 2073?</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li>BAFIA 2073 (Banks and Financial Institutions Act) is the umbrella law under which NRB licenses and regulates all BFIs.</li>
+<li>Institutions are grouped into four classes by function and minimum capital:</li>
+<li><strong>Class "A" — Commercial banks</strong> (<em>banijya bank</em>): full-scope banking, largest capital; e.g., RBB.</li>
+<li><strong>Class "B" — Development banks</strong> (<em>bikas bank</em>): limited scope, often regional.</li>
+<li><strong>Class "C" — Finance companies</strong>: deposits, loans, hire-purchase.</li>
+<li><strong>Class "D" — Microfinance institutions</strong> (<em>laghubitta</em>): small loans to low-income/rural groups for financial inclusion.</li>
+<li>NRB sits above all four as regulator; cooperatives and the infrastructure development bank operate under separate laws.</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">2.</span> <span class="marks">[5 marks]</span> What is capital fund? Distinguish between core capital and supplementary capital.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li>Capital fund (<em>puji kosh</em>) = a bank's own permanent resources that absorb losses and protect depositors; the basis of capital adequacy.</li>
+<li><strong>Core capital (Tier 1 / primary):</strong> paid-up capital, share premium, statutory general reserve, retained earnings — permanent and freely available.</li>
+<li><strong>Supplementary capital (Tier 2):</strong> general loan-loss provision, subordinated term debt, revaluation reserve, hybrid instruments — limited loss-absorbing capacity.</li>
+<li>Capital Adequacy Ratio (CAR) = Capital fund &divide; Risk-Weighted Assets, computed under Basel III.</li>
+<li>NRB fixes a minimum CAR and core-capital ratio for each class of BFI <em>(check current figure from NRB)</em>.</li>
+<li>A larger capital fund means a stronger cushion, more public confidence and greater lending capacity.</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">3.</span> <span class="marks">[5 marks]</span> What is the Cash Reserve Ratio (CRR)? How does it differ from the Statutory Liquidity Ratio (SLR)?</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li><strong>CRR</strong> = minimum percentage of total deposits a bank must keep as a cash balance with NRB.</li>
+<li>Purpose: protects depositors, ensures liquidity, and acts as a monetary-policy tool to control money supply and credit.</li>
+<li><strong>SLR</strong> = minimum share of deposits held in liquid assets (cash, gold, government securities) — a broader requirement that includes the CRR portion.</li>
+<li>Raising CRR/SLR tightens liquidity (less money to lend); lowering them eases credit.</li>
+<li>Both ratios are set by NRB in the annual Monetary Policy <em>(check current figure from NRB)</em>.</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">4.</span> <span class="marks">[5 marks]</span> Explain the Credit-to-Deposit (CD) ratio and its importance.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li>CD ratio = total credit (loans) &divide; total deposits, expressed as a percentage.</li>
+<li>It shows how much of the deposits a bank has lent out — a key liquidity and prudence indicator.</li>
+<li>NRB caps the CD ratio to prevent over-lending and liquidity stress <em>(check current figure from NRB)</em>; it replaced the earlier CCD ratio.</li>
+<li>A ratio above the limit signals aggressive lending and liquidity risk; a very low ratio means idle funds and weak earnings.</li>
+<li>Helps NRB monitor systemic liquidity and forces banks to balance lending with deposit mobilisation.</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">5.</span> <span class="marks">[5 marks]</span> What is the base rate of a bank? Why does NRB require it?</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li>Base rate = the minimum interest rate below which a bank generally cannot lend, so that lending covers its costs.</li>
+<li>Computed from an NRB-prescribed formula combining: cost of funds (deposit interest), cost of CRR and SLR, operating cost, and a small return on assets.</li>
+<li>Actual lending rate = base rate + a premium reflecting the borrower's risk.</li>
+<li>Purpose: transparency in loan pricing, fair competition, and protection of banks from lending below cost.</li>
+<li>Banks calculate and publish the base rate monthly <em>(check current figure from NRB)</em>.</li>
+</ul>
+</details>
+</div>
+
+<h3>Short Answer — Prudential and Compliance Concepts (5 marks each)</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> <span class="marks">[5 marks]</span> What is loan-loss provisioning? How are loans classified by NRB?</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li>Provisioning = setting aside part of profit as a reserve against possible loan defaults; it protects the bank and reflects true asset quality.</li>
+<li>NRB classifies loans by overdue period into: <strong>Pass</strong>, <strong>Watchlist</strong>, <strong>Substandard</strong>, <strong>Doubtful</strong>, and <strong>Loss</strong>.</li>
+<li><strong>Performing loans</strong> = Pass + Watchlist; <strong>Non-Performing Loans (NPL)</strong> = Substandard + Doubtful + Loss.</li>
+<li>The provision rate rises with risk — smallest for Pass, up to 100% for Loss loans <em>(check current provisioning rates from NRB)</em>.</li>
+<li>Higher NPL and provisioning cut into profit; the NPL ratio is a key measure of asset quality.</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">2.</span> <span class="marks">[5 marks]</span> What is KYC and why is it important in banking?</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li>Know Your Customer (KYC) = the process of identifying and verifying a customer's identity, address and source of funds before and during a banking relationship.</li>
+<li>Documents: citizenship/passport, photo, PAN, address proof; for firms — registration papers and beneficial-owner details.</li>
+<li>Purpose: prevent money laundering, terrorist financing, fraud and misuse of accounts.</li>
+<li>Part of wider Customer Due Diligence (CDD) required under the AML Act 2064; NRB mandates periodic KYC updates and enhanced KYC for high-risk customers.</li>
+<li>Foundation of a safe banking relationship and of regulatory compliance.</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">3.</span> <span class="marks">[5 marks]</span> What is blacklisting in banking? Who maintains it and on what grounds?</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li>Blacklisting = an official listing of defaulters/wrongdoers who are then barred from further credit facilities.</li>
+<li>Maintained in Nepal by the Credit Information Bureau — Credit Information Center Ltd (<em>Karja Suchana Kendra</em>) — under NRB direction.</li>
+<li>Common grounds: wilful loan default, misuse of a loan, cheque dishonour due to insufficient funds, and fraud.</li>
+<li>Consequences: no new loans from any BFI, a damaged credit record, and possible legal action.</li>
+<li>Removal follows clearing of dues and a cooling-off period; the system enforces credit discipline and protects the banking sector.</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">4.</span> <span class="marks">[5 marks]</span> What is credit rating? Name the credit-rating agencies operating in Nepal.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li>Credit rating = an independent expert opinion on the creditworthiness (ability to repay) of a borrower, company or debt instrument.</li>
+<li>Expressed as grades/symbols, e.g., AAA (highest) down to D (default).</li>
+<li>Provided in Nepal by licensed agencies such as <strong>ICRA Nepal</strong> and <strong>CARE Ratings Nepal</strong>.</li>
+<li>Mandatory for public share issues, debentures and large borrowings.</li>
+<li>Helps investors and lenders price risk — a higher rating lowers borrowing cost. (Different from the internal credit scoring of retail borrowers.)</li>
+</ul>
+</details>
+</div>
+
+<h3>Short Answer — Laws, Management and Digital Banking (5 marks each)</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> <span class="marks">[5 marks]</span> What does the Negotiable Instruments Act 2034 cover? State the essentials of a cheque and the effect of its dishonour.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li>The Act governs negotiable instruments — <strong>cheque, bill of exchange, and promissory note</strong> (transferable documents ordering or promising payment of money).</li>
+<li>A cheque = a written order to a bank to pay a certain sum to a named person or bearer, on demand.</li>
+<li>Essentials: in writing, signed by the drawer, a definite sum, payable on demand, drawn on a specified bank.</li>
+<li>Dishonour (e.g., insufficient funds) gives the holder a legal remedy and can lead to blacklisting.</li>
+<li>Read with the Banking Offence Act 2064, cheque fraud can also carry penal consequences; the Act gives payment transactions certainty and enforceability.</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">2.</span> <span class="marks">[5 marks]</span> Explain the Right to Information Act 2064 and its relevance to a public bank such as RBB.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li>The RTI Act 2064 gives every citizen the right to seek and receive information held by public bodies.</li>
+<li>Public bodies — including government-owned banks like RBB — must appoint an Information Officer and proactively publish key information.</li>
+<li>A citizen applies and is generally given the information within a set time; refusal is allowed only for legally exempt matters (privacy, security, commercial confidentiality).</li>
+<li>The National Information Commission hears appeals against refusal.</li>
+<li>Promotes transparency, accountability and good governance; a bank must balance disclosure with customer confidentiality (banking secrecy).</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">3.</span> <span class="marks">[5 marks]</span> Distinguish between connectIPS, RTGS and SWIFT.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li><strong>connectIPS</strong> — a retail e-payment system by Nepal Clearing House Ltd (NCHL) that lets users link bank accounts and transfer/pay directly; for everyday, lower-value transactions.</li>
+<li><strong>RTGS (Real-Time Gross Settlement)</strong> — operated by NRB for large-value or urgent domestic payments; settles each transaction individually and instantly <em>(check current threshold from NRB)</em>.</li>
+<li><strong>SWIFT</strong> — a global secure messaging network for cross-border payments and trade (letters of credit, remittances).</li>
+<li>Scope: connectIPS = domestic retail; RTGS = domestic high-value; SWIFT = international.</li>
+<li>Timing: connectIPS and RTGS are near-instant domestic transfers; SWIFT is a messaging standard, with actual settlement through correspondent banks.</li>
+</ul>
+</details>
+</div>
+
+<h3>Long Answer — Banking System and Regulation (10 marks each)</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> <span class="marks">[10 marks]</span> Describe the roles and functions of Nepal Rastra Bank as the central bank, and the tools it uses to conduct monetary policy (with reference to the NRB Act 2058).</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li>NRB (established 2013 BS) is Nepal's central bank; the NRB Act 2058 defines its objectives, autonomy and powers.</li>
+<li><strong>Objectives:</strong> maintain price stability, external/financial-sector stability, a sound payment system, and overall banking-system development.</li>
+<li><strong>Core functions:</strong></li>
+<li>Sole authority to issue currency (notes and coins).</li>
+<li>Banker, adviser and fiscal agent to the government.</li>
+<li>Banker's bank and lender of last resort to BFIs.</li>
+<li>Regulator and supervisor of BFIs (licensing, inspection, directives) together with BAFIA 2073.</li>
+<li>Custodian and manager of foreign-exchange reserves; manages the exchange-rate regime (peg with the Indian rupee).</li>
+<li>Formulates and implements monetary policy.</li>
+<li><strong>Monetary-policy tools — quantitative:</strong> CRR, SLR, bank/policy rate, open-market operations (repo/reverse repo), and the standing liquidity facility.</li>
+<li><strong>Qualitative tools:</strong> directed/priority-sector lending, margin requirements, CD-ratio and credit limits, and moral suasion.</li>
+<li>Rates are announced in the annual Monetary Policy <em>(check current figures from NRB)</em>.</li>
+<li>Overall aim: control inflation, ensure adequate credit for growth, and safeguard financial stability.</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">2.</span> <span class="marks">[10 marks]</span> Explain the objectives and main provisions of BAFIA 2073 and its role in regulating banks and financial institutions.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li>BAFIA 2073 (Banks and Financial Institutions Act, 2017) is the principal law for licensing, regulating and supervising BFIs; it replaced BAFIA 2063.</li>
+<li><strong>Objectives:</strong> protect depositors' rights and interests, promote a healthy and competitive financial system, and build public confidence.</li>
+<li><strong>Classification:</strong> BFIs are licensed as Class A (commercial banks), B (development banks), C (finance companies) and D (microfinance).</li>
+<li><strong>Licensing:</strong> minimum paid-up capital, fit-and-proper promoters, and feasibility <em>(check current capital requirement from NRB)</em>.</li>
+<li><strong>Corporate governance:</strong> rules on board composition, independent directors, restrictions on related/family directors, and tenure limits.</li>
+<li><strong>Restrictions:</strong> single-borrower and sector exposure limits, curbs on lending to directors/related parties, and insider dealing.</li>
+<li><strong>Prudential norms:</strong> capital adequacy, loan classification and provisioning, and liquidity as per NRB directives.</li>
+<li><strong>NRB powers:</strong> inspection, prompt corrective action, management takeover, merger/acquisition, and liquidation.</li>
+<li>Significance: gives NRB legal authority to enforce discipline, protects depositors, and underpins financial stability.</li>
+</ul>
+</details>
+</div>
+
+<h3>Long Answer — Banking Laws and Financial Crime (10 marks each)</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> <span class="marks">[10 marks]</span> Discuss Nepal's legal framework against money laundering (AML Act 2064) and the Banking Offence and Punishment Act 2064, including the obligations they place on banks.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li>Money laundering = disguising illegally obtained money to make it appear legitimate; it harms the economy, integrity and security.</li>
+<li>The Asset (Money) Laundering Prevention Act 2064 is the core AML/CFT law, also addressing terrorist financing.</li>
+<li><strong>Institutional set-up:</strong> the Financial Information Unit (FIU) at NRB receives and analyses reports; it works with the coordination committee, the Department of Money Laundering Investigation, and regulators.</li>
+<li><strong>Obligations of banks (reporting entities):</strong></li>
+<li>Conduct KYC/Customer Due Diligence and identify beneficial owners.</li>
+<li>Apply enhanced due diligence to high-risk customers and PEPs (politically exposed persons).</li>
+<li>File Threshold Transaction Reports (TTR) and Suspicious Transaction Reports (STR) to the FIU.</li>
+<li>Keep records, train staff, and appoint an AML compliance officer.</li>
+<li>Aligned with FATF international standards; weak compliance risks penalties and country "grey-listing".</li>
+<li><strong>Banking Offence and Punishment Act 2064:</strong> criminalises banking offences such as opening accounts/loans with false details, misuse of credit, unauthorised withdrawal, ATM/card and electronic fraud, and cheque fraud — with fines and imprisonment.</li>
+<li>Together they protect the integrity of the financial system and deter financial crime.</li>
+</ul>
+</details>
+</div>
+
+<h3>Long Answer — Organizational Behaviour and Service (10 marks each)</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> <span class="marks">[10 marks]</span> Explain motivation, communication and team building as elements of organizational behaviour, and how they apply in a bank.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li>Organizational behaviour (OB) studies how individuals and groups act at work; good OB raises productivity, service quality and staff retention — vital in a service business like banking.</li>
+<li><strong>Motivation</strong> — the inner drive to perform. Key theories:</li>
+<li>Maslow's hierarchy of needs (physiological &rarr; safety &rarr; social &rarr; esteem &rarr; self-actualisation).</li>
+<li>Herzberg's two-factor theory — hygiene factors (pay, conditions) prevent dissatisfaction; motivators (achievement, recognition, growth) create satisfaction.</li>
+<li>McGregor's Theory X and Theory Y; Vroom's expectancy theory.</li>
+<li>Application: fair pay, career growth, recognition, training, job rotation, and incentives for meeting targets.</li>
+<li><strong>Communication</strong> — sharing information to build common understanding.</li>
+<li>Process: sender &rarr; message &rarr; channel &rarr; receiver &rarr; feedback.</li>
+<li>Types: formal (downward, upward, horizontal) and informal (grapevine); verbal, written and digital.</li>
+<li>Barriers (language, noise, hierarchy, overload) are overcome by clarity, feedback and active listening.</li>
+<li><strong>Team building</strong> — developing a cohesive, goal-focused group; Tuckman's stages: forming, storming, norming, performing (and adjourning).</li>
+<li>Needs shared goals, clear roles, trust and good leadership; benefits branch coordination, problem-solving and customer service.</li>
+<li>Together, motivated staff, clear communication and strong teams drive service quality and organisational goals.</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">2.</span> <span class="marks">[10 marks]</span> Discuss customer service and grievance handling in a bank. Refer also to employee relations under the Labour Act 2074 and the RBB Service Bylaws 2070.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li>In banking, service quality is the main differentiator; satisfied customers bring loyalty, deposits and reputation.</li>
+<li><strong>Dimensions of service quality (SERVQUAL):</strong> reliability, responsiveness, assurance, empathy, and tangibles.</li>
+<li>Good service practices: prompt and courteous service, accurate information, minimal waiting, digital channels, financial literacy, and inclusiveness.</li>
+<li><strong>Customer grievance handling:</strong></li>
+<li>Provide easy complaint channels (desk, phone, email, online, suggestion box).</li>
+<li>Acknowledge, record, investigate and resolve within a set time; escalate unresolved cases.</li>
+<li>Maintain a grievance-handling officer/cell; NRB requires BFIs to run a grievance mechanism with second-tier redress.</li>
+<li>Analyse complaints to fix root causes and improve service.</li>
+<li><strong>Employee relations (internal grievances):</strong> governed by the Labour Act 2074 (general employment) and, for RBB staff, the RBB Service Bylaws 2070 (recruitment, promotion, conduct, discipline and benefits).</li>
+<li>Fair, transparent staff grievance redressal improves morale and reduces disputes.</li>
+<li>Handling both customer and employee grievances well builds trust and a positive organisational image.</li>
+</ul>
+</details>
+</div>
+
+<h3>Long Answer — Digital Payment Systems (10 marks each)</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> <span class="marks">[10 marks]</span> Describe Nepal's digital payment ecosystem — RTGS, IPS/connectIPS, cheque clearing, SWIFT, wallets and CBDC — and its benefits and risks. Refer to the Payment and Settlement Act 2075.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li>Nepal's payment system is regulated by NRB under the <strong>Payment and Settlement Act 2075</strong> and NRB directives; NRB licenses Payment Service Providers (PSPs) and Operators (PSOs).</li>
+<li>The Electronic Transaction Act 2063 provides supporting legal recognition of electronic records and signatures.</li>
+<li><strong>Key systems and channels:</strong></li>
+<li><strong>RTGS</strong> — NRB-operated; settles large-value/urgent payments individually and instantly <em>(check current threshold from NRB)</em>.</li>
+<li><strong>IPS and connectIPS</strong> — run by Nepal Clearing House Ltd (NCHL); IPS is batch-based account-to-account transfer, connectIPS lets users pay/transfer directly by linking bank accounts.</li>
+<li><strong>Electronic Cheque Clearing (NCHL-ECC)</strong> — digital cheque clearing that replaced the physical exchange of cheques.</li>
+<li><strong>SWIFT</strong> — global messaging network for cross-border payments and trade.</li>
+<li>Cards (debit/credit/ATM), mobile and internet banking, and QR (NEPALPAY QR).</li>
+<li><strong>Digital wallets / PSPs</strong> — eSewa, Khalti, IME Pay for retail payments.</li>
+<li><strong>CBDC (Central Bank Digital Currency)</strong> — a digital form of the rupee issued by NRB; NRB is studying a "digital rupee" to modernise payments and deepen inclusion <em>(check current status from NRB)</em>.</li>
+<li><strong>Benefits:</strong> speed, convenience, lower cost, transparency, financial inclusion, and less cash handling.</li>
+<li><strong>Risks/challenges:</strong> cyber-security and fraud, system downtime, low digital literacy, privacy, and interoperability — requiring strong controls and NRB oversight.</li>
+</ul>
+</details>
+</div>
+
+</section>
+<section class="sec"><h2>Paper II &mdash; Information Technology (Subjective)</h2>
+<p class="lede">Paper II is 100 marks, fully subjective. Practise clear structure and diagrams (OSI, TCP/IP, memory hierarchy) &mdash; they earn marks quickly.</p>
+<h3>Unit 1: Introduction to Computers, Computer Types, AI, ML &amp; Blockchain — Short Answer Questions</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> <span class="marks">[5 marks]</span> Differentiate between Artificial Intelligence, Machine Learning, and Deep Learning. Give one banking-sector application of each.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li><strong>AI</strong>: broad field enabling machines to mimic human intelligence/decision-making, may be rule-based or learning-based. Example: AI-driven chatbot for customer queries.</li>
+<li><strong>ML</strong>: subset of AI; systems learn patterns from data without explicit programming (supervised, unsupervised, reinforcement learning). Example: ML-based credit-scoring / loan-default prediction model.</li>
+<li><strong>Deep Learning</strong>: subset of ML using multi-layer artificial neural networks; automatic feature extraction from large/unstructured data. Example: DL-based signature or facial recognition for e-KYC.</li>
+<li>Relationship: <code>AI ⊃ ML ⊃ DL</code> — draw as three nested circles/sets, largest to smallest.</li>
+</ul>
+</details>
+</div>
+
+<h3>Unit 1: Introduction to Computers, Computer Types, AI, ML &amp; Blockchain — Long Answer Questions</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> <span class="marks">[10 marks]</span> What is Blockchain technology? Explain its key features and describe two potential applications in Nepal's banking and financial sector.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li><strong>Definition</strong>: a distributed, decentralized digital ledger that records transactions across multiple nodes; data organized into cryptographically linked blocks.</li>
+<li>Draw a simple block-chain diagram: each block contains <em>data + timestamp + hash of previous block + own hash</em>, chained in sequence.</li>
+<li><strong>Key features</strong>: decentralization (no single point of control), immutability (tamper-evidence via hash chaining), transparency, consensus mechanism (PoW, PoS, PBFT) to validate new blocks, strong cryptographic security.</li>
+<li><strong>Applications in banking</strong>: (i) trade finance / letter-of-credit automation — reduces paperwork and fraud; (ii) shared KYC/AML registry among BFIs; (iii) faster, transparent cross-border remittance settlement; (iv) smart-contract based loan disbursement and collateral tracking.</li>
+<li><strong>Benefits</strong>: lower reconciliation cost, fraud reduction, faster settlement, audit trail.</li>
+<li><strong>Challenges</strong>: regulatory uncertainty, scalability/throughput limits, integration with legacy Core Banking Systems (CBS), energy cost of PoW.</li>
+</ul>
+</details>
+</div>
+
+<h3>Unit 2: Computer Architecture, Memory, CPU &amp; I/O — Short Answer Questions</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> <span class="marks">[5 marks]</span> Draw and explain the memory hierarchy of a computer system.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li>Draw as a pyramid, top to bottom: <strong>CPU registers → Cache (L1/L2/L3) → Main memory (RAM) → Secondary storage (HDD/SSD) → Tertiary/offline storage (tape, cloud backup)</strong>.</li>
+<li>Moving down the pyramid: capacity increases, cost per bit decreases, access speed decreases.</li>
+<li>Moving up: speed increases, capacity decreases, cost per bit increases.</li>
+<li>Purpose: bridges the speed gap between a fast CPU and slower storage, exploiting <em>temporal and spatial locality</em> through caching.</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">2.</span> <span class="marks">[5 marks]</span> Explain any three techniques of I/O data transfer used in a computer system.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li><strong>Programmed I/O</strong>: CPU polls device status continuously and performs the transfer itself; simple but wastes CPU cycles (busy-waiting).</li>
+<li><strong>Interrupt-driven I/O</strong>: device raises an interrupt when ready; CPU runs an ISR to transfer data; CPU is free to do other work between interrupts.</li>
+<li><strong>DMA (Direct Memory Access)</strong>: a dedicated DMA controller transfers data directly between device and memory without per-byte CPU involvement; CPU only initiates the transfer and is interrupted on completion; used for bulk transfers (disk, network).</li>
+<li>Efficiency increases and CPU overhead decreases in the order: programmed I/O → interrupt-driven I/O → DMA.</li>
+</ul>
+</details>
+</div>
+
+<h3>Unit 2: Computer Architecture, Memory, CPU &amp; I/O — Long Answer Questions</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> <span class="marks">[10 marks]</span> Explain the internal organization of a CPU with a block diagram. Describe the fetch-decode-execute cycle and the function of key registers.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li>Block diagram: <strong>ALU</strong>, <strong>Control Unit</strong>, and <strong>Registers</strong> connected internally, linked to Memory and I/O via the system bus (address bus, data bus, control bus).</li>
+<li>Key registers: <strong>PC</strong> (Program Counter — address of next instruction), <strong>MAR</strong> (Memory Address Register), <strong>MBR/MDR</strong> (Memory Buffer/Data Register), <strong>IR</strong> (Instruction Register — holds current instruction), <strong>Accumulator/GPRs</strong> (operands and results), <strong>Flag/Status register</strong> (condition codes).</li>
+<li><strong>Fetch</strong>: PC → MAR → memory read → MBR → IR; PC is incremented.</li>
+<li><strong>Decode</strong>: Control Unit decodes the opcode in IR and generates control signals.</li>
+<li><strong>Execute</strong>: ALU performs the operation or a memory/I/O access occurs; result is written back to a register or memory.</li>
+<li>Cycle repeats, typically followed by an interrupt-check step; mention <em>pipelining</em> as a performance enhancement that overlaps these stages for successive instructions.</li>
+</ul>
+</details>
+</div>
+
+<h3>Unit 3: Networking Devices, Switching &amp; Cryptography — Short Answer Questions</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> <span class="marks">[5 marks]</span> Differentiate between hub, switch, router, and gateway.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li><strong>Hub</strong>: Physical layer (Layer 1) device; broadcasts an incoming signal to all ports; no intelligence; single collision domain.</li>
+<li><strong>Switch</strong>: Data Link layer (Layer 2) device; forwards frames only to the destination port using a MAC address table; separate collision domain per port, single broadcast domain.</li>
+<li><strong>Router</strong>: Network layer (Layer 3) device; forwards packets between different networks using IP addresses and routing tables/protocols; separates broadcast domains.</li>
+<li><strong>Gateway</strong>: connects networks using different protocols/architectures (protocol translation), e.g. connecting a bank's LAN to a payment-switch network with a different message format.</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">2.</span> <span class="marks">[5 marks]</span> Differentiate between symmetric key and asymmetric key cryptography, with one example algorithm each.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li><strong>Symmetric key</strong>: same key for encryption and decryption; fast, suited to bulk data; key-distribution is the main challenge. Example: <code>AES</code>, <code>DES</code>/<code>3DES</code>.</li>
+<li><strong>Asymmetric key</strong>: key pair (public + private); public key encrypts/verifies, private key decrypts/signs; solves key-distribution but is computationally slower. Example: <code>RSA</code>, <code>ECC</code>, Diffie-Hellman (key exchange).</li>
+<li>Banking use: asymmetric for digital signatures, SSL/TLS handshake, and PKI-based certificate authentication; symmetric for actual bulk encryption of transaction data.</li>
+<li>Hybrid model: TLS uses asymmetric cryptography to securely exchange a symmetric session key, then uses that symmetric key for the session's data encryption.</li>
+</ul>
+</details>
+</div>
+
+<h3>Unit 3: Networking Devices, Switching &amp; Cryptography — Long Answer Questions</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> <span class="marks">[10 marks]</span> Draw the OSI reference model and explain the function of each layer. How does it compare with the TCP/IP model?</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li>Draw 7 stacked layers, sender and receiver side, with peer-to-peer logical arrows and the actual data path flowing down and across: <strong>Application, Presentation, Session, Transport, Network, Data Link, Physical</strong>.</li>
+<li><strong>Application</strong>: interface to end-user services (HTTP, FTP, SMTP).</li>
+<li><strong>Presentation</strong>: data translation, compression, encryption/decryption formatting.</li>
+<li><strong>Session</strong>: establishes, manages, and terminates sessions between hosts.</li>
+<li><strong>Transport</strong>: end-to-end delivery, segmentation, flow and error control, port addressing (TCP/UDP).</li>
+<li><strong>Network</strong>: logical (IP) addressing and routing between networks.</li>
+<li><strong>Data Link</strong>: framing, MAC addressing, error detection (CRC/parity) and flow control over a single link.</li>
+<li><strong>Physical</strong>: transmission of raw bits over the physical medium.</li>
+<li><strong>TCP/IP model</strong> has 4 layers: Application (merges OSI Application+Presentation+Session), Transport, Internet (=Network/IP), Network Access (merges Data Link+Physical).</li>
+<li>Comparison: OSI is a conceptual, protocol-independent reference model developed before protocols existed; TCP/IP is a practical model built around the protocols actually used on the Internet.</li>
+</ul>
+</details>
+</div>
+
+<h3>Unit 4: Operating Systems &amp; Scheduling — Short Answer Questions</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> <span class="marks">[5 marks]</span> Differentiate between a process and a thread.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li><strong>Process</strong>: independent program in execution with its own memory space (code, data, heap, stack) and PCB; heavyweight; inter-process communication needs IPC (pipes, shared memory, message queues).</li>
+<li><strong>Thread</strong>: lightweight unit of execution within a process; shares code/data/heap with sibling threads but has its own stack, registers, and program counter; cheaper context switch than a process.</li>
+<li>Multi-threading benefit: concurrency and responsiveness, e.g. a core banking application server handling many client request threads with shared resources.</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">2.</span> <span class="marks">[5 marks]</span> Differentiate between paging and segmentation as memory management techniques.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li><strong>Paging</strong>: physical memory divided into fixed-size frames, logical memory into equal-size pages; mapped via a page table; eliminates external fragmentation but may cause internal fragmentation.</li>
+<li><strong>Segmentation</strong>: program divided into variable-size logical segments (code, data, stack) reflecting program structure; mapped via a segment table (base + limit); may cause external fragmentation.</li>
+<li>Address translation: paging uses page-number + offset; segmentation uses segment-number + offset with bounds checking.</li>
+<li>Modern OS often combine both — segments further divided into pages.</li>
+</ul>
+</details>
+</div>
+
+<h3>Unit 4: Operating Systems &amp; Scheduling — Long Answer Questions</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> <span class="marks">[10 marks]</span> Explain FCFS, SJF, Round Robin, and Priority CPU scheduling algorithms with a suitable example. What criteria are used to evaluate a scheduling algorithm?</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li>Evaluation criteria: CPU utilization, throughput, turnaround time, waiting time, response time.</li>
+<li><strong>FCFS</strong> (First Come First Served): non-preemptive, executes in arrival order; simple but suffers from the convoy effect.</li>
+<li><strong>SJF</strong> (Shortest Job First): process with smallest burst time runs next; preemptive form is SRTF; minimizes average waiting time but risks starvation of long processes and needs burst-time estimation.</li>
+<li><strong>Round Robin</strong>: preemptive, each process gets a fixed time quantum in cyclic order; good response time for interactive systems; too small a quantum increases context-switch overhead, too large behaves like FCFS.</li>
+<li><strong>Priority Scheduling</strong>: highest-priority process runs first; preemptive or non-preemptive; risk of starvation for low-priority jobs, mitigated by aging.</li>
+<li>Illustrate with a small Gantt chart for 3–4 processes (arrival time, burst time) and compute average waiting/turnaround time under each algorithm for comparison.</li>
+</ul>
+</details>
+</div>
+
+<h3>Unit 5: DBMS, Data Warehousing, Web Technologies &amp; Disaster Recovery — Short Answer Questions</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> <span class="marks">[5 marks]</span> Explain the ACID properties of a database transaction. Why are they important for banking systems?</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li><strong>Atomicity</strong>: transaction executes fully or not at all — e.g. a fund transfer's debit and credit both succeed or both roll back.</li>
+<li><strong>Consistency</strong>: transaction moves the database from one valid state to another, preserving integrity constraints.</li>
+<li><strong>Isolation</strong>: concurrent transactions do not interfere; isolation levels — read uncommitted, read committed, repeatable read, serializable.</li>
+<li><strong>Durability</strong>: once committed, changes survive system failure (via write-ahead logging).</li>
+<li>Importance in banking: guarantees correctness of financial transactions, prevents double-debit/credit errors, and enables crash recovery in Core Banking Systems.</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">2.</span> <span class="marks">[5 marks]</span> Differentiate between OLTP and OLAP systems. What is a data warehouse?</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li><strong>OLTP</strong> (Online Transaction Processing): day-to-day operational transactions (deposits, withdrawals); normalized schema; fast, short transactions; many concurrent users.</li>
+<li><strong>OLAP</strong> (Online Analytical Processing): complex analytical queries and reporting for decision-making; denormalized dimensional schema (star/snowflake); historical, aggregated data.</li>
+<li><strong>Data warehouse</strong>: a subject-oriented, integrated, time-variant, non-volatile collection of data from multiple sources, used for reporting and analysis.</li>
+<li><strong>ETL</strong>: Extract data from source systems, Transform (cleanse/standardize), Load into the warehouse.</li>
+<li>Banking use: MIS and regulatory reporting to NRB, fraud-pattern analysis, customer segmentation.</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">3.</span> <span class="marks">[5 marks]</span> Differentiate between HTML and XML.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li><strong>HTML</strong>: HyperText Markup Language; used to display and format web content; fixed, predefined tag set; primarily concerned with presentation.</li>
+<li><strong>XML</strong>: eXtensible Markup Language; used to store, describe, and transport structured data; user-defined custom tags; case-sensitive and strictly well-formed (every tag must be properly closed and nested); concerned with data, not presentation.</li>
+<li>Relation: XML is commonly used for data interchange between systems (e.g. web-service messaging), while HTML renders content in a browser; XHTML combines the strict syntax rules of XML with HTML tags.</li>
+</ul>
+</details>
+</div>
+
+<h3>Unit 5: DBMS, Data Warehousing, Web Technologies &amp; Disaster Recovery — Long Answer Questions</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> <span class="marks">[10 marks]</span> What is a Disaster Recovery Plan (DRP)? Explain its key components and describe how RTO and RPO are used in designing one for a bank's IT infrastructure.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li><strong>DRP</strong>: a documented, structured approach describing how an organization resumes operations quickly after an unplanned incident (natural disaster, cyberattack, hardware failure).</li>
+<li>Key components: risk assessment and Business Impact Analysis (BIA), backup strategy (full/incremental/differential), backup site type, data replication, defined recovery procedures and roles, communication plan, periodic testing/drills.</li>
+<li><strong>RTO</strong> (Recovery Time Objective): maximum acceptable time to restore a system/service after disruption.</li>
+<li><strong>RPO</strong> (Recovery Point Objective): maximum acceptable data loss, measured as a point in time (how far back the last usable backup/replication point can be).</li>
+<li>Site types: <em>Hot site</em> (near real-time replication, low RTO/RPO, high cost), <em>Warm site</em> (partially equipped, moderate RTO), <em>Cold site</em> (basic infrastructure only, high RTO, low cost).</li>
+<li>Bank application: Core Banking System typically requires near-zero RPO/RTO, real-time data replication to a DR site in a different seismic/geographic zone, and periodic DR switchover drills — consistent with NRB directives on business continuity.</li>
+</ul>
+</details>
+</div>
+
+<h3>Unit 6: Cyber Security, ICT Policy 2072 &amp; NRB Guidelines — Short Answer Questions</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> <span class="marks">[5 marks]</span> Explain any four common types of cyber-attacks faced by banking and financial institutions.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li><strong>Phishing</strong>: fraudulent emails/messages/websites tricking users into revealing credentials or OTPs.</li>
+<li><strong>Malware/Ransomware</strong>: malicious software that damages or locks systems, or encrypts data and demands ransom.</li>
+<li><strong>DDoS</strong> (Distributed Denial of Service): floods a server/network with traffic to disrupt availability, e.g. taking an internet-banking portal offline.</li>
+<li><strong>Man-in-the-Middle (MITM)</strong>: attacker intercepts or alters communication between two parties, e.g. session hijacking during an online banking session.</li>
+<li><strong>SQL Injection</strong>: malicious SQL code injected through input fields to manipulate or extract database data.</li>
+<li><strong>Social engineering</strong>: psychological manipulation of staff or customers to bypass security controls.</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">2.</span> <span class="marks">[5 marks]</span> What are the key objectives of Nepal's ICT Policy 2072?</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li>Promote widespread access to ICT infrastructure, bridging the urban-rural digital divide.</li>
+<li>Encourage e-governance for transparent, efficient, and accessible public service delivery.</li>
+<li>Promote the ICT industry and IT-enabled services (ITES) for economic growth, employment, and IT service exports.</li>
+<li>Establish a legal and security framework for electronic transactions, cyber security, and data protection.</li>
+<li>Develop human resources and digital literacy/capacity building in ICT.</li>
+<li>Encourage public-private partnership, investment, and research/innovation in the ICT sector.</li>
+</ul>
+</details>
+</div>
+
+<h3>Unit 6: Cyber Security, ICT Policy 2072 &amp; NRB Guidelines — Long Answer Questions</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> <span class="marks">[10 marks]</span> Explain the key requirements of Nepal Rastra Bank's IT Guidelines / Cyber Resilience Guidelines for Banks and Financial Institutions (BFIs).</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li>Objective: ensure BFIs maintain robust, secure, and resilient IT systems to protect the financial system and customer data.</li>
+<li><strong>Governance</strong>: mandatory IT Steering Committee/IT policy at board level, defined roles (e.g. CISO/IT Head), regular IT audit (internal and NRB-approved external auditor).</li>
+<li><strong>Risk management</strong>: documented IT/cyber risk management framework, Business Impact Analysis, periodic risk assessment.</li>
+<li><strong>Data Centre and DR</strong>: mandatory Data Centre and geographically-separated Disaster Recovery Site, defined RTO/RPO, periodic DR drills/switchover testing with results reported to NRB.</li>
+<li><strong>Cyber security controls</strong>: network segmentation, firewalls/IDS-IPS, endpoint protection, patch management, regular VAPT (Vulnerability Assessment and Penetration Testing), Security Operations Center/log monitoring.</li>
+<li><strong>Incident reporting</strong>: mandatory, timely reporting of cyber incidents/breaches to NRB within a specified timeframe.</li>
+<li><strong>Access control</strong>: multi-factor authentication for critical/internet-banking systems, role-based access control, strong password policy.</li>
+<li><strong>Outsourcing/Cloud</strong>: due-diligence and approval requirements before outsourcing IT services or using cloud infrastructure for core banking data.</li>
+<li><strong>Awareness and compliance</strong>: periodic staff cyber-security training, customer awareness, and mandatory periodic compliance/self-assessment reporting to NRB, with regulatory action for non-compliance.</li>
+</ul>
+</details>
+</div>
+
+</section>
+    </div><!-- /body-wrap -->
+    <footer class="doc-foot">Practice questions built from the official RBB syllabus. Model answers are study guides, not official keys — confirm current figures, dates and Act provisions on <strong>nrb.org.np</strong> and <strong>rbb.com.np</strong>. The written exam may be answered in Nepali or English. All the best.</footer>
+  </main>
+</div>
+<button class="totop" id="totop" type="button" aria-label="Back to top">&#8593; Top</button>
+<script>
+(function(){
+  var main=document.getElementById('content');
+  var wrap=main.querySelector('.body-wrap');
+  var each=function(list,fn){Array.prototype.forEach.call(list,fn);};
+
+  /* wrap wide tables */
+  each(wrap.querySelectorAll('table'),function(t){
+    if(t.parentNode.classList.contains('tbl-scroll'))return;
+    var d=document.createElement('div');d.className='tbl-scroll';
+    t.parentNode.insertBefore(d,t);d.appendChild(t);
+  });
+
+  /* mark "Group ..." headings as dividers */
+  each(wrap.querySelectorAll('h3'),function(h){
+    if(!h.classList.contains('groupdiv') && /^group\b/i.test((h.textContent||'').trim())){
+      h.classList.add('groupdiv');
+    }
+  });
+
+  /* build the contents list */
+  var nav=document.getElementById('toc-nav');
+  var used={};
+  function slug(s){
+    s=(s||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,48)||'sec';
+    if(used[s]!=null){used[s]++;s=s+'-'+used[s];}else{used[s]=0;}
+    return s;
+  }
+  var items=[];
+  each(wrap.querySelectorAll('h2, h3'),function(h){
+    if(!h.id)h.id=slug(h.textContent);
+    var a=document.createElement('a');
+    a.href='#'+h.id;
+    a.textContent=(h.textContent||'').replace(/\s+/g,' ').trim();
+    a.className = h.tagName==='H2' ? 'lv2' : (h.classList.contains('groupdiv') ? 'lv3group' : 'lv3');
+    nav.appendChild(a);
+    items.push({a:a,h:h});
+  });
+
+  /* scroll-spy */
+  if('IntersectionObserver' in window){
+    var spy=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){
+          items.forEach(function(it){it.a.classList.toggle('active',it.h===e.target);});
+        }
+      });
+    },{rootMargin:'0px 0px -82% 0px',threshold:0});
+    items.forEach(function(it){spy.observe(it.h);});
+  }
+
+  /* reveal / hide all answers */
+  var ra=document.getElementById('revealAll');
+  var answers=wrap.querySelectorAll('details.ans');
+  if(ra){
+    var shown=false;
+    ra.addEventListener('click',function(){
+      shown=!shown;
+      each(answers,function(d){d.open=shown;});
+      ra.textContent=shown?'Hide all answers':'Reveal all answers';
+    });
+  }
+
+  /* back-to-top */
+  var tt=document.getElementById('totop');
+  window.addEventListener('scroll',function(){tt.classList.toggle('show',window.scrollY>640);},{passive:true});
+  tt.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'});});
+
+  /* light / dark reading mode */
+  var tb=document.getElementById('theme');
+  try{var saved=localStorage.getItem('rbb-theme');if(saved)document.documentElement.setAttribute('data-theme',saved);}catch(e){}
+  tb.addEventListener('click',function(){
+    var cur=document.documentElement.getAttribute('data-theme');
+    var dark=cur?cur==='dark':window.matchMedia('(prefers-color-scheme:dark)').matches;
+    var next=dark?'light':'dark';
+    document.documentElement.setAttribute('data-theme',next);
+    try{localStorage.setItem('rbb-theme',next);}catch(e){}
+  });
+})();
+</script>
+</body>
+</html>

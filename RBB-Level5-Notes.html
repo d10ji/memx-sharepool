@@ -1,0 +1,1602 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RBB Level 5 (IT) — Study Handbook</title>
+<style>
+  :root{
+    --paper:#f4f3ef; --paper-2:#eceae3; --panel:#faf9f5;
+    --ink:#23262b; --ink-2:#585650; --ink-3:#8c887e;
+    --rule:#d9d5cb; --rule-2:#e7e3d9;
+    --spot:#1f3d6e; --spot-2:#16305a; --spot-tint:#e8ecf3; --on-spot:#ffffff;
+    --warn:#8a5410; --code-bg:#eceae3; --sel:#cddbef;
+    --serif:"Constantia","Cambria",Georgia,"Palatino Linotype",Palatino,"Times New Roman",serif;
+    --sans:"Segoe UI","Calibri",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+    --mono:"Cascadia Code",Consolas,"SFMono-Regular",Menlo,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --paper:#17191c; --paper-2:#1e2124; --panel:#1c1f22;
+      --ink:#e8e5de; --ink-2:#aca89f; --ink-3:#7e7a72;
+      --rule:#32353a; --rule-2:#292c30;
+      --spot:#8fb0e0; --spot-2:#a9c3ea; --spot-tint:#1a2536; --on-spot:#12161f;
+      --warn:#d7a250; --code-bg:#1e2124; --sel:#28374f;
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f3ef; --paper-2:#eceae3; --panel:#faf9f5;
+    --ink:#23262b; --ink-2:#585650; --ink-3:#8c887e;
+    --rule:#d9d5cb; --rule-2:#e7e3d9;
+    --spot:#1f3d6e; --spot-2:#16305a; --spot-tint:#e8ecf3; --on-spot:#ffffff;
+    --warn:#8a5410; --code-bg:#eceae3; --sel:#cddbef;
+  }
+  :root[data-theme="dark"]{
+    --paper:#17191c; --paper-2:#1e2124; --panel:#1c1f22;
+    --ink:#e8e5de; --ink-2:#aca89f; --ink-3:#7e7a72;
+    --rule:#32353a; --rule-2:#292c30;
+    --spot:#8fb0e0; --spot-2:#a9c3ea; --spot-tint:#1a2536; --on-spot:#12161f;
+    --warn:#d7a250; --code-bg:#1e2124; --sel:#28374f;
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:var(--serif);font-size:18px;line-height:1.72;
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  ::selection{background:var(--sel)}
+
+  .app{display:grid;grid-template-columns:280px minmax(0,1fr)}
+
+  /* ---------- Contents (book-style, not a dashboard) ---------- */
+  .toc{position:sticky;top:0;align-self:start;height:100vh;overflow:auto;
+    background:var(--paper-2);border-right:1px solid var(--rule);padding:26px 14px 48px}
+  .toc-brand{font-family:var(--serif);font-size:18px;color:var(--ink);font-weight:700;
+    padding:0 10px 12px;line-height:1.25}
+  .toc-brand span{display:block;font-family:var(--sans);font-size:11.5px;font-weight:600;
+    letter-spacing:.03em;color:var(--ink-3);margin-top:4px;text-transform:uppercase}
+  .toc-lead{font-family:var(--sans);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--ink-3);padding:0 10px;margin:6px 0 10px;border-top:1px solid var(--rule);padding-top:14px}
+  .toc-nav{display:flex;flex-direction:column}
+  .toc-nav a{text-decoration:none;color:var(--ink-2);font-family:var(--sans);font-size:12.5px;
+    line-height:1.35;padding:3px 8px 3px 12px;border-left:2px solid transparent;transition:color .12s}
+  .toc-nav a.lv2{font-weight:700;color:var(--ink);text-transform:uppercase;letter-spacing:.05em;
+    font-size:11px;margin-top:18px}
+  .toc-nav a.lv3{padding-left:16px}
+  .toc-nav a.lv3group{color:var(--spot);font-weight:700;font-variant:small-caps;
+    letter-spacing:.02em;font-size:12.5px;padding-left:12px;margin-top:10px}
+  .toc-nav a:hover{color:var(--ink)}
+  .toc-nav a.active{color:var(--spot);font-weight:700;border-left-color:var(--spot)}
+
+  /* ---------- Reading column ---------- */
+  .content{padding:0 clamp(22px,5vw,70px) 96px;min-width:0}
+  .topbar{max-width:46rem;margin:0 auto;display:flex;justify-content:space-between;align-items:center;
+    padding:14px 0 10px}
+  .crumb{font-family:var(--sans);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3)}
+  .theme{appearance:none;border:1px solid var(--rule);background:var(--panel);color:var(--ink-2);
+    width:34px;height:34px;border-radius:3px;cursor:pointer;font-size:15px;line-height:1}
+  .theme:hover{color:var(--spot);border-color:var(--spot)}
+  .theme:focus-visible{outline:2px solid var(--spot);outline-offset:2px}
+
+  .doc-head{max-width:46rem;margin:0 auto;padding:14px 0 6px;border-bottom:1px solid var(--rule)}
+  .eyebrow{font-family:var(--sans);font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--spot);font-weight:700}
+  .doc-head h1{font-family:var(--sans);font-size:clamp(27px,4.4vw,38px);font-weight:700;
+    margin:14px 0 12px;line-height:1.14;letter-spacing:-.015em;color:var(--ink);text-wrap:balance}
+  .doc-head .sub{color:var(--ink-2);font-size:17.5px;max-width:40em}
+  .doc-head .disc{margin:16px 0 6px;font-family:var(--sans);font-size:13px;line-height:1.55;color:var(--ink-2);
+    background:var(--panel);border:1px solid var(--rule);padding:12px 15px 12px 16px;max-width:40em}
+  .doc-head .disc strong{font-family:var(--sans);text-transform:uppercase;letter-spacing:.08em;
+    font-size:11px;color:var(--spot);display:block;margin-bottom:4px}
+  .doc-head .disc em{color:var(--warn);font-style:italic;font-weight:400}
+
+  .body-wrap{max-width:46rem;margin:0 auto}
+
+  /* ---------- Chapter (h2) & section (h3) headings ---------- */
+  .body-wrap h2{font-family:var(--sans);font-weight:700;font-size:clamp(22px,3vw,28px);color:var(--ink);
+    letter-spacing:-.01em;margin:0;padding:0 0 .34em;border-bottom:3px solid var(--spot);
+    text-wrap:balance;scroll-margin-top:16px}
+  .sec{margin-top:64px}
+  .sec:first-of-type{margin-top:34px}
+  .body-wrap h3{font-family:var(--sans);font-weight:700;font-size:19.5px;color:var(--spot);
+    margin:38px 0 .35em;padding-bottom:.28em;border-bottom:1px solid var(--rule);
+    line-height:1.3;text-wrap:balance;scroll-margin-top:16px}
+  .body-wrap h3.groupdiv{color:var(--ink-2);font-variant:small-caps;letter-spacing:.04em;font-size:16px;
+    text-align:center;border-bottom:none;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
+    padding:.5em 0;margin:52px 0 8px;background:none}
+  .body-wrap h4{font-family:var(--sans);font-weight:700;font-size:15px;color:var(--ink);margin:22px 0 4px}
+  .secno{color:var(--spot);font-weight:700;margin-right:.45em}
+
+  /* ---------- Body text: book setting (justified, first-line indent) ---------- */
+  .body-wrap p{margin:.15em 0 .55em;text-align:justify;hyphens:auto;text-indent:1.4em}
+  .body-wrap h2 + p,.body-wrap h3 + p,.body-wrap h4 + p,.body-wrap p:first-child,
+  .body-wrap blockquote + p,.body-wrap ul + p,.body-wrap ol + p,.body-wrap .tbl-scroll + p{text-indent:0}
+  .body-wrap strong{color:var(--ink);font-weight:700}
+  .body-wrap em{color:var(--warn);font-style:italic}
+  .body-wrap a{color:var(--spot);text-underline-offset:2px}
+
+  /* chapter-intro paragraph with a drop cap */
+  .lede{font-size:17px;color:var(--ink-2);text-indent:0 !important;margin-top:14px}
+  .lede::first-letter{font-family:var(--serif);float:left;font-size:3.05em;line-height:.82;
+    font-weight:700;color:var(--spot);padding:.02em .1em 0 0}
+
+  /* ---------- Normal lists ---------- */
+  .body-wrap ul,.body-wrap ol{margin:.5em 0 1em;padding-left:1.5em}
+  .body-wrap li{margin:.28em 0}
+  .body-wrap li::marker{color:var(--spot)}
+
+  /* ---------- "Exam pointers" key-box (built by JS) ---------- */
+  .kp{list-style:none;margin:1.15em 0 1.4em;padding:0;border:1px solid var(--spot);background:var(--spot-tint)}
+  .kp li{margin:0}
+  .kp li.kp-h{background:var(--spot);color:var(--on-spot);font-family:var(--sans);font-weight:700;
+    text-transform:uppercase;letter-spacing:.11em;font-size:11px;padding:.5em 1.1em}
+  .kp li:not(.kp-h){display:list-item;list-style:square;margin:.34em 0 .34em 2.5em;padding-right:1.1em;
+    font-size:16.5px;line-height:1.55}
+  .kp li:not(.kp-h)::marker{color:var(--spot)}
+  .kp li:not(.kp-h):first-of-type{margin-top:.6em}
+  .kp li:not(.kp-h):last-of-type{margin-bottom:.7em}
+
+  /* ---------- Tables (ruled, print-style) ---------- */
+  .tbl-scroll{overflow-x:auto;margin:1.1em 0 1.3em}
+  .body-wrap table{border-collapse:collapse;width:100%;font-family:var(--sans);font-size:14.5px;
+    line-height:1.5;border-top:2px solid var(--ink-2)}
+  .body-wrap th,.body-wrap td{text-align:left;padding:.5em .85em;border-bottom:1px solid var(--rule);vertical-align:top}
+  .body-wrap thead th{border-bottom:2px solid var(--spot);color:var(--spot);font-size:12px;
+    letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
+
+  .body-wrap blockquote{margin:1em 0;padding:.2em 0 .2em 1.1em;border-left:3px solid var(--rule);
+    color:var(--ink-2);font-style:italic}
+  .body-wrap code{font-family:var(--mono);font-size:.84em;background:var(--code-bg);
+    padding:.1em .42em;border-radius:2px}
+
+  .doc-foot{max-width:46rem;margin:66px auto 0;padding-top:18px;border-top:1px solid var(--rule);
+    font-family:var(--sans);color:var(--ink-3);font-size:12.5px;line-height:1.6}
+
+  .totop{position:fixed;right:20px;bottom:20px;z-index:30;appearance:none;
+    border:1px solid var(--rule);background:var(--panel);color:var(--ink-2);border-radius:3px;
+    padding:7px 13px;font-family:var(--sans);font-size:12px;font-weight:600;cursor:pointer;
+    opacity:0;pointer-events:none;transition:opacity .2s}
+  .totop.show{opacity:1;pointer-events:auto}
+  .totop:hover{color:var(--spot);border-color:var(--spot)}
+
+  @media (max-width:900px){
+    .app{grid-template-columns:1fr}
+    .toc{position:static;height:auto;max-height:46vh;border-right:none;border-bottom:1px solid var(--rule)}
+    body{font-size:17px}
+    .body-wrap p{text-align:left;text-indent:0;margin:.4em 0 .7em}
+    .lede::first-letter{font-size:2.6em}
+  }
+  @media print{
+    .toc,.totop,.topbar{display:none}
+    .app{display:block}.content{padding:0}
+    body{font-size:11pt;background:#fff;color:#000}
+    :root{--paper:#fff;--ink:#000;--spot:#1f3d6e;--rule:#bbb}
+    .body-wrap h2,.body-wrap h3,.body-wrap h4{break-after:avoid}
+    .kp,.tbl-scroll,.body-wrap li,.body-wrap p{break-inside:avoid}
+    .sec{margin-top:34px}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="toc" id="toc">
+    <div class="toc-brand">RBB Study Handbook<span>Level 5 · वरिष्ठ सहायक (सूचना प्रविधि)</span></div>
+    <div class="toc-lead">Contents</div>
+    <nav class="toc-nav" id="toc-nav" aria-label="Contents"></nav>
+  </aside>
+  <main class="content" id="content">
+    <div class="topbar">
+      <div class="crumb">Level 5 · Senior Assistant (IT)</div>
+      <button class="theme" id="theme" type="button" aria-label="Toggle light / dark reading mode" title="Reading mode">◐</button>
+    </div>
+    <header class="doc-head">
+      <div class="eyebrow">Rastriya Banijya Bank — IT Recruitment</div>
+      <h1>Level 5 — Senior Assistant (IT)</h1>
+      <p class="sub">A complete concept handbook for every syllabus topic. Banking &amp; Organizational Management is taught from first principles; the Information Technology units are a full, exam-ready refresher.</p>
+      <p class="disc"><strong>How to use this book</strong>Read a topic, then test yourself on its <em>Exam pointers</em> box. Where a note says <em>verify</em>, confirm the current figure or amendment from the official NRB / RBB source before the exam.</p>
+    </header>
+    <div class="body-wrap">
+<section class="sec"><h2>Paper I &middot; Section A &mdash; Banking &amp; Organizational Management</h2>
+<p class="lede">Section A is subjective and worth 50 marks: six short answers (5 marks each) and two long answers (10 marks each). It is the only banking and management content in the Level&nbsp;5 written exam, so treat every topic below as compulsory.</p>
+<h3>Financial Institutions in Nepal (वित्तीय संस्थाहरू)</h3>
+
+<p>A <strong>financial institution (FI)</strong> is an organisation that deals with money. It collects money from people who have extra (savers/depositors), and gives money to people who need it (borrowers). In simple words, it sits in the middle between savers and users of money, and earns from the difference. Banks, insurance companies, and pension funds are all financial institutions.</p>
+
+<p><strong>Why they matter (role and contribution):</strong> Financial institutions are the "heart" of the economy. They (1) keep people's savings safe, (2) give loans for business, farming, houses and study, (3) move money around the country and abroad (payments and remittance), (4) help the government run monetary policy, and (5) create jobs and pay taxes. When FIs work well, businesses grow, people get credit, and the whole economy develops faster. In Nepal, banks and FIs are a large part of the formal financial sector and handle a big share of national savings and lending.</p>
+
+<p><strong>Who controls them (status and regulator):</strong> The central bank of Nepal, <strong>Nepal Rastra Bank (NRB / नेपाल राष्ट्र बैंक)</strong>, licenses and supervises banks and financial institutions. The main law is the <strong>Bank and Financial Institution Act (BAFIA)</strong> <em>(verify the exact current year/section from the latest text)</em>. Not every financial institution is under NRB — insurance is under the <strong>Nepal Insurance Authority</strong>, the securities/share market is under the <strong>Securities Board of Nepal (SEBON)</strong>, and some funds have their own laws. So it is useful to divide FIs into two big groups: <strong>banking FIs</strong> (under NRB) and <strong>non-bank FIs</strong> (mostly under other regulators).</p>
+
+<h4>Banking Institutions and the "A / B / C / D class" idea</h4>
+
+<p>Under BAFIA, NRB gives a <strong>licence in one of four "classes"</strong>. The class decides what work the institution is allowed to do and how much capital it must have. Class "A" is the biggest and can do the most; class "D" is the smallest and most focused. Think of it like permission levels: a higher class has a wider permission set. This is called <strong>class-based licensing</strong>.</p>
+
+<table>
+<thead>
+<tr><th>Class</th><th>Type of institution</th><th>Main work (simple)</th><th>Range of activity</th></tr>
+</thead>
+<tbody>
+<tr><td>A</td><td>Commercial Bank (वाणिज्य बैंक)</td><td>Full banking: deposits, all kinds of loans, foreign exchange, trade finance, cards, remittance</td><td>Widest — can do almost all banking</td></tr>
+<tr><td>B</td><td>Development Bank (विकास बैंक)</td><td>Deposits and loans, often focused on a region or a sector (industry, agriculture)</td><td>Medium — fewer powers than commercial banks</td></tr>
+<tr><td>C</td><td>Finance Company (वित्त कम्पनी)</td><td>Deposits, hire-purchase, term loans, smaller-scale lending</td><td>Narrower than development banks</td></tr>
+<tr><td>D</td><td>Microfinance Financial Institution (लघुवित्त वित्तीय संस्था)</td><td>Very small loans and savings for low-income and rural people, often without heavy collateral</td><td>Narrowest — focused on the poor</td></tr>
+</tbody>
+</table>
+
+<p><strong>(a) Commercial Banks (Class A):</strong> These are the largest and most powerful banks. They take all kinds of deposits, give all kinds of loans, deal in foreign currency, finance imports and exports, and offer modern services (ATM, cards, mobile banking). RBB itself is a commercial bank. They need the highest paid-up capital.</p>
+
+<p><strong>(b) Development Banks (Class B):</strong> Smaller than commercial banks. They also take deposits and give loans, but with fewer powers (for example, limited or no foreign exchange business). Historically they were meant to develop specific sectors or regions.</p>
+
+<p><strong>(c) Finance Companies (Class C):</strong> Still smaller. They focus on things like term loans, hire-purchase (loans to buy vehicles or equipment), and consumer loans. Their allowed activities are narrower than development banks.</p>
+
+<p><strong>(d) Microfinance Institutions (Class D):</strong> These serve poor and rural people who cannot easily get loans from big banks. They give <em>micro</em> (very small) loans and collect small savings, often through group lending. Their goal is financial inclusion and poverty reduction, not large corporate lending.</p>
+
+<p><strong>(e) Infrastructure Development Bank:</strong> This is a special kind of bank created to finance <strong>big infrastructure projects</strong> — hydropower, roads, transmission lines, airports — which need very large, long-term loans that normal banks find risky. In Nepal, <strong>Nepal Infrastructure Bank Limited (NIFRA)</strong> was set up for this purpose under special provisions. It is not for daily retail banking; it is a project-finance bank for national development. <em>(Verify its exact legal basis and current status.)</em></p>
+
+<h4>Non-bank Financial Institutions</h4>
+
+<p>These handle savings, protection, and long-term funds, but they are <strong>not ordinary banks</strong> and mostly are <strong>not under NRB</strong>. They are still very important for the economy and for people's future security.</p>
+
+<p><strong>Insurance Companies (बीमा कम्पनी):</strong> An insurance company collects small regular payments (called <strong>premiums</strong>) from many people. In return, it promises to pay a large amount if a bad event happens (death, accident, fire, illness). This way, the risk of one person is shared across many. There are two main types: <strong>life insurance</strong> (paying on death or after a fixed term) and <strong>non-life / general insurance</strong> (motor, fire, health, crop, etc.). Insurance in Nepal is regulated by the <strong>Nepal Insurance Authority</strong> (earlier called the Insurance Board / Beema Samiti), not by NRB.</p>
+
+<p><strong>Employees Provident Fund — EPF (कर्मचारी सञ्चय कोष):</strong> This is a <strong>retirement savings fund</strong>, mainly for government employees and workers of listed organisations. A part of the employee's salary is deducted every month, the employer adds a matching amount, and the total is saved and invested. When the person retires, they get a lump sum plus interest. It is one of Nepal's oldest and largest institutional funds, established in <strong>1962 (2019 BS)</strong>. Its purpose is old-age financial security.</p>
+
+<p><strong>Citizen Investment Trust — CIT (नागरिक लगानी कोष):</strong> Established in <strong>1990 (2047 BS)</strong>, CIT runs various <strong>savings, retirement and investment schemes</strong> for the general public and employees (for example, pension funds, gratuity funds, insurance-linked savings). It is also an active <strong>investor in the capital market</strong> (shares, government bonds) and helps mobilise long-term savings for investment.</p>
+
+<p><strong>Social Security Fund — SSF (सामाजिक सुरक्षा कोष):</strong> This is a newer, <strong>contribution-based social security scheme</strong> for workers in the formal (and gradually informal) sector. The worker and the employer both contribute a percentage of salary, and in return the worker gets benefits such as medical care, accident and disability cover, dependent/family support, and old-age pension. It is run under the Ministry of Labour, based on the <strong>Contribution-Based Social Security Act (2074 BS / 2017)</strong>, with contributions starting from around <strong>2018 (2075 BS)</strong>. Its aim is a wide social safety net for workers.</p>
+
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li><strong>NRB</strong> is the regulator of banks/FIs under <strong>BAFIA</strong>; classes are A = Commercial, B = Development, C = Finance, D = Microfinance.</li>
+<li>Higher class = more capital + wider activities; Class A (commercial) can do the most, Class D (microfinance) is the most focused.</li>
+<li><strong>Infrastructure development bank</strong> (NIFRA) finances big projects (hydropower, roads) with long-term funds.</li>
+<li>Non-bank FIs: <strong>Insurance</strong> (under Nepal Insurance Authority), <strong>EPF</strong> (कर्मचारी सञ्चय कोष, 1962), <strong>CIT</strong> (नागरिक लगानी कोष, 1990), <strong>SSF</strong> (सामाजिक सुरक्षा कोष, contribution-based).</li>
+<li>Insurance = premium in, big payout on loss; risk is shared among many people (life vs non-life).</li>
+<li>FIs channel savings into loans/investment — key for growth, payments, remittance, jobs and monetary policy.</li>
+</ul>
+
+<h3>Capital Fund (पूँजीकोष) and Capital Adequacy</h3>
+
+<p>The <strong>capital fund</strong> is the bank's own money — the money that belongs to the owners/shareholders plus certain reserves — as opposed to depositors' money. It is the bank's "cushion" or safety buffer. If loans go bad and the bank makes losses, this cushion absorbs the loss so that depositors' money stays safe. A bank with a strong capital fund is more able to survive shocks.</p>
+
+<p>Capital fund has two parts. <strong>Core capital (Tier 1)</strong> is the strongest, permanent money: paid-up share capital, share premium, and retained profits/reserves. <strong>Supplementary capital (Tier 2)</strong> is weaker support capital: things like general loan-loss provisions and certain long-term borrowings (subordinated debt). The idea of measuring this cushion against the bank's risk comes from the international <strong>Basel</strong> framework (Basel III), which NRB applies in Nepal.</p>
+
+<p>The key measure is the <strong>Capital Adequacy Ratio (CAR)</strong>. In simple form:</p>
+
+<blockquote>CAR = Capital Fund / Risk-Weighted Assets (RWA)</blockquote>
+
+<p><strong>Risk-weighted assets</strong> means the bank's assets adjusted for how risky they are — a risky loan counts fully, while very safe assets (like cash or government bonds) count little or nothing. NRB sets a <strong>minimum CAR</strong> that every bank must keep. For example, if the minimum is set at a certain percent, a bank must hold at least that much capital against its risk-weighted assets. <em>(Verify the current minimum total capital adequacy ratio and core-capital ratio from the latest NRB directive / monetary policy.)</em></p>
+
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Capital fund = bank's <strong>own money</strong> (owners + reserves), acts as a loss-absorbing cushion protecting depositors.</li>
+<li>Two tiers: <strong>Core / Tier 1</strong> (paid-up capital, reserves, retained earnings) and <strong>Supplementary / Tier 2</strong> (general provisions, subordinated debt).</li>
+<li><strong>CAR = Capital Fund ÷ Risk-Weighted Assets</strong>; based on the <strong>Basel</strong> framework.</li>
+<li>NRB fixes a minimum CAR; <em>(verify the current % — do not memorise an old figure).</em></li>
+</ul>
+
+<h3>Loan Loss Provisioning (कर्जा नोक्सानी व्यवस्था)</h3>
+
+<p>When a bank gives a loan, there is always a chance the borrower will not repay. <strong>Loan loss provisioning</strong> means the bank sets aside some money in advance to cover this possible loss. This provision is an expense that reduces the bank's profit, but it makes the accounts honest and keeps the bank safe. It is like keeping an emergency fund because you know some loans will fail.</p>
+
+<p>To decide how much to set aside, NRB requires banks to <strong>classify every loan</strong> by how overdue it is (how late the payment is). A common classification is: <strong>Pass</strong> (good, paying on time), <strong>Watchlist</strong> (early warning signs), <strong>Substandard</strong>, <strong>Doubtful</strong>, and <strong>Loss</strong>. The later and riskier the loan, the higher the provision required — a "Loss" loan usually needs a 100% provision.</p>
+
+<p>Loans in the good categories (Pass, Watchlist) are called <strong>performing loans</strong>. Loans in Substandard, Doubtful, and Loss categories are <strong>Non-Performing Loans (NPL)</strong>. The <strong>NPL ratio</strong> (bad loans ÷ total loans) is a key sign of a bank's health — a low NPL ratio is good.</p>
+
+<table>
+<thead>
+<tr><th>Loan class</th><th>Meaning (simple)</th><th>Provision (typical idea)</th></tr>
+</thead>
+<tbody>
+<tr><td>Pass</td><td>Good, repaying on time (performing)</td><td>Small (e.g. around 1%)</td></tr>
+<tr><td>Watchlist</td><td>Still performing but showing warning signs</td><td>Higher than Pass</td></tr>
+<tr><td>Substandard</td><td>Overdue for a short period (non-performing)</td><td>Higher</td></tr>
+<tr><td>Doubtful</td><td>Overdue for a longer period (non-performing)</td><td>Much higher</td></tr>
+<tr><td>Loss</td><td>Very unlikely to be recovered (non-performing)</td><td>Full — 100%</td></tr>
+</tbody>
+</table>
+
+<p><em>(Verify the exact overdue periods and the exact provision percentages for each class from the current NRB directive — these change over time.)</em></p>
+
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Provisioning = money set aside <strong>in advance</strong> against loans that may not be repaid (an expense, reduces profit).</li>
+<li>Loans are classified by overdue period: <strong>Pass, Watchlist, Substandard, Doubtful, Loss.</strong></li>
+<li><strong>Performing</strong> = Pass/Watchlist; <strong>Non-Performing Loans (NPL)</strong> = Substandard + Doubtful + Loss.</li>
+<li><strong>Loss</strong> loans need <strong>100%</strong> provision; a low <strong>NPL ratio</strong> means a healthier bank.</li>
+<li><em>(Verify exact %/periods from current NRB directive.)</em></li>
+</ul>
+
+<h3>Credit-Deposit (CD) Ratio (कर्जा–निक्षेप अनुपात)</h3>
+
+<p>The <strong>CD ratio</strong> compares how much a bank has <strong>lent out (credit)</strong> to how much it has <strong>collected (deposits)</strong>. In simple form:</p>
+
+<blockquote>CD Ratio = Total Loans / Total Deposits × 100%</blockquote>
+
+<p>It shows how aggressively a bank is lending. A <strong>high</strong> CD ratio means the bank has lent out most of its deposits — good for profit, but risky for liquidity (it may not have enough cash if many depositors withdraw). A <strong>low</strong> CD ratio means the bank is lending less and keeping more idle money — safer, but less profit. To keep balance, NRB sets a <strong>maximum CD ratio</strong> that banks cannot cross. <em>(Verify the current CD-ratio cap from the latest NRB directive; note NRB earlier used a "CCD ratio" before moving to the CD ratio.)</em></p>
+
+<p>Example: if a bank has Rs 100 in deposits and has given Rs 90 in loans, its CD ratio is 90%. If the cap is set below that, the bank must either collect more deposits or slow down its lending.</p>
+
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li><strong>CD ratio = Loans ÷ Deposits.</strong> High = more lending, more risk; low = safer, less profit.</li>
+<li>NRB fixes a <strong>maximum</strong> CD ratio to protect liquidity and control credit growth.</li>
+<li>It replaced the older <strong>CCD ratio</strong> (credit to core-capital-plus-deposit).</li>
+<li><em>(Verify the current cap % from the latest NRB directive.)</em></li>
+</ul>
+
+<h3>Cash Reserve Ratio (CRR) (नगद मौज्दात अनुपात)</h3>
+
+<p>The <strong>Cash Reserve Ratio (CRR)</strong> is the minimum percentage of its total deposits that a bank must keep as a <strong>cash reserve with the central bank (NRB)</strong>. This money cannot be lent out. For example, if CRR is set at a certain percent and a bank has Rs 100 in deposits, it must keep that percent of Rs 100 parked at NRB at all times.</p>
+
+<p>CRR has two purposes. First, <strong>safety/liquidity</strong> — it guarantees that every bank always keeps some ready cash, so it can meet withdrawals. Second, <strong>monetary policy</strong> — NRB uses CRR to control the amount of money in the economy. If NRB <em>raises</em> CRR, banks have less money to lend, so credit and inflation slow down. If NRB <em>lowers</em> CRR, banks can lend more, which pushes growth. So CRR is a tool to manage money supply and inflation. <em>(Verify the current CRR % from the latest NRB monetary policy.)</em></p>
+
+<p>A related tool is the <strong>Statutory Liquidity Ratio (SLR)</strong> — a minimum share of deposits that must be kept in liquid assets like cash and government securities. CRR is a subset idea within this liquidity requirement.</p>
+
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li><strong>CRR</strong> = minimum % of deposits kept as <strong>cash with NRB</strong>; cannot be lent.</li>
+<li>Purposes: ensure <strong>liquidity</strong> + tool of <strong>monetary policy</strong>.</li>
+<li>Raise CRR → less lending (controls inflation); lower CRR → more lending (boosts growth).</li>
+<li>Related: <strong>SLR</strong> (liquid assets incl. cash + govt securities). <em>(Verify current CRR % from latest monetary policy.)</em></li>
+</ul>
+
+<h3>Refinancing, Rescheduling and Restructuring (पुनर्कर्जा, पुनर्तालिकीकरण, पुनर्संरचना)</h3>
+
+<p>These three words sound similar but mean different things. All three deal with helping loans or borrowers, but in different ways.</p>
+
+<h4>Refinancing (पुनर्कर्जा)</h4>
+<p>Refinancing is when <strong>NRB provides low-cost funds to banks</strong> so that banks can then lend to selected priority or affected sectors at a <strong>cheaper interest rate</strong>. It is a support tool, often used during crises (for example, to help small businesses, agriculture, or industries hit by disaster). The goal is to push cheap credit into important sectors.</p>
+
+<h4>Rescheduling (पुनर्तालिकीकरण)</h4>
+<p>Rescheduling means <strong>changing the repayment timetable</strong> of a loan when the borrower is facing temporary trouble — for example, extending the repayment period or delaying instalments — while keeping the basic loan the same. It gives the borrower more time to pay.</p>
+
+<h4>Restructuring (पुनर्संरचना)</h4>
+<p>Restructuring is a <strong>deeper change to the terms</strong> of the loan, not just the time. It may include reducing the interest rate, changing the loan structure, or converting part of the debt into equity. It is used when the borrower's problem is more serious and the whole loan needs to be redesigned to help recovery.</p>
+
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li><strong>Refinancing</strong> = NRB gives cheap funds to banks → cheaper loans to priority/affected sectors.</li>
+<li><strong>Rescheduling</strong> = change the <strong>repayment schedule/time</strong> (temporary relief).</li>
+<li><strong>Restructuring</strong> = deeper change in <strong>loan terms</strong> (rate, structure, debt-to-equity).</li>
+<li>Rescheduling and restructuring help a borrower already in difficulty; refinancing is a broader policy support tool.</li>
+</ul>
+
+<h3>Base Rate (आधार दर)</h3>
+
+<p>The <strong>base rate</strong> is the <strong>minimum interest rate</strong> below which a bank cannot lend to normal customers. Think of it as the bank's "cost price" of money. It is calculated from the bank's real costs of running its lending business, so that lending rates are transparent and fair.</p>
+
+<p>The base rate is built from several parts: the <strong>cost of funds</strong> (interest the bank pays on deposits and borrowings), the <strong>cost of the CRR/SLR</strong> (money kept idle at NRB earns nothing), the bank's <strong>operating cost</strong>, and a small <strong>return on assets</strong> (minimum profit margin). NRB gives a standard formula so all banks calculate it the same way.</p>
+
+<p>The actual lending rate charged to a customer is:</p>
+
+<blockquote>Lending Rate = Base Rate + Premium (spread)</blockquote>
+
+<p>The <strong>premium</strong> depends on the customer's risk. So the base rate creates a clear floor, and everyone can see how much extra a bank is charging. A lower base rate usually means cheaper loans for the whole market.</p>
+
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Base rate = <strong>minimum lending rate</strong>; a bank cannot lend below it (except allowed cases).</li>
+<li>Built from: <strong>cost of funds + CRR/SLR cost + operating cost + return on assets</strong> (NRB formula).</li>
+<li><strong>Lending rate = Base rate + premium</strong> (premium = customer risk / spread).</li>
+<li>Purpose: <strong>transparency</strong> and fair pricing of loans.</li>
+</ul>
+
+<h3>Credit Information and Blacklisting (कर्जा सूचना र कालोसूची)</h3>
+
+<p>Before giving a loan, a bank wants to know: has this person repaid loans in the past, or did they cheat other banks? <strong>Credit information</strong> is the record of a borrower's past loans and repayment behaviour. In Nepal, this is collected by the <strong>Credit Information Bureau — CIB (कर्जा सूचना केन्द्र)</strong>. Banks report their borrowers to CIB and check CIB before lending, so a bad borrower cannot easily hide by moving from one bank to another.</p>
+
+<p><strong>Blacklisting (कालोसूची)</strong> is a punishment for serious defaulters. If a borrower fails to repay, misuses a loan, or issues a bad/bounced cheque (as defined by rules), the bank can report them to be blacklisted. A <strong>blacklisted person cannot get new loans</strong> from any bank and may face other restrictions. When they clear their dues, they can apply to be removed from the blacklist ("delisting"). This system pushes people to repay honestly. <em>(Verify the exact blacklisting/delisting conditions from the current CIB/NRB rules.)</em></p>
+
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li><strong>Credit Information Bureau (CIB / कर्जा सूचना केन्द्र)</strong> keeps borrowers' loan and repayment history.</li>
+<li>Banks <strong>check CIB before lending</strong> and report their borrowers to it.</li>
+<li><strong>Blacklisting</strong> = defaulters/cheque-bouncers barred from new loans; can be <strong>delisted</strong> after clearing dues.</li>
+<li>Purpose: reduce bad loans, stop cheats from hiding across banks.</li>
+</ul>
+
+<h3>Credit Ratings (कर्जा/साख मूल्याङ्कन)</h3>
+
+<p>A <strong>credit rating</strong> is an independent opinion about how likely a borrower (a company, a bank, a bond, or even a country) is to repay its debt. A specialised <strong>credit rating agency</strong> studies the finances and gives a grade, usually on a scale from <strong>AAA (very safe / strongest)</strong> down to <strong>D (default / failed)</strong>. Higher rating = lower risk for the investor/lender.</p>
+
+<p>Ratings help investors decide where to put money and help companies raise funds at fair cost. In Nepal, rating agencies such as <strong>ICRA Nepal</strong> and <strong>CARE Ratings Nepal</strong> operate under SEBON oversight. A credit rating is generally <strong>required before a company issues shares to the public (IPO), issues debentures/bonds, or makes certain large public offerings</strong>, so investors know the risk. <em>(Verify the exact cases where rating is mandatory from current SEBON rules.)</em></p>
+
+<p>Note the difference: a <strong>credit rating</strong> (this topic) grades a company/bond/issuer, while <strong>credit information</strong> (previous topic) is the record of an individual borrower's past loans. They are related but not the same.</p>
+
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Credit rating = independent opinion on ability to repay; scale <strong>AAA (best) to D (default)</strong>.</li>
+<li>Given by <strong>rating agencies</strong> (in Nepal: ICRA Nepal, CARE Ratings Nepal) under <strong>SEBON</strong>.</li>
+<li>Usually <strong>mandatory before IPOs / bond issues / large public offerings.</strong></li>
+<li>Rating = grades an <strong>issuer/security</strong>; credit information = record of a <strong>borrower's</strong> loan history.</li>
+</ul>
+
+<h3>Know Your Customer — KYC (आफ्नो ग्राहक पहिचान)</h3>
+
+<p><strong>Know Your Customer (KYC)</strong> is the process where a bank <strong>properly identifies and verifies who its customer really is</strong> before and during the business relationship. When you open an account, the bank asks for your citizenship/ID, photo, address, PAN, and sometimes source of income. This is KYC. The bank must be sure the customer is a real, identified person and understand the nature of their transactions.</p>
+
+<p>KYC is the front line against financial crime — <strong>money laundering</strong> (making dirty/illegal money look clean), fraud, and <strong>terrorist financing</strong>. Nepal follows <strong>Anti-Money Laundering / Combating the Financing of Terrorism (AML/CFT)</strong> rules, based on the <strong>Asset (Money) Laundering Prevention Act</strong> and international <strong>FATF</strong> standards. Banks must also watch for unusual transactions and report suspicious ones to the authorities (the Financial Information Unit). Riskier customers get stronger checks — this is called <strong>enhanced due diligence</strong>.</p>
+
+<p>Example: if a new customer suddenly deposits a very large cash amount that does not match their known income, KYC/AML rules require the bank to ask questions and, if needed, report it.</p>
+
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>KYC = <strong>identify and verify the customer</strong> (ID, photo, address, PAN, source of funds).</li>
+<li>Main goal: stop <strong>money laundering, fraud, and terrorist financing (AML/CFT)</strong>.</li>
+<li>Based on the <strong>Asset (Money) Laundering Prevention Act</strong> and <strong>FATF</strong> standards.</li>
+<li>Higher-risk customers → <strong>enhanced due diligence</strong>; suspicious transactions must be reported.</li>
+</ul>
+
+<h3>Audit and Internal Control (लेखापरीक्षण र आन्तरिक नियन्त्रण)</h3>
+
+<p>A bank handles huge amounts of other people's money, so it must have strong checks to prevent mistakes and fraud. Two related ideas do this job: <strong>internal control</strong> and <strong>audit</strong>.</p>
+
+<p><strong>Internal control</strong> is the system of rules, checks, and procedures inside the bank that runs <em>every day</em> to keep operations correct and safe. Key ideas include <strong>segregation of duties</strong> (the person who approves a payment is not the same person who records it, so no one can act alone), approval limits, dual signatures, reconciliation, and access controls. A well-known model for internal control is the <strong>COSO framework</strong>. Good internal control prevents errors and fraud before they happen.</p>
+
+<p><strong>Audit</strong> is the independent checking of the bank's records and controls to confirm they are correct and honest. There are three levels:</p>
+
+<table>
+<thead>
+<tr><th>Type</th><th>Who does it</th><th>Purpose</th></tr>
+</thead>
+<tbody>
+<tr><td>Internal audit</td><td>The bank's own audit department (reports to the Board/Audit Committee, not to management)</td><td>Ongoing check of controls, risks and compliance from inside</td></tr>
+<tr><td>External / statutory audit</td><td>An independent outside auditor (chartered accountant)</td><td>Verify the yearly financial statements are true and fair</td></tr>
+<tr><td>Regulatory / NRB inspection</td><td>Nepal Rastra Bank supervision/inspection team</td><td>Check the bank follows NRB rules and is financially sound</td></tr>
+</tbody>
+</table>
+
+<p>Together, strong internal control plus regular audit build trust, protect depositors, and keep the bank stable. <em>(Verify specific committee/reporting requirements from the current NRB corporate governance directive.)</em></p>
+
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li><strong>Internal control</strong> = daily system of checks (segregation of duties, approvals, reconciliation); a common model is <strong>COSO</strong>.</li>
+<li><strong>Audit</strong> = independent checking that records and controls are correct.</li>
+<li>Three levels: <strong>internal audit</strong> (inside, reports to Board/Audit Committee), <strong>external/statutory audit</strong> (independent CA), <strong>NRB inspection</strong> (regulator).</li>
+<li>Internal audit should be independent of management to stay objective.</li>
+<li>Purpose: prevent fraud/errors, ensure accurate accounts, protect depositors.</li>
+</ul>
+<h3>Nepal Rastra Bank Act 2058 (नेपाल राष्ट्र बैंक ऐन २०५८)</h3>
+<p>This is the law that creates and governs Nepal Rastra Bank (NRB), the central bank of Nepal. A central bank is not a normal bank for the public. It is the "bank of banks" and the "bank of the government". This Act (year 2058 B.S., which is 2002 A.D.) replaced the older NRB Act 2012 and gave NRB more independence to do its work without political pressure.</p>
+<p>The main purpose of the Act is to keep the economy stable. It gives NRB the job of maintaining <strong>price stability</strong> (controlling inflation) and <strong>financial-system stability</strong> (keeping banks safe and trusted). To do this, NRB makes and runs the country's monetary policy — it controls how much money is in the economy by changing interest rates and cash reserve rules.</p>
+<p>The Act also gives NRB some special powers that no one else has. Only NRB can issue Nepali currency notes and coins. NRB acts as the government's banker and advisor, manages the country's foreign exchange (foreign money) reserves, and works as the <strong>lender of last resort</strong> — meaning if a healthy bank suddenly runs out of cash, NRB can lend to it to stop panic. NRB also regulates and supervises all banks and financial institutions.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>NRB Act 2058 (2002 A.D.) established the modern legal base of the central bank; it replaced NRB Act 2012.</li>
+<li>Twin objectives: price stability and financial-sector stability; NRB also formulates monetary policy.</li>
+<li>NRB has the sole (monopoly) right to issue currency (notes and coins).</li>
+<li>NRB roles: banker to government, banker to banks, lender of last resort, manager of foreign exchange reserves, regulator/supervisor of BFIs.</li>
+<li>The Act gives NRB legal autonomy (independence) in monetary matters.</li>
+</ul>
+
+<h3>Bank and Financial Institution Act — BAFIA 2073 (बैंक तथा वित्तीय संस्था सम्बन्धी ऐन २०७३)</h3>
+<p>BAFIA is the umbrella law for all banks and financial institutions (BFIs) in Nepal. "Umbrella" means one single law covers everything, instead of a separate law for each type of bank. The current version is BAFIA 2073 (2017 A.D.), which replaced BAFIA 2063. It controls how a bank is born (licensing), how it runs, and how it can be closed or merged.</p>
+<p>Under BAFIA, NRB is the licensing and regulating authority. No one can open a bank or use the word "bank" without NRB's licence. The Act sets rules for minimum paid-up capital, the board of directors, good governance (corporate governance), what activities a bank may and may not do, protection of depositors, and mergers and acquisitions.</p>
+<p>A very important idea in BAFIA is the <strong>classification of institutions into four classes</strong>. This tells you what each institution is allowed to do. The exact minimum capital for each class changes over time <em>(verify the current figure from the latest NRB directive)</em>.</p>
+<table>
+<thead><tr><th>Class</th><th>Type of institution</th><th>Simple idea</th></tr></thead>
+<tbody>
+<tr><td>Class "A"</td><td>Commercial banks</td><td>Full banking services; largest scope (RBB is here)</td></tr>
+<tr><td>Class "B"</td><td>Development banks</td><td>Wider than finance companies, narrower than commercial banks</td></tr>
+<tr><td>Class "C"</td><td>Finance companies</td><td>Deposit and lending with limited scope</td></tr>
+<tr><td>Class "D"</td><td>Microfinance institutions</td><td>Small loans/deposits for low-income and rural people</td></tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>BAFIA 2073 (2017 A.D.) is the single umbrella law for BFIs; it replaced BAFIA 2063.</li>
+<li>NRB is the licensing authority; no institution may operate as a bank without NRB licence.</li>
+<li>Four classes: A = commercial, B = development, C = finance company, D = microfinance.</li>
+<li>Covers capital, board and governance, prohibited activities, depositor protection, merger and acquisition (M&A).</li>
+<li>Rastriya Banijya Bank is a Class "A" commercial bank.</li>
+</ul>
+
+<h3>Payment and Settlement Act 2075 (भुक्तानी तथा फर्छ्यौट ऐन २०७५)</h3>
+<p>This Act (2075 B.S. / 2019 A.D.) gives a clear legal base to Nepal's payment systems — the systems that move money between people, businesses, and banks. Before this law, digital payments grew fast but the rules were scattered. This Act made NRB the official regulator of all payment, clearing, and settlement activity.</p>
+<p>The Act creates licences for two kinds of players. A <strong>Payment System Operator (PSO)</strong> runs the "pipes" and switches that connect banks (for example a clearing house). A <strong>Payment Service Provider (PSP)</strong> gives services directly to customers (for example a mobile wallet or a payment gateway). Anyone doing this business must get a licence from NRB.</p>
+<p>The Act also gives legal recognition to important technical concepts. <strong>Netting</strong> means adding up many payments and settling only the net difference. <strong>Settlement finality</strong> means once a payment is settled it cannot be reversed or cancelled, even if a bank later fails. These legal protections make electronic payments safe and trusted.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Payment and Settlement Act 2075 (2019 A.D.) is the legal base for payment, clearing and settlement systems.</li>
+<li>NRB is the regulator; it licenses PSOs (operators) and PSPs (service providers).</li>
+<li>Gives legal recognition to electronic payments, netting, and settlement finality.</li>
+<li>Supports safe growth of wallets, cards, QR, RTGS and interbank systems.</li>
+</ul>
+
+<h3>Money Laundering (Asset Laundering) Prevention Act 2064 (सम्पत्ति शुद्धीकरण (मनी लाउन्डरिङ) निवारण ऐन २०६४)</h3>
+<p>Money laundering means making "dirty money" (money earned from crime like corruption, drugs, fraud) look "clean" and legal. Criminals push dirty money through banks and businesses so no one can trace where it came from. This Act (2064 B.S. / 2008 A.D.) exists to stop that and also to stop the financing of terrorism (giving money to terrorists).</p>
+<p>The Act forces banks and other reporting entities to "know their customer". This is called <strong>KYC (Know Your Customer)</strong> and <strong>CDD (Customer Due Diligence)</strong> — the bank must check who the customer really is and where their money comes from. Banks must report two main things: a <strong>Suspicious Transaction Report (STR)</strong> when something looks wrong, and a <strong>Threshold Transaction Report (TTR)</strong> when a transaction is above a set large amount <em>(verify the current figure from the latest NRB directive)</em>.</p>
+<p>The Act creates special bodies to fight this crime. The <strong>Financial Information Unit (FIU)</strong>, located at NRB, collects and analyses reports from banks. A separate <strong>Department of Money Laundering Investigation</strong> investigates cases. For example, if someone deposits huge cash with no clear source, the bank files an STR to the FIU.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Act 2064 (2008 A.D.) prevents money laundering (AML) and terrorist financing (CFT).</li>
+<li>Requires KYC / CDD; reporting entities must file STR and TTR.</li>
+<li>Financial Information Unit (FIU) sits inside NRB; a separate department investigates cases.</li>
+<li>Supports Nepal's commitments to international standards (e.g., FATF recommendations).</li>
+</ul>
+
+<h3>Banking Offence and Punishment Act 2064 (बैंकिङ कसुर तथा सजाय ऐन २०६४)</h3>
+<p>This Act (2064 B.S. / 2008 A.D.) makes a list of crimes that can be done inside the banking system, and fixes the punishment for each. Its goal is simple: to protect public trust in banks. If people do not trust banks, they will not deposit money, and the whole economy suffers.</p>
+<p>The Act covers offences such as opening or operating an account with false details, taking or giving loans by fraud or fake documents, unauthorized withdrawal of money, forging cheques or bank documents, misuse of electronic banking (ATM, cards, online systems), and misuse of position by bank staff. Both customers and bank employees can be punished under this Act.</p>
+<p>Punishment usually includes returning the loss, plus a fine and/or imprisonment, depending on the amount and seriousness. For example, if a bank employee secretly transfers money from a customer's account to their own, that is a banking offence under this Act.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Act 2064 (2008 A.D.) defines banking offences and their punishments.</li>
+<li>Purpose: protect trust and integrity of the banking system.</li>
+<li>Covers fraud, forgery, unauthorized transactions, fake loans, and electronic/ATM/card misuse.</li>
+<li>Applies to both customers and bank staff; punishment can be fine and/or imprisonment plus recovery of loss.</li>
+</ul>
+
+<h3>Negotiable Instruments Act 2034 (विनिमेय अधिकारपत्र ऐन २०३४)</h3>
+<p>A negotiable instrument is a written document that promises or orders payment of money and can be transferred from one person to another. "Negotiable" means the right to receive the money can pass to a new holder just by handing over the paper (with endorsement). This Act (2034 B.S. / 1977 A.D.) is the law that defines and governs these documents in Nepal.</p>
+<p>The Act covers three main instruments: the cheque, the bill of exchange, and the promissory note. It explains how they are made, how they are transferred (endorsement and negotiation), what happens when they are not paid (dishonour), and who is a <strong>holder in due course</strong> (a person who received the instrument honestly, for value, and gets strong legal protection).</p>
+<h4>The three instruments compared</h4>
+<table>
+<thead><tr><th>Instrument</th><th>What it is</th><th>Parties</th></tr></thead>
+<tbody>
+<tr><td>Promissory note</td><td>A written promise by one person to pay a certain sum to another</td><td>Maker → Payee</td></tr>
+<tr><td>Bill of exchange</td><td>A written order telling someone to pay a certain sum to a named person</td><td>Drawer, Drawee, Payee</td></tr>
+<tr><td>Cheque</td><td>A special bill of exchange drawn on a bank, payable on demand</td><td>Drawer (customer), Drawee (bank), Payee</td></tr>
+</tbody>
+</table>
+<p>For example, when you write a cheque, you (the drawer) order your bank (the drawee) to pay money to the person named (the payee). If the bank refuses because there is no money in the account, the cheque is "dishonoured" and legal action can follow.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Act 2034 (1977 A.D.) governs promissory notes, bills of exchange, and cheques.</li>
+<li>Cheque = a bill of exchange drawn on a bank, always payable on demand.</li>
+<li>Promissory note = a promise to pay; bill of exchange = an order to pay.</li>
+<li>Key concepts: endorsement, negotiation, dishonour, and holder in due course.</li>
+</ul>
+
+<h3>Electronic Transaction Act 2063 (विद्युतीय (इलेक्ट्रोनिक) कारोबार ऐन २०६३)</h3>
+<p>This Act (2063 B.S. / 2008 A.D.) is often called Nepal's "cyber law". Before it, the law did not clearly accept electronic records as valid. This Act gives legal recognition to electronic records and to digital (electronic) signatures — meaning an email, an electronic document, or a digitally signed contract can be legally valid like paper.</p>
+<p>To make digital signatures trustworthy, the Act sets up a system of <strong>Certifying Authorities</strong> that issue digital certificates, supervised by a government <strong>Controller of Certification</strong>. This is the same public-key/digital-certificate idea you know from computer engineering, given legal force.</p>
+<p>The Act also defines <strong>cyber crimes</strong> and their punishment — for example hacking, unauthorized access to a computer system, damaging data, and publishing illegal or offensive material online. For banking, this Act supports internet banking, online contracts, and digital records as legally acceptable evidence.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>ETA 2063 (2008 A.D.) is Nepal's main cyber law.</li>
+<li>Gives legal recognition to electronic records and digital signatures.</li>
+<li>Sets up Certifying Authorities and a Controller of Certification (PKI system).</li>
+<li>Defines cyber offences (hacking, unauthorized access, data damage) and punishment; supports e-banking legally.</li>
+</ul>
+
+<h3>Job Description, Terms of Reference and Responsibilities (कार्य विवरण)</h3>
+<p>A <strong>job description</strong> is a written document that clearly says what a particular job is. It lists the job title, the main duties, the reporting line (who the person reports to), and the skills or qualifications needed. Its purpose is to make sure both the employee and the organization understand exactly what is expected.</p>
+<p><strong>Terms of Reference (ToR)</strong> is a similar idea but usually written for a specific task, committee, project, or consultant. It defines the scope (what is included and not included), objectives, deliverables, timeline, and authority for that assignment. <strong>Responsibilities</strong> are the specific duties a person is answerable for.</p>
+<p>These documents matter because they remove confusion. When roles are clear, work is not repeated or missed, performance can be measured fairly, and disputes are fewer. For example, a bank teller's job description clearly states cash handling limits and daily balancing duties, so the teller knows the boundaries of the role.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Job description = title, duties, reporting line, required qualifications.</li>
+<li>Terms of Reference (ToR) = scope, objectives, deliverables and authority for a task/committee/consultant.</li>
+<li>Clear roles improve accountability, fair appraisal, and reduce duplication and conflict.</li>
+<li>Job description comes from job analysis; it is the basis for recruitment and appraisal.</li>
+</ul>
+
+<h3>Job Motivation and Performance (कार्य अभिप्रेरणा)</h3>
+<p>Motivation is the inner drive that makes a person want to work hard and do well. Performance is how good the actual work result is. The two are linked: higher motivation usually leads to better performance, but performance also depends on ability and a good work environment.</p>
+<p>Two famous theories explain motivation. <strong>Maslow's Hierarchy of Needs</strong> says people are driven by needs in a ladder order — first basic needs, then higher needs. <strong>Herzberg's Two-Factor Theory</strong> says some factors only prevent unhappiness (hygiene factors), while other factors truly create satisfaction and drive (motivators).</p>
+<table>
+<thead><tr><th>Theory</th><th>Main idea</th><th>Example</th></tr></thead>
+<tbody>
+<tr><td>Maslow</td><td>Five needs in order: Physiological → Safety → Social → Esteem → Self-actualization</td><td>A person first wants salary and job security, later wants recognition and growth</td></tr>
+<tr><td>Herzberg</td><td>Hygiene factors prevent dissatisfaction; motivators create satisfaction</td><td>Hygiene: pay, working conditions. Motivators: achievement, recognition, responsibility</td></tr>
+</tbody>
+</table>
+<p>For managers this means: fixing only salary and comfort stops complaints, but real high performance comes from giving people responsibility, recognition, and chances to grow.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Motivation = internal drive; performance = actual result (needs motivation + ability + environment).</li>
+<li>Maslow: five needs from physiological to self-actualization, satisfied bottom to top.</li>
+<li>Herzberg: hygiene factors (pay, conditions) prevent dissatisfaction; motivators (recognition, achievement, growth) create satisfaction.</li>
+<li>Motivation can be intrinsic (from within) or extrinsic (rewards from outside).</li>
+</ul>
+
+<h3>Communication (सञ्चार)</h3>
+<p>Communication is the process of sending information from one person and having it correctly understood by another. It is not complete until the receiver understands the message. In a bank, good communication is essential — with customers, with team members, and with regulators.</p>
+<h4>Skills and approaches</h4>
+<p>Key communication skills include clear speaking, active listening (really paying attention), clear writing, and good body language (non-verbal signals). Communication can flow in different directions: <strong>downward</strong> (manager to staff), <strong>upward</strong> (staff to manager), <strong>horizontal</strong> (between equals), and <strong>diagonal</strong> (across levels and departments). Approaches can be verbal (spoken/written) or non-verbal.</p>
+<h4>Barriers</h4>
+<p>Barriers are things that block or distort a message. Examples: language differences, noise, unclear message, information overload, emotional state, cultural differences, and use of too much jargon. For example, if a bank officer uses heavy technical terms with a village customer, the message fails — that is a semantic (language) barrier. Good communicators reduce barriers by keeping messages simple, giving feedback, and confirming understanding.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Communication is two-way; it is complete only when the receiver understands and gives feedback.</li>
+<li>Skills: clear speaking, active listening, clear writing, non-verbal cues.</li>
+<li>Directions: downward, upward, horizontal, diagonal.</li>
+<li>Common barriers: language/semantic, physical noise, psychological, cultural, information overload, jargon.</li>
+</ul>
+
+<h3>Team Building and Workmanship (टोली निर्माण)</h3>
+<p>A team is a group of people who work together toward a shared goal. Team building is the effort to make that group work well together — with trust, cooperation, and clear roles. A good team achieves more than the same people working alone; this is called <strong>synergy</strong> (the whole is greater than the sum of parts).</p>
+<p><strong>Workmanship</strong> means the quality, skill, and care a person puts into their work. Good workmanship shows in accurate, reliable, and neat results. In a bank, this means processing transactions correctly, following procedures, and taking pride in error-free work.</p>
+<p>Good teams usually have clear common goals, defined roles, open communication, mutual trust, and good leadership. Teams often grow through stages — forming, storming, norming, and performing — meaning it takes time and some conflict before a team works smoothly. For example, a branch team that shares workload during a busy festival season and covers for each other shows strong team building.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Team building aims for synergy: combined output greater than individual outputs.</li>
+<li>Features of a good team: shared goals, clear roles, trust, open communication, strong leadership.</li>
+<li>Team development stages: forming, storming, norming, performing.</li>
+<li>Workmanship = quality, skill, and care shown in the work itself.</li>
+</ul>
+
+<h3>Customer Satisfaction and Service Delivery (ग्राहक सन्तुष्टि)</h3>
+<p>Customer satisfaction is the feeling a customer gets when the service meets or beats their expectation. In banking, customers are the main source of business (deposits and loans), so keeping them happy is central. A satisfied customer stays longer, uses more services, and brings new customers by word of mouth.</p>
+<p><strong>Service delivery</strong> is the actual way the service reaches the customer — at the counter, on the phone, through ATMs, or through mobile and internet banking. Good service delivery is fast, accurate, polite, reliable, and easy to access. Service quality is often judged on features such as reliability, responsiveness, assurance, empathy, and tangibles (the SERVQUAL idea).</p>
+<p>To satisfy customers, banks reduce waiting time, train staff to be polite, keep systems running, and handle problems quickly. For example, a bank that offers 24/7 mobile banking and answers complaints the same day delivers strong service. The formula to remember: <strong>Satisfaction = Perceived service − Expected service</strong>.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Satisfaction depends on the gap between expectation and actual (perceived) service.</li>
+<li>Service quality dimensions (SERVQUAL): Reliability, Responsiveness, Assurance, Empathy, Tangibles.</li>
+<li>Good service delivery: fast, accurate, reliable, polite, accessible across channels.</li>
+<li>Satisfied customers give loyalty, more business, and positive word of mouth.</li>
+</ul>
+
+<h3>Grievance Handling (गुनासो व्यवस्थापन)</h3>
+<p>A grievance is a complaint — a feeling of unfairness or dissatisfaction raised by an employee or a customer. Grievance handling is the organized way an organization receives, examines, and resolves these complaints. If grievances are ignored, they grow into anger, poor performance, or loss of customers.</p>
+<p>A good grievance system has clear steps: an easy way to submit the complaint, quick acknowledgement, fair investigation, a decision within a set time, and a way to appeal if the person is not satisfied. It should be fair, confidential where needed, and consistent. Banks usually have both a customer complaint desk and an internal staff grievance process.</p>
+<p>For example, if a customer complains that a wrong charge was cut from their account, good grievance handling means the bank listens, checks the record, corrects the mistake quickly, and informs the customer. This turns an unhappy customer back into a loyal one.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Grievance = a complaint of unfairness/dissatisfaction (from staff or customer).</li>
+<li>Good process: easy submission, acknowledgement, fair and timely investigation, decision, and appeal.</li>
+<li>Principles: fairness, promptness, consistency, confidentiality.</li>
+<li>Quick, fair handling protects morale, trust, and customer loyalty.</li>
+</ul>
+
+<h3>Companies Act 2063 (कम्पनी ऐन २०६३)</h3>
+<p>This Act (2063 B.S. / 2006 A.D.) is the law for forming and running companies in Nepal. A company is a separate legal "person" — it can own property, make contracts, and be sued in its own name, apart from its owners (shareholders). This idea of a separate legal identity and limited liability is the heart of company law.</p>
+<p>The Act covers how a company is incorporated (registered), the documents needed (memorandum and articles of association), types of companies (private and public), shares and capital, the board of directors, the annual general meeting (AGM), accounts and audit, and how a company is closed (winding up / liquidation). The <strong>Office of the Company Registrar</strong> registers and supervises companies.</p>
+<p>For banking, this Act matters because commercial banks are usually public limited companies and must follow both the Companies Act and BAFIA. For example, a bank must hold an AGM, appoint auditors, and follow governance rules under this Act.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Companies Act 2063 (2006 A.D.) governs formation and operation of companies.</li>
+<li>Key ideas: separate legal identity and limited liability of shareholders.</li>
+<li>Company types: private limited and public limited; banks are usually public limited.</li>
+<li>Office of the Company Registrar registers/supervises; covers directors, AGM, audit, winding up.</li>
+</ul>
+
+<h3>Labour Act 2074 (श्रम ऐन २०७४)</h3>
+<p>This Act (2074 B.S. / 2017 A.D.) governs the relationship between employers and workers in Nepal. It replaced the old Labour Act 2048. Its purpose is to protect workers' rights while also giving employers clear and flexible rules to run their business.</p>
+<p>The Act sets working hours (generally <strong>8 hours a day and 48 hours a week</strong> <em>(verify the current figure from the latest provision)</em>), rules on minimum wage, overtime, various types of leave, safe working conditions (occupational health and safety), and fair procedures for termination of employment. It also connects to the social security system, where employer and employee contribute for benefits.</p>
+<p>For a bank as an employer, this Act matters for its contract or outsourced staff. Note that permanent RBB employees are mainly governed by the RBB Employees Service Bylaws, but general labour standards still form the background. For example, the Act requires a fair process and notice before dismissing a worker.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Labour Act 2074 (2017 A.D.) governs employer–worker relations; replaced Labour Act 2048.</li>
+<li>Working hours generally 8 hours/day, 48 hours/week; provides overtime, leave, OSH.</li>
+<li>Requires fair procedure for termination and links to social security contributions.</li>
+<li>Aims to balance workers' protection with business flexibility.</li>
+</ul>
+
+<h3>Public Procurement Act 2063 (सार्वजनिक खरिद ऐन २०६३)</h3>
+<p>Procurement means buying goods, services, or construction work. When a public body (government office or public entity) buys things, it uses public money, so the process must be fair and transparent. This Act (2063 B.S. / 2007 A.D.) sets the rules for how public bodies must buy, so there is no favouritism or corruption.</p>
+<p>The Act's core principles are transparency, competition, equal treatment of bidders, and value for money (best result for the money spent). It lays out procurement methods such as open (competitive) bidding, sealed quotation, direct procurement (only in limited cases), and consultancy selection. The <strong>Public Procurement Monitoring Office (PPMO)</strong> monitors and sets standards.</p>
+<p>For example, if a public bank wants to buy new servers of large value, it must usually call open competitive bids rather than quietly choosing one supplier. This protects public money and ensures fair chance to all sellers.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Act 2063 (2007 A.D.) governs procurement by public entities using public funds.</li>
+<li>Principles: transparency, competition, equal treatment, value for money, economy and efficiency.</li>
+<li>Methods: open bidding, sealed quotation, direct procurement, consultancy selection.</li>
+<li>Public Procurement Monitoring Office (PPMO) is the monitoring and standard-setting body.</li>
+</ul>
+
+<h3>Right to Information Act 2064 (सूचनाको हक सम्बन्धी ऐन २०६४)</h3>
+<p>This Act (2064 B.S. / 2007 A.D.) gives every citizen the right to ask for and receive information held by public bodies. The idea is that public offices work with public money and public trust, so citizens have a right to know what they are doing. This right supports transparency, accountability, and good governance.</p>
+<p>Under the Act, every public body must appoint an <strong>Information Officer</strong> to receive requests and provide information within a set time. Public bodies must also proactively publish key information (self-disclosure) at regular intervals. The <strong>National Information Commission</strong> is the independent body that protects this right and hears appeals.</p>
+<p>Some information can be kept secret — for example matters affecting national security, personal privacy, or trade secrets. For a bank, this Act matters for public-interest information, but it is balanced against customer confidentiality and banking secrecy. For example, a citizen may request general policy information, but not another person's private account details.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>RTI Act 2064 (2007 A.D.) gives citizens the right to information held by public bodies.</li>
+<li>Public bodies must appoint an Information Officer and disclose key information proactively.</li>
+<li>National Information Commission protects the right and decides appeals.</li>
+<li>Exceptions exist (national security, privacy, trade/banking secrecy); RTI is balanced with confidentiality.</li>
+</ul>
+
+<h3>RBB Employees Service Bylaws 2070 (राष्ट्रिय वाणिज्य बैंक कर्मचारी सेवा विनियमावली २०७०)</h3>
+<p>These are the internal service rules made by Rastriya Banijya Bank for its own employees. While national laws set the general background, a bank's day-to-day human-resource rules come from its own service bylaws. These bylaws (2070 B.S.) are the main "rulebook" for RBB staff and directly affect anyone working at RBB.</p>
+<p>The bylaws cover the whole employee life cycle: recruitment and appointment, probation and confirmation, job levels and grades, promotion, transfer, salary and allowances, leave, training, conduct and discipline, punishment for misconduct, and retirement and benefits. They set the rights and duties of every employee.</p>
+<p>For an exam candidate applying as a Senior Assistant (IT), these bylaws are very important because they define your level, your promotion path, leave rules, and disciplinary rules. Specific figures such as leave days, grade steps, and retirement age should be confirmed from the current bylaw text <em>(verify the current figure from the latest bylaw amendment)</em>.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Internal service rules of RBB (2070 B.S.) governing its own employees.</li>
+<li>Cover recruitment, appointment, promotion, transfer, pay/allowances, leave, discipline, and retirement.</li>
+<li>Define employee levels and rights/duties (relevant to Level 5 Senior Assistant).</li>
+<li>Confirm exact figures (leave, grades, retirement age) from the latest amended bylaws.</li>
+</ul>
+
+<h3>NRB Unified Directives and Circulars for Commercial Banks (एनआरबी एकीकृत निर्देशन)</h3>
+<p>NRB does not only make laws; it also gives regular detailed instructions to banks. The <strong>Unified Directives (Ekikrit Nirdeshan)</strong> is a single consolidated document, updated regularly, that brings together all of NRB's rules for banks and financial institutions in one place. <strong>Circulars</strong> are shorter, specific instructions issued whenever needed. Together they turn broad laws (like BAFIA) into precise operating rules.</p>
+<p>The directives cover the core prudential rules that keep banks safe. These include capital adequacy (how much capital a bank must hold), loan classification and loan-loss provisioning, single obligor limit (maximum lending to one borrower), the Cash Reserve Ratio (CRR) and Statutory Liquidity Ratio (SLR), interest rate and spread rules, corporate governance, KYC/AML rules, and reporting requirements. Exact percentages change every year <em>(verify the current figure from the latest NRB directive)</em>.</p>
+<p>These directives matter because a bank that breaks them can be fined or restricted by NRB. For an IT staff member, many reports and system controls exist precisely to meet these directives. For example, systems must calculate CRR/SLR positions and produce reports NRB requires.</p>
+<table>
+<thead><tr><th>Term</th><th>Simple meaning</th></tr></thead>
+<tbody>
+<tr><td>CRR (Cash Reserve Ratio)</td><td>Portion of deposits a bank must keep with NRB as cash reserve</td></tr>
+<tr><td>SLR (Statutory Liquidity Ratio)</td><td>Portion of deposits kept in liquid/approved assets</td></tr>
+<tr><td>Capital adequacy</td><td>Minimum capital a bank must hold against its risks</td></tr>
+<tr><td>Single obligor limit</td><td>Maximum a bank may lend to one borrower/group</td></tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Unified Directives = one consolidated, regularly updated set of NRB rules for BFIs; circulars are specific instructions.</li>
+<li>They implement BAFIA and NRB Act in detailed operating terms.</li>
+<li>Cover capital adequacy, loan classification/provisioning, single obligor limit, CRR/SLR, interest/spread, governance, AML, reporting.</li>
+<li>Non-compliance can bring NRB penalties; exact percentages change yearly (verify current figures).</li>
+</ul>
+
+<h3>Electronic Cheque Clearing — ECC (विद्युतीय चेक क्लियरिङ)</h3>
+<p>Clearing is the process of settling cheques between different banks. Old clearing needed the physical paper cheque to be carried to the other bank, which was slow. Electronic Cheque Clearing (ECC) solves this by using <strong>cheque truncation</strong> — instead of moving the paper, the bank captures a scanned image and the electronic (MICR) data of the cheque and sends only that.</p>
+<p>In Nepal, ECC is operated by <strong>Nepal Clearing House Limited (NCHL)</strong>. Banks send cheque images in scheduled sessions during the day; the system matches, nets the amounts between banks, and settles the net difference through the settlement bank (NRB). This makes cheque payment much faster and cheaper.</p>
+<p>For example, if you deposit a cheque drawn on another bank, your bank scans it and sends the image through NCHL-ECC; the funds clear the same day or next day, without any paper cheque physically travelling.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>ECC clears cheques electronically using cheque truncation (image + MICR data instead of paper).</li>
+<li>Operated in Nepal by Nepal Clearing House Limited (NCHL).</li>
+<li>Works in sessions; uses netting; final settlement through NRB.</li>
+<li>Result: faster, cheaper, safer inter-bank cheque clearing.</li>
+</ul>
+
+<h3>IPS, ConnectIPS, RTGS and SWIFT (अन्तर-बैंक भुक्तानी प्रणाली)</h3>
+<p>These are four different systems that move money between banks. They are often confused, so it helps to see how they differ. The key differences are: who runs them, whether they settle in real time or in batches, and whether they are for small or large / domestic or international payments.</p>
+<h4>Each system explained</h4>
+<p><strong>IPS (Interbank Payment System)</strong> — run by NCHL. It moves account-to-account payments in <strong>batches</strong> using deferred net settlement. It is mainly used for retail and bulk payments (like salaries, dividends, or many small transfers together).</p>
+<p><strong>ConnectIPS</strong> — also from NCHL. It is a customer-facing web portal and app where a person links their bank accounts and directly pays bills, government dues, and transfers. It is convenient and near real-time for the user, riding on the IPS/RTGS infrastructure.</p>
+<p><strong>RTGS (Real Time Gross Settlement)</strong> — run by NRB. Each payment is settled <strong>individually and immediately (gross, in real time)</strong>, not batched. It is used for large-value and urgent payments. Because settlement is instant and final, it carries no batch risk.</p>
+<p><strong>SWIFT</strong> — a global <strong>messaging</strong> network (Society for Worldwide Interbank Financial Telecommunication) used mainly for <strong>cross-border</strong> (international) payments and messages between banks. Important: SWIFT itself sends secure messages; it does not move or settle the money — banks settle through correspondent accounts. Banks are identified by BIC/SWIFT codes.</p>
+<table>
+<thead><tr><th>System</th><th>Operator</th><th>Settlement</th><th>Best for</th></tr></thead>
+<tbody>
+<tr><td>IPS</td><td>NCHL</td><td>Batch / deferred net</td><td>Retail and bulk domestic transfers</td></tr>
+<tr><td>ConnectIPS</td><td>NCHL</td><td>Near real-time (customer channel)</td><td>Direct customer payments and bills</td></tr>
+<tr><td>RTGS</td><td>NRB</td><td>Real-time, gross, individual</td><td>Large-value and urgent payments</td></tr>
+<tr><td>SWIFT</td><td>Global cooperative</td><td>Messaging only (not settlement)</td><td>Cross-border interbank messages</td></tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>IPS = NCHL batch net settlement for retail/bulk domestic payments.</li>
+<li>ConnectIPS = NCHL customer app/portal to link accounts and pay directly.</li>
+<li>RTGS = NRB system; real-time gross settlement for large-value/urgent payments.</li>
+<li>SWIFT = global messaging network for cross-border transactions; it messages, it does not settle funds; banks use BIC codes.</li>
+</ul>
+
+<h3>Internet Banking, Mobile Banking, QR Code and NFC (इन्टरनेट/मोबाइल बैंकिङ)</h3>
+<p>These are the digital "channels" that let customers do banking without visiting a branch. <strong>Internet banking</strong> is banking through a web browser on a computer — checking balance, transferring money, paying bills. <strong>Mobile banking</strong> is the same idea through a smartphone app, and today it is the most used channel in Nepal because phones are everywhere.</p>
+<p>A <strong>QR code (Quick Response code)</strong> is a square barcode that a phone camera scans to make a payment quickly. The customer scans the merchant's QR and confirms the amount — no cash and no card needed. Nepal has a national QR standard (NepalQR) so that one QR can work across many banks and wallets (interoperable).</p>
+<p><strong>NFC (Near Field Communication)</strong> is a short-range wireless technology. When you "tap" a card or phone on a machine to pay, that is NFC contactless payment; the two devices communicate over a few centimetres. For example, tapping a contactless debit card on a POS machine uses NFC.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Internet banking = web-based; mobile banking = smartphone app (most popular channel in Nepal).</li>
+<li>QR payment = scan a square code to pay; NepalQR is the national interoperable standard.</li>
+<li>NFC = short-range wireless (a few cm) used for tap/contactless payments.</li>
+<li>These channels increase convenience and financial inclusion; they need strong security (OTP, encryption, 2FA).</li>
+</ul>
+
+<h3>Digital Payment Cards — Debit, Credit and Prepaid (भुक्तानी कार्ड)</h3>
+<p>A payment card is a plastic (or virtual) card that lets you pay or withdraw money electronically, at an ATM or a POS (Point of Sale) machine or online. The three main types differ mainly in where the money comes from.</p>
+<table>
+<thead><tr><th>Card type</th><th>Where the money comes from</th><th>Simple idea</th></tr></thead>
+<tbody>
+<tr><td>Debit card</td><td>Your own bank account</td><td>Pay now with your own money; balance falls immediately</td></tr>
+<tr><td>Credit card</td><td>A credit limit given by the bank</td><td>Pay now with the bank's money; you repay later (with interest if late)</td></tr>
+<tr><td>Prepaid card</td><td>Money loaded onto the card in advance</td><td>Spend only what was loaded; not tied to a bank account</td></tr>
+</tbody>
+</table>
+<p>Cards run on card networks/switches such as Visa, Mastercard, UnionPay, and Nepal's own switches like SCT and NPI (National Payments Interface) <em>(verify the current network details from the latest source)</em>. For example, a salary account debit card lets an employee withdraw cash from any ATM and pay at shops directly from their account.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Debit = your account money (pay now); Credit = bank's credit line (pay later); Prepaid = pre-loaded money.</li>
+<li>Cards work at ATM, POS, and online (e-commerce).</li>
+<li>Networks/switches: Visa, Mastercard, UnionPay, and domestic switches (SCT, NPI).</li>
+<li>Security features: PIN, chip (EMV), CVV, OTP; contactless cards use NFC.</li>
+</ul>
+
+<h3>Digital Wallets (डिजिटल वालेट)</h3>
+<p>A digital wallet (e-wallet or mobile wallet) is a smartphone-based account where you keep money electronically and use it to pay. You load money into the wallet from a bank account or card, and then use it to pay bills, buy top-ups, send money, or scan QR codes at shops. Popular examples in Nepal include eSewa, Khalti, and IME Pay.</p>
+<p>Wallets are run by <strong>Payment Service Providers (PSPs)</strong> licensed by NRB under the Payment and Settlement Act 2075. Because wallets are lighter than full bank accounts, NRB sets <strong>KYC-based limits</strong> — how much you can load and transact depends on how much identity verification you have done. Exact limits change over time <em>(verify the current figure from the latest NRB directive)</em>.</p>
+<p>Wallets are important for financial inclusion: people without easy branch access can still pay digitally using just a phone. For example, a user can pay their electricity bill from a Khalti wallet at home without visiting any office.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Digital wallet = mobile-based store of value used for payments and transfers.</li>
+<li>Run by NRB-licensed PSPs under the Payment and Settlement Act 2075.</li>
+<li>Transaction/balance limits depend on KYC level (verify current limits).</li>
+<li>Examples in Nepal: eSewa, Khalti, IME Pay; they boost financial inclusion.</li>
+</ul>
+
+<h3>Central Bank Digital Currency — CBDC (केन्द्रीय बैंक डिजिटल मुद्रा)</h3>
+<p>A Central Bank Digital Currency is a digital form of a country's official money, issued directly by the central bank. It is legal tender, just like paper notes, but in electronic form. This is different from private wallets or bank deposits, because CBDC is a direct liability of the central bank itself — the safest form of money.</p>
+<p>It is very important to understand that <strong>CBDC is not cryptocurrency like Bitcoin</strong>. Bitcoin is decentralized, private, and its value swings a lot. CBDC is centralized (controlled by the central bank), stable in value (same as the national currency), and legal. It can be <strong>retail</strong> (used by the general public for daily payments) or <strong>wholesale</strong> (used only between banks for large settlements).</p>
+<p>Central banks study CBDC to modernise payments, lower cash-handling cost, improve financial inclusion, and keep public money relevant in a digital age. NRB has been studying and preparing for a possible CBDC in Nepal <em>(verify the current status from the latest NRB publication)</em>.</p>
+<table>
+<thead><tr><th>Feature</th><th>CBDC</th><th>Cryptocurrency (e.g., Bitcoin)</th></tr></thead>
+<tbody>
+<tr><td>Issuer</td><td>Central bank</td><td>No central issuer (decentralized)</td></tr>
+<tr><td>Legal status</td><td>Legal tender</td><td>Not legal tender (banned in Nepal)</td></tr>
+<tr><td>Value stability</td><td>Stable (= national currency)</td><td>Highly volatile</td></tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>CBDC = digital form of central-bank money; it is legal tender and a direct central-bank liability.</li>
+<li>Not the same as cryptocurrency: CBDC is centralized, stable, and legal.</li>
+<li>Two types: retail (public use) and wholesale (interbank settlement).</li>
+<li>Benefits: cheaper payments, inclusion, efficiency; NRB is studying CBDC for Nepal (verify current status).</li>
+</ul>
+
+</section>
+<section class="sec"><h2>Paper II &mdash; Information Technology &amp; Management</h2>
+<p class="lede">These six units form the whole of Paper II (subjective, 100 marks) and are also the source of the 50 objective (MCQ) marks in Paper&nbsp;I, Section&nbsp;B &mdash; so studying them once earns marks in both papers.</p>
+<h3 class="groupdiv">Section A &middot; Units 1&ndash;3</h3>
+<h3>Types of Computers by Working Principle: Analog, Digital, Hybrid</h3>
+<p>Computers can first be classified by the nature of the data they process. An <strong>analog computer</strong> processes continuous physical quantities such as voltage, temperature, pressure, or speed. It does not work with discrete numbers; instead it measures and manipulates continuously varying signals in real time. Because the underlying quantity is continuous, analog computation is naturally suited to physical measurement and control but is limited in precision, since small electrical noise directly affects accuracy.</p>
+<p>A <strong>digital computer</strong> processes data represented as discrete binary digits (0 and 1). All modern general-purpose computers — desktops, laptops, servers, smartphones — are digital. Digital computation offers very high precision, can store and reproduce data exactly, and is programmable for a wide range of tasks using stored instructions. The trade-off is that continuous real-world signals must first be converted (via an analog-to-digital converter) before a digital machine can process them.</p>
+<p>A <strong>hybrid computer</strong> combines both approaches: it accepts continuous analog input from the environment (through sensors), converts it to digital form for precise processing and storage, and may convert results back to analog form for control action. Hybrid machines are common in medical intensive-care monitoring equipment (converting a patient's continuous vital signs into digital readouts and alarms) and in industrial process-control and petrol-pump metering systems.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Analog = continuous data, real-time, lower precision; Digital = discrete (binary) data, high precision, programmable; Hybrid = both combined.</li>
+<li>Classic analog examples: speedometer, seismograph, older voltmeters. Classic hybrid examples: ICU monitors, petrol pumps.</li>
+<li>Conversion terms: ADC (analog-to-digital converter) and DAC (digital-to-analog converter) are the bridge components in hybrid systems.</li>
+</ul>
+
+<h3>Mainframe and Super Computers</h3>
+<p>A <strong>mainframe computer</strong> is a large, centralized system built for high-volume, mission-critical processing. Its defining strength is not raw computational speed alone but very high I/O throughput, reliability, and the ability to serve thousands of users and transactions concurrently without downtime — a design philosophy summarized as RAS (Reliability, Availability, Serviceability). Mainframes are the backbone of banking, airline reservation, insurance, and large government record systems, since they can process massive batch and online transaction volumes with strong data integrity. IBM's Z-series is the most common commercial example.</p>
+<p>A <strong>supercomputer</strong> is built purely to maximize computational speed for scientific and numerically intensive workloads. It achieves this through massive parallel processing — thousands to millions of processor cores working simultaneously — and its performance is measured in FLOPS (Floating Point Operations Per Second, e.g., teraflops or petaflops) rather than the MIPS/throughput measures used for mainframes. Typical uses include weather and climate simulation, nuclear research, genome sequencing, and cryptographic or AI model training. Examples include Japan's Fugaku and the USA's Frontier (an exascale system).</p>
+<p>The table below places all five computer types on a common comparative footing, since exam questions frequently ask candidates to rank or match them by speed, storage, and memory characteristics.</p>
+<table>
+<thead>
+<tr><th>Type</th><th>Processing Speed</th><th>Storage Capacity</th><th>Memory</th><th>Typical Use</th></tr>
+</thead>
+<tbody>
+<tr><td>Analog</td><td>Real-time but comparatively low precision</td><td>Very limited / not applicable</td><td>No true binary memory</td><td>Continuous measurement and control (radar, gauges)</td></tr>
+<tr><td>Digital</td><td>Fast, measured in GHz / MIPS</td><td>High and expandable (GB–TB)</td><td>RAM in GB range</td><td>General-purpose computing</td></tr>
+<tr><td>Hybrid</td><td>Moderate to high (real-time plus digital precision)</td><td>Moderate</td><td>Combination of analog buffers and digital RAM</td><td>Medical monitoring, industrial control</td></tr>
+<tr><td>Mainframe</td><td>Very high sustained throughput (many MIPS)</td><td>Very high, centralized (TB–PB)</td><td>Very large (hundreds of GB, expandable)</td><td>Banking, airline reservation, bulk transaction processing</td></tr>
+<tr><td>Supercomputer</td><td>Extremely high, measured in FLOPS (tera-/peta-/exascale)</td><td>Very high, often distributed/parallel storage</td><td>Massive, distributed across thousands of nodes</td><td>Scientific simulation, weather forecasting, research</td></tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Mainframe performance is described in MIPS/throughput and RAS; supercomputer performance is described in FLOPS.</li>
+<li>Mainframes emphasize concurrent multi-user reliability (banking); supercomputers emphasize raw parallel computation (science).</li>
+<li>Know the size order commonly tested: Supercomputer > Mainframe > Mini/Server > Microcomputer, though today performance boundaries overlap.</li>
+</ul>
+
+<h3>The Internet: Concept, Working, and Architecture</h3>
+<p>The <strong>Internet</strong> is a global network of interconnected computer networks that communicate using a common set of rules called the TCP/IP protocol suite. It is important to distinguish the Internet (the physical and logical network infrastructure) from the <strong>World Wide Web</strong> (WWW), which is only one service that runs over the Internet — a system of linked hypertext documents accessed via browsers using HTTP/HTTPS. Email, FTP, and VoIP are other services that also run over the same underlying Internet.</p>
+<p>Internet access works on a <strong>client-server model</strong>: a client (browser or app) sends a request, which travels through the user's ISP (Internet Service Provider), across backbone routers, to the server hosting the resource. Every device on the Internet is identified by an IP address; the <strong>Domain Name System (DNS)</strong> translates human-friendly domain names (like rbb.com.np) into numeric IP addresses so users do not need to memorize them.</p>
+<p>Key supporting protocols a candidate should recognize: HTTP/HTTPS (web pages, with HTTPS adding TLS/SSL encryption), FTP (file transfer), SMTP/POP3/IMAP (email), DNS (name resolution), and DHCP (automatic IP address assignment). A URL (Uniform Resource Locator) such as <code>https://www.rbb.com.np/index.html</code> encodes the protocol, host/domain name, and resource path.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Internet = network infrastructure; WWW = one service (hypertext over HTTP) running on it. Do not treat them as synonyms in exams.</li>
+<li>DNS converts domain names to IP addresses; DHCP automatically assigns IP addresses to devices on a network.</li>
+<li>HTTPS = HTTP + SSL/TLS encryption, shown by the padlock icon and used for secure banking transactions.</li>
+</ul>
+
+<h3>Email System</h3>
+<p>Electronic mail (email) allows users to exchange digital messages over a network. Sending and delivering an email involves three core protocols: <strong>SMTP</strong> (Simple Mail Transfer Protocol) is used to send/relay mail from a client to a mail server and between mail servers; <strong>POP3</strong> (Post Office Protocol version 3) downloads messages from the server to a single device, typically removing them from the server; and <strong>IMAP</strong> (Internet Message Access Protocol) keeps messages synchronized on the server so they can be accessed from multiple devices.</p>
+<p>An email message consists of a header (From, To, Cc/Bcc, Subject, Date, message routing information) and a body (the message content, plus optional attachments). Since email was originally designed for plain text, <strong>MIME</strong> (Multipurpose Internet Mail Extensions) was introduced to allow attachments and non-text content such as images and documents to be encoded and sent as email.</p>
+<p>Email carries specific security risks that are frequently tested: <strong>phishing</strong> (fraudulent emails designed to trick a user into revealing credentials or clicking malicious links), <strong>spam</strong> (unsolicited bulk email), and email spoofing (forging the sender address). Banks mitigate these with spam filters, SPF/DKIM/DMARC sender-verification records, staff awareness training, and by never asking customers for passwords or OTPs by email.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>SMTP = sending mail; POP3/IMAP = receiving/retrieving mail. IMAP keeps mail on the server (multi-device); POP3 typically downloads and removes it.</li>
+<li>MIME extends email to support attachments and non-ASCII/multimedia content.</li>
+<li>Phishing is a social-engineering attack via email; it is the most common initial vector for banking fraud.</li>
+</ul>
+
+<h3>Web Design Basics</h3>
+<p>A website is built from structural, presentational, and behavioral layers. <strong>HTML</strong> (HyperText Markup Language) defines the structure and content of a web page using tags/elements. <strong>CSS</strong> (Cascading Style Sheets) controls presentation — colors, layout, fonts — separately from content, which makes maintenance easier and allows a consistent look across many pages. <strong>JavaScript</strong> adds interactivity and dynamic behavior that runs inside the browser (client-side).</p>
+<p>Websites are broadly either <strong>static</strong> (fixed HTML pages that show the same content to every visitor until manually edited) or <strong>dynamic</strong> (content generated on the fly, often from a database, differing per user or request — e.g., an Internet banking dashboard showing a specific customer's balance). Dynamic sites rely on server-side scripting/technologies (PHP, ASP.NET, Java, Node.js, Python) that run on the web server, as distinct from client-side scripts that run in the visitor's browser.</p>
+<p>Good web design also considers <strong>responsive design</strong> (a layout that adapts automatically to different screen sizes — desktop, tablet, mobile), accessibility, browser compatibility, and adherence to open web standards (maintained by the W3C). A working website additionally needs a registered <strong>domain name</strong> (its address, e.g. rbb.com.np) and <strong>web hosting</strong> (server space where the site's files/database actually reside).</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>HTML = structure, CSS = presentation, JavaScript = client-side behavior — the three fundamental building blocks.</li>
+<li>Static page: same content for every user; Dynamic page: generated per request, usually database-driven.</li>
+<li>Domain name and web hosting are two distinct, separately purchased requirements to publish a website.</li>
+</ul>
+
+<h3>Physical Security of IT Infrastructure</h3>
+<p><strong>Physical security</strong> protects hardware, facilities, and personnel from physical threats — theft, unauthorized access, fire, natural disaster, and environmental damage — as opposed to logical/cyber security, which protects data and software. For a bank's data center and server rooms, physical security is often the first line of defense: no amount of firewall configuration helps if an intruder can simply walk in and remove a server or hard disk.</p>
+<p>Key physical controls include: access control mechanisms (biometric locks, smart cards, security guards, visitor logs, mantraps) to restrict entry to authorized personnel only; CCTV surveillance and intrusion alarms; fire detection and suppression systems using gases such as FM-200 or inert gas (rather than water, which would damage electronics); and environmental controls — precision air conditioning (HVAC) and humidity control, since servers generate heat and are sensitive to temperature/humidity swings.</p>
+<p>Additional considerations tested at this level include redundant power (UPS for short outages, backup diesel generators for extended outages), structured/secured cabling to prevent tapping or accidental disconnection, siting the data center away from flood-prone or ground-floor locations, and maintaining a Disaster Recovery (DR) site geographically separate from the primary data center so that a fire, earthquake, or flood at one site does not destroy both copies of critical banking data.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Physical security = protecting the hardware/premises; distinct from (but complementary to) logical/network security.</li>
+<li>Fire suppression in server rooms uses gas-based systems, not water sprinklers.</li>
+<li>UPS handles brief power loss; a generator handles extended outages; a DR site protects against total site loss.</li>
+</ul>
+
+<h3>Artificial Intelligence (AI)</h3>
+<p><strong>Artificial Intelligence</strong> is the branch of computer science concerned with building systems that can perform tasks which normally require human intelligence — reasoning, learning, perception, language understanding, and decision-making. AI is commonly divided into <strong>Narrow/Weak AI</strong> (designed for one specific task, e.g., a chatbot or a fraud-detection engine — this is all that exists commercially today) and <strong>General/Strong AI</strong> (a hypothetical system with human-like general intelligence across any task, not yet achieved).</p>
+<p>Major subfields include Machine Learning (systems that improve from data/experience), Natural Language Processing (NLP — understanding and generating human language, used in chatbots and virtual assistants), Computer Vision (interpreting images, e.g., in cheque/signature verification), Robotics, and Expert Systems (rule-based systems that encode human expert knowledge for decision support). The classic benchmark for machine intelligence, the <strong>Turing Test</strong>, checks whether a human evaluator can distinguish a machine's conversational responses from a human's.</p>
+<p>In banking, AI applications include chatbots for customer service, AI-driven fraud/anomaly detection on transactions, credit scoring and risk assessment, robotic process automation (RPA) for repetitive back-office tasks, and biometric authentication (face/voice recognition).</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>AI is the broad goal (intelligent behavior); ML is one technique used to achieve it; only Narrow AI exists in practice today.</li>
+<li>Turing Test = benchmark for whether a machine's behavior is indistinguishable from a human's.</li>
+<li>Common banking AI use cases: chatbots, fraud detection, credit scoring, RPA.</li>
+</ul>
+
+<h3>Machine Learning (ML)</h3>
+<p><strong>Machine Learning</strong> is a subset of AI in which a system learns patterns from data and improves its performance on a task without being explicitly programmed with fixed rules for every case. Instead of a human writing exact logic, an ML algorithm is trained on historical data (the training set) and builds a mathematical model that can then make predictions or decisions on new, unseen data.</p>
+<p>ML has three main learning paradigms. In <strong>supervised learning</strong>, the training data is labeled (each input has a known correct output), e.g., predicting loan default (yes/no) from past labeled customer records — common algorithms include regression and decision trees. In <strong>unsupervised learning</strong>, the data is unlabeled and the algorithm finds hidden structure or groupings on its own, e.g., clustering customers into segments for targeted marketing. In <strong>reinforcement learning</strong>, an agent learns by trial and error, receiving rewards or penalties for actions taken in an environment, e.g., an algorithmic trading or robotics system.</p>
+<p><strong>Deep Learning</strong> is a further subset of ML that uses multi-layered artificial neural networks to automatically learn complex patterns (e.g., image or speech recognition) directly from raw data, without manual feature engineering. In banking, ML is widely used for credit scoring, real-time transaction fraud detection, churn prediction, and personalized product recommendations.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Hierarchy to remember: AI ⊃ Machine Learning ⊃ Deep Learning.</li>
+<li>Supervised = labeled data; Unsupervised = unlabeled/clustering; Reinforcement = reward-based trial and error.</li>
+<li>Fraud detection and credit scoring are the two most commonly cited ML use cases in banking exams.</li>
+</ul>
+
+<h3>Blockchain Technology</h3>
+<p><strong>Blockchain</strong> is a distributed, decentralized digital ledger that records transactions across a network of computers (nodes) such that no single central authority controls it. Data is stored in <strong>blocks</strong>, and each block contains a cryptographic hash of the previous block, linking them into a chronological chain — hence "block-chain." Because changing any block would change its hash and break the chain (detectable by all nodes), blockchain records are considered <strong>immutable</strong> (extremely difficult to alter after the fact).</p>
+<p>Instead of trusting one central server, all participating nodes hold a copy of the ledger and agree on new entries through a <strong>consensus mechanism</strong> — the two most cited are <strong>Proof of Work</strong> (nodes/"miners" compete to solve a computational puzzle; used by Bitcoin) and <strong>Proof of Stake</strong> (validators are chosen based on the amount of cryptocurrency they stake/hold, which is more energy-efficient). A <strong>smart contract</strong> is self-executing code stored on a blockchain that automatically enforces an agreement when predefined conditions are met, without needing an intermediary.</p>
+<p>Blockchain first became widely known through cryptocurrencies such as Bitcoin, but its banking-relevant applications go beyond currency: cross-border payments and remittance (faster, cheaper settlement), trade finance (transparent letter-of-credit processing), KYC/identity verification shared across institutions, and clearing/settlement of securities.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Blockchain = decentralized, immutable, chained ledger; each block references the previous block's hash.</li>
+<li>Consensus mechanisms: Proof of Work (computation-based, energy intensive) vs Proof of Stake (stake-based, efficient).</li>
+<li>Smart contract = self-executing code on the blockchain; no intermediary needed once conditions are met.</li>
+</ul>
+
+<h3>Basic Computer Architecture</h3>
+<p>Almost all modern computers follow the <strong>von Neumann architecture</strong>, which established the "stored-program concept": both program instructions and data are stored together in the same memory and are fetched by the CPU as needed. The architecture has four core components — the CPU (which itself contains the Control Unit and ALU), main memory, input/output devices, and a system bus connecting them — all operating on a single shared memory and a single bus for both instructions and data.</p>
+<p>The <strong>Harvard architecture</strong> is the main alternative, using physically separate memories and buses for instructions and data, which allows both to be fetched simultaneously (faster in certain contexts) but at higher hardware complexity/cost; it is used in some microcontrollers and digital signal processors, while general-purpose PCs remain von Neumann-based.</p>
+<p>Program execution follows the repeating <strong>fetch–decode–execute cycle</strong>: the CPU fetches the next instruction from memory (address held in the Program Counter), decodes it in the Control Unit to determine the required operation, executes it (often using the ALU), and stores any result — then the cycle repeats for the next instruction.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Von Neumann = single shared memory/bus for instructions and data ("stored-program" concept); Harvard = separate memory/bus for each.</li>
+<li>Von Neumann bottleneck: since instructions and data share one bus, they cannot be fetched at the same time, limiting throughput.</li>
+<li>Fetch–Decode–Execute is the fundamental instruction cycle of every CPU.</li>
+</ul>
+
+<h3>Registers</h3>
+<p><strong>Registers</strong> are the smallest and fastest storage locations available to a CPU, built directly into the processor chip using flip-flops/latches. They hold data currently being processed or control information needed for the immediate next step, and are orders of magnitude faster than even cache memory, though also far smaller in capacity (a few bytes/words each).</p>
+<p>Key special-purpose registers every candidate should know: the <strong>Program Counter (PC)</strong> holds the memory address of the next instruction to fetch; the <strong>Instruction Register (IR)</strong> holds the instruction currently being decoded/executed; the <strong>Memory Address Register (MAR)</strong> holds the address of the memory location currently being accessed; the <strong>Memory Data/Buffer Register (MDR/MBR)</strong> temporarily holds data being transferred to/from memory; the <strong>Accumulator (AC)</strong> holds intermediate arithmetic/logic results; and the <strong>Status/Flag Register</strong> holds condition flags (zero, carry, overflow, sign) set by the last ALU operation.</p>
+<p>Beyond these, most CPUs also provide <strong>general-purpose registers</strong> (used flexibly by programs/compilers for temporary values) and a <strong>Stack Pointer (SP)</strong> that tracks the top of the call stack (used for function calls and local variables).</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Registers are the fastest memory in the computer — faster than cache, RAM, or disk — but hold only a tiny amount of data.</li>
+<li>PC = address of next instruction; IR = current instruction; MAR = address being accessed; MDR = data being transferred.</li>
+<li>Flag/status register records outcomes (zero, carry, overflow) used for conditional branching.</li>
+</ul>
+
+<h3>Memory Management</h3>
+<p>Computer memory is organized as a <strong>hierarchy</strong> that trades off speed, cost, and capacity: the fastest and most expensive memory (registers, then cache) sits closest to the CPU in small quantities, while slower, cheaper, higher-capacity memory (RAM, then secondary storage like SSD/HDD, then backup/archive media) sits further away. Effective system design keeps frequently used data as close to the CPU as possible.</p>
+<table>
+<thead>
+<tr><th>Level</th><th>Relative Speed</th><th>Relative Cost per Bit</th><th>Typical Size</th></tr>
+</thead>
+<tbody>
+<tr><td>CPU Registers</td><td>Fastest</td><td>Highest</td><td>A few bytes/words</td></tr>
+<tr><td>Cache (L1/L2/L3)</td><td>Very fast</td><td>High</td><td>KB to a few MB</td></tr>
+<tr><td>Primary memory (RAM)</td><td>Fast</td><td>Moderate</td><td>GB range</td></tr>
+<tr><td>Secondary storage (SSD/HDD)</td><td>Slower</td><td>Low</td><td>GB to TB range</td></tr>
+<tr><td>Backup/archive (tape, cloud)</td><td>Slowest</td><td>Lowest</td><td>TB to PB range</td></tr>
+</tbody>
+</table>
+<p>Because RAM is limited and expensive relative to disk, operating systems use <strong>virtual memory</strong> to let programs behave as if they have more memory than physically installed, by temporarily moving inactive portions to disk (swap space). This is implemented through <strong>paging</strong> (dividing memory into fixed-size blocks called pages/frames, managed by the Memory Management Unit, MMU, with a page table mapping virtual to physical addresses) and/or <strong>segmentation</strong> (dividing a program into logical variable-sized units such as code, data, and stack segments). Paging can suffer from internal fragmentation (wasted space inside a fixed-size page); segmentation can suffer from external fragmentation (wasted gaps between variable-sized segments).</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Memory hierarchy order (fastest/smallest to slowest/largest): Registers → Cache → RAM → Secondary storage → Backup/archive.</li>
+<li>Virtual memory lets a program use more address space than physical RAM by swapping to disk.</li>
+<li>Paging = fixed-size blocks (internal fragmentation risk); Segmentation = variable, logical blocks (external fragmentation risk).</li>
+</ul>
+
+<h3>Organization of Hard Disk</h3>
+<p>A hard disk drive (HDD) stores data magnetically on one or more rigid spinning <strong>platters</strong>. Each platter surface is divided into concentric rings called <strong>tracks</strong>, and each track is further divided into smaller arc-shaped units called <strong>sectors</strong> (traditionally 512 bytes, or 4KB in modern "Advanced Format" disks) — the sector is the smallest unit the disk can read or write at a time. When a disk has multiple stacked platters, the set of tracks at the same radial position across all platter surfaces is called a <strong>cylinder</strong>; data is often organized cylinder-by-cylinder to minimize head movement.</p>
+<p>Data is read/written by a <strong>read-write head</strong> mounted on an actuator arm that moves radially across the platter, while a spindle motor spins the platters at a constant speed (commonly 5,400, 7,200, 10,000, or 15,000 RPM). Overall disk access time is the sum of: <strong>seek time</strong> (time for the head to move to the correct track), <strong>rotational latency</strong> (time for the disk to spin until the desired sector arrives under the head), and <strong>data transfer time</strong> (time to actually read/write the data once positioned).</p>
+<p><strong>Low-level formatting</strong> physically defines the tracks and sectors on a blank disk (usually done at the factory), while <strong>high-level formatting</strong> creates the file system structures (like FAT/NTFS/ext4) an operating system needs to store files. For fault tolerance and/or performance, multiple physical disks can be combined using <strong>RAID</strong> (Redundant Array of Independent Disks) — e.g., RAID 1 mirrors data across two disks for redundancy, while RAID 0 stripes data across disks purely for speed with no redundancy.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Order of granularity: Platter → Track (a ring) → Sector (an arc segment of a track) → Cylinder (same track across all platters).</li>
+<li>Access time = Seek time + Rotational latency + Transfer time.</li>
+<li>RAID 0 = striping (speed, no redundancy); RAID 1 = mirroring (redundancy, no speed gain in capacity terms).</li>
+</ul>
+
+<h3>CPU Architecture: ALU, CU, and Buses</h3>
+<p>The <strong>Central Processing Unit (CPU)</strong> is the "brain" of the computer, and its two principal functional components are the Arithmetic Logic Unit and the Control Unit, working together with registers and buses to execute instructions. The <strong>Arithmetic Logic Unit (ALU)</strong> performs all arithmetic operations (addition, subtraction, multiplication, division) and logical/comparison operations (AND, OR, NOT, XOR, greater-than/less-than) on data supplied to it. It does the actual computation but has no notion of "what to do next" on its own.</p>
+<p>The <strong>Control Unit (CU)</strong> directs and coordinates all CPU activity: it fetches instructions from memory, decodes what operation they represent, and generates the timing and control signals that tell the ALU, registers, and memory what to do and when — but the CU itself does not perform arithmetic. Together, CU-directed fetch/decode and ALU-driven execution implement the fetch–decode–execute cycle discussed earlier.</p>
+<p>Components communicate over a <strong>system bus</strong>, which has three logical parts: the <strong>data bus</strong> (bidirectional, carries the actual data being moved; its width, e.g. 32-bit or 64-bit, corresponds to the CPU's "word size" and affects how much data can move per cycle), the <strong>address bus</strong> (unidirectional, carries memory addresses; its width determines the maximum addressable memory — an n-bit address bus can address 2ⁿ locations), and the <strong>control bus</strong> (carries control signals such as read/write, clock, and interrupt signals that synchronize the whole system).</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>ALU = performs computation; CU = directs/coordinates but does not compute.</li>
+<li>Data bus = carries data (bidirectional); Address bus = carries memory locations (unidirectional); Control bus = carries timing/control signals.</li>
+<li>An n-bit address bus can address exactly 2ⁿ distinct memory locations — a frequent numeric MCQ.</li>
+</ul>
+
+<h3>I/O Management and I/O Interface</h3>
+<p>Input/Output (I/O) devices (keyboard, disk, printer, network card) generally operate far slower than the CPU and often use different data formats and voltage levels. An <strong>I/O interface</strong> is the hardware/logic that bridges this gap, acting as a translator and buffer between the fast CPU and slower, electrically different peripheral devices, and is typically controlled by a device-specific <strong>device driver</strong> (software) working with an I/O controller (hardware).</p>
+<p>Three classic methods exist for the CPU to communicate with I/O devices. In <strong>programmed I/O</strong>, the CPU repeatedly polls (checks) the device's status register in a busy-wait loop until it is ready, wasting CPU cycles on waiting. In <strong>interrupt-driven I/O</strong>, the CPU issues a request and continues other work; the device raises a hardware interrupt signal when it is ready or finished, at which point the CPU pauses its current task to service the device — far more efficient than polling. In <strong>Direct Memory Access (DMA)</strong>, a dedicated DMA controller transfers a whole block of data directly between the device and main memory without the CPU's involvement for each individual byte; the CPU is only interrupted once, at the start and end of the whole transfer, freeing it almost entirely during bulk transfers such as disk reads.</p>
+<p>Exam questions commonly rank these by CPU efficiency: DMA is most efficient for large transfers, interrupt-driven I/O is efficient for occasional/unpredictable events, and programmed I/O is the simplest but least efficient, suitable only for very simple or time-critical small devices.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Programmed I/O = CPU busy-waits/polls (wastes cycles); Interrupt-driven I/O = device signals CPU when ready (efficient for sporadic events); DMA = bulk transfer directly to/from memory with minimal CPU involvement.</li>
+<li>I/O interface = hardware bridge; device driver = software translating OS commands into device-specific commands.</li>
+<li>DMA is the preferred method for high-volume transfers like disk or network I/O.</li>
+</ul>
+
+<h3>I/O Request Handling</h3>
+<p>When an application needs to read or write data, it issues a <strong>system call</strong> to the operating system rather than accessing hardware directly. The OS's I/O subsystem receives this request, validates and queues it if the device is busy, and passes it to the appropriate <strong>device driver</strong>, which translates the generic request into device-specific commands understood by the device controller; the controller then operates the physical device.</p>
+<p>Because multiple processes may request the same device (e.g., several jobs wanting to print) or a device may be slower than the rate requests arrive, the OS performs <strong>I/O scheduling</strong> — maintaining a queue of pending requests and choosing an order to service them (disk scheduling algorithms such as FCFS, SSTF — Shortest Seek Time First, SCAN, and C-SCAN are the classic examples for optimizing hard-disk head movement). <strong>Buffering</strong> temporarily holds data in memory to smooth out speed differences between producer and consumer (e.g., between a fast CPU and a slower printer).</p>
+<p>For devices that cannot be shared simultaneously (like a printer), the OS uses <strong>spooling</strong> (Simultaneous Peripheral Operations On-Line): each job is written to a disk queue first, and the device processes queued jobs one at a time in the background, allowing multiple users/processes to "print" concurrently without conflict. On completion, the device controller raises an interrupt, which the OS's interrupt handler processes to update status and release the requesting process.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Order of handling: application system call → OS I/O subsystem/queue → device driver → device controller → physical device.</li>
+<li>Spooling allows multiple jobs to share one device (classic example: print spooling) by queuing on disk.</li>
+<li>Disk scheduling algorithms (FCFS, SSTF, SCAN, C-SCAN) determine the order in which queued I/O requests are served.</li>
+</ul>
+
+<h3>I/O Devices</h3>
+<p>I/O devices are the physical peripherals through which a computer receives data (input) or presents results (output). <strong>Input devices</strong> include the keyboard, mouse, scanner, microphone, joystick, touch screen, barcode reader, and — particularly relevant to banking operations — MICR (Magnetic Ink Character Recognition, used to read the character band on cheques) and OCR (Optical Character Recognition, used to digitize printed/handwritten text) readers used in cheque-clearing systems.</p>
+<p><strong>Output devices</strong> include the monitor/display, printer, plotter, and speakers, presenting processed results back to the user in visual, printed, or audio form. Some devices are bidirectional or serve both roles — a touch screen (input via touch, output via display), a modem/network card (sends and receives data), and storage devices such as hard disks, SSDs, and USB drives, which act as both an output target (writing/saving data) and an input source (reading data back).</p>
+<p>All I/O devices connect to the system through an I/O interface/controller and are ultimately managed by the operating system's device drivers, as covered in the earlier I/O management topics.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>MICR and OCR are the classic banking-specific input devices used for cheque processing — a common exam-specific detail.</li>
+<li>Storage devices (HDD, SSD, pen drive) function as both input and output devices.</li>
+<li>Touch screens are a dual input/output device.</li>
+</ul>
+
+<h3>Networking Devices: Repeater, Hub, Switch, Router</h3>
+<p>Networking devices are compared by which layer of the OSI model they operate at and how "intelligently" they handle traffic. A <strong>repeater</strong> is the simplest device: it operates at the Physical layer and simply receives a weakening signal and regenerates/amplifies it, extending the maximum cable distance a signal can travel — it has no understanding of addresses or data content at all.</p>
+<p>A <strong>hub</strong> also operates at the Physical layer but connects multiple devices; whatever data arrives on one port is broadcast out to every other port with no filtering or intelligence, meaning all connected devices share one <strong>collision domain</strong> (only one device can transmit without collision at a time) and one broadcast domain. A <strong>switch</strong> is a smarter Data Link layer (Layer 2) device: it learns the MAC address of each connected device and builds a MAC address table, then forwards each frame only to the specific port where the destination device resides, giving each port its own separate collision domain and greatly improving efficiency versus a hub.</p>
+<p>A <strong>router</strong> operates at the Network layer (Layer 3) and connects different networks together (e.g., a bank branch's LAN to the wider WAN/Internet), forwarding packets based on destination IP address using a routing table, and separates both collision domains and broadcast domains per interface. In short, complexity and intelligence increase in the order repeater → hub → switch → router.</p>
+<table>
+<thead>
+<tr><th>Device</th><th>OSI Layer</th><th>Primary Function</th><th>Collision Domain</th><th>Broadcast Domain</th></tr>
+</thead>
+<tbody>
+<tr><td>Repeater</td><td>Physical (Layer 1)</td><td>Regenerates/amplifies a weak signal to extend distance</td><td>Single (shared)</td><td>Single (shared)</td></tr>
+<tr><td>Hub</td><td>Physical (Layer 1)</td><td>Broadcasts incoming data to all connected ports</td><td>Single (shared by all ports)</td><td>Single (shared)</td></tr>
+<tr><td>Switch</td><td>Data Link (Layer 2)</td><td>Forwards frames to the specific port using a MAC address table</td><td>Separate per port</td><td>Single (unless VLANs are used)</td></tr>
+<tr><td>Router</td><td>Network (Layer 3)</td><td>Forwards packets between different networks using IP/routing table</td><td>Separate per port</td><td>Separate per port/interface</td></tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Layer order: Repeater/Hub = Layer 1; Switch = Layer 2 (MAC address); Router = Layer 3 (IP address).</li>
+<li>A switch gives each port its own collision domain; only a router separates broadcast domains (without VLANs).</li>
+<li>Routers connect distinct networks; switches/hubs/repeaters operate within one network segment.</li>
+</ul>
+
+<h3>Switching Technologies</h3>
+<p>Switching determines how data moves through intermediate nodes from source to destination across a network. In <strong>circuit switching</strong>, a dedicated physical/logical path is established between sender and receiver for the entire duration of the communication before any data flows (as in the traditional telephone network, PSTN); the path's bandwidth is reserved exclusively, guaranteeing constant, predictable performance but wasting capacity when the line is idle, and it also requires setup time before communication can begin.</p>
+<p>In <strong>packet switching</strong>, data is broken into small, independently addressed <strong>packets</strong> that share network links with other traffic (statistical multiplexing) and are reassembled at the destination; this is the model the Internet uses, and it makes far more efficient use of bandwidth since no path is reserved for idle time. Packet switching itself has two forms: <strong>datagram</strong> (connectionless — each packet is routed independently and may arrive out of order, as with IP) and <strong>virtual circuit</strong> (connection-oriented — a logical path is set up first and all packets follow the same route, as with older technologies like X.25, Frame Relay, and ATM, or modern MPLS).</p>
+<p><strong>Message switching</strong> is an older store-and-forward technique: an entire message (not split into packets) is transmitted as one unit and stored in full at each intermediate node before being forwarded onward when the next link is free — no dedicated end-to-end path is ever reserved. It was used in early telegram/store-and-forward systems but is largely obsolete for interactive use because of high delay.</p>
+<table>
+<thead>
+<tr><th>Feature</th><th>Circuit Switching</th><th>Packet Switching</th><th>Message Switching</th></tr>
+</thead>
+<tbody>
+<tr><td>Path setup</td><td>Dedicated path established before transfer</td><td>No fixed path; each packet routed independently or via virtual circuit</td><td>No path reserved; store-and-forward hop by hop</td></tr>
+<tr><td>Resource use</td><td>Reserved for whole session (can be wasted if idle)</td><td>Shared/efficient (statistical multiplexing)</td><td>Shared, but whole message stored at each node</td></tr>
+<tr><td>Delay</td><td>Setup delay, then constant low delay</td><td>Variable delay per packet</td><td>High delay (store-and-forward of full message)</td></tr>
+<tr><td>Example</td><td>Traditional telephone network (PSTN)</td><td>The Internet (IP)</td><td>Early telegram/store-and-forward email systems</td></tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Circuit switching = dedicated path, reserved bandwidth, setup delay; used by traditional telephony.</li>
+<li>Packet switching = efficient bandwidth sharing; datagram (connectionless, IP) vs virtual circuit (connection-oriented, ATM/Frame Relay/MPLS).</li>
+<li>Message switching = whole message stored and forwarded node by node; no dedicated path; largely obsolete for real-time use.</li>
+</ul>
+
+<h3>Modems and Remote Network Access</h3>
+<p>A <strong>modem</strong> (Modulator-DEModulator) converts digital data from a computer into analog signals suitable for transmission over an analog medium such as a telephone or cable line (modulation) and converts incoming analog signals back into digital data (demodulation) at the receiving end. Common types include dial-up modems (using standard telephone lines, low speed), DSL modems (broadband over existing telephone copper wiring), cable modems (broadband over coaxial cable TV lines), and wireless/cellular modems (using 3G/4G/5G mobile networks). Note that <strong>baud rate</strong> (the number of signal changes/symbols per second) is not the same as <strong>bit rate</strong> (bits transmitted per second) — if each symbol encodes more than one bit, bit rate exceeds baud rate.</p>
+<p><strong>Remote network access</strong> refers to methods that let an authorized user or branch connect to a network from outside its physical premises. A <strong>VPN (Virtual Private Network)</strong> creates an encrypted logical tunnel over a shared public network (typically the Internet), so traffic between, say, a bank branch and its head office data center is protected as if it traveled over a private line; common VPN protocols include IPSec and SSL/TLS.</p>
+<p>Other remote-access methods include <strong>Remote Desktop Protocol (RDP)</strong> and similar remote-desktop software, which let an authorized user view and control another computer's desktop over a network; <strong>leased lines</strong>, a dedicated, always-on point-to-point circuit rented from a telecom/ISP giving guaranteed fixed bandwidth (historically common for connecting bank branches to core banking data centers); and older <strong>dial-up networking</strong>, which used a modem and the PPP protocol over ordinary telephone lines.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Modem = converts digital ↔ analog for transmission over analog media; types: dial-up, DSL, cable, cellular/wireless.</li>
+<li>Baud rate (symbols/second) ≠ bit rate (bits/second) — a frequently tested distinction.</li>
+<li>VPN = encrypted tunnel over a public network; leased line = dedicated, always-on private circuit; RDP = remote control of another desktop.</li>
+</ul>
+
+<h3>Error Detection and Correction Techniques</h3>
+<p>Data can become corrupted during transmission due to noise or interference, so networks use techniques to detect (and sometimes correct) such errors. A <strong>parity bit</strong> is the simplest method: one extra bit is added to a block of data so that the total count of 1-bits is even (even parity) or odd (odd parity); the receiver recomputes parity and flags a mismatch. Parity reliably detects only single-bit (or any odd number of bit) errors and cannot detect errors affecting an even number of bits, nor can it correct anything.</p>
+<p>A <strong>checksum</strong> is computed by the sender by summing the data (often in fixed-size blocks, with an end-around carry/complement), appending the result to the message; the receiver performs the same sum and compares. Checksums (used in IP, TCP, and UDP headers) are stronger than a single parity bit but can still miss certain error patterns and, like parity, only detect — they do not correct — errors. A <strong>Cyclic Redundancy Check (CRC)</strong> is considerably stronger: the data is treated as a binary polynomial and divided by a fixed generator polynomial; the remainder (the CRC value) is appended to the transmitted data. The receiver performs the same division on the received data — a non-zero remainder indicates an error. CRC is widely used in Ethernet frames and storage devices because it reliably catches burst errors that simpler checksums miss, though standard CRC still only detects errors rather than correcting them.</p>
+<p><strong>Hamming code</strong> is unique among these in being able to both detect and correct errors without retransmission. It inserts multiple parity bits at specific bit positions (powers of two: 1, 2, 4, 8...), each covering an overlapping subset of the data bits. On receipt, the parity checks are recomputed and combined into a binary number called the <strong>syndrome</strong>, which — if nonzero — directly identifies the exact bit position that is in error, allowing it to be flipped/corrected; a properly designed Hamming code can correct any single-bit error and detect (without correcting) double-bit errors. It is used, for example, in ECC (Error-Correcting Code) memory.</p>
+<table>
+<thead>
+<tr><th>Technique</th><th>Detects Errors?</th><th>Corrects Errors?</th><th>Relative Strength / Overhead</th></tr>
+</thead>
+<tbody>
+<tr><td>Parity bit</td><td>Yes (single-bit / odd-count errors only)</td><td>No</td><td>Very low overhead, weakest protection</td></tr>
+<tr><td>Checksum</td><td>Yes (most errors, some patterns missed)</td><td>No</td><td>Low overhead, moderate protection</td></tr>
+<tr><td>CRC</td><td>Yes (very reliable, including burst errors)</td><td>No (in standard form)</td><td>Moderate overhead, strong detection</td></tr>
+<tr><td>Hamming code</td><td>Yes (single and double-bit errors)</td><td>Yes (single-bit errors)</td><td>Higher overhead, only technique here that self-corrects</td></tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Only Hamming code, among these four, can correct an error on its own; parity, checksum, and CRC only detect.</li>
+<li>CRC uses polynomial division and is stronger than a simple checksum; used in Ethernet.</li>
+<li>Hamming code's syndrome value directly points to the erroneous bit's position.</li>
+</ul>
+
+<h3>Internet Services</h3>
+<p>Beyond web browsing and email, the Internet supports several distinct services, each tied to its own protocol. The <strong>World Wide Web (WWW)</strong> delivers hypertext/multimedia documents via HTTP/HTTPS through a browser. <strong>File Transfer Protocol (FTP)</strong>, and its secure variant SFTP, allow uploading/downloading files between a client and a remote server. <strong>Remote login</strong> services, Telnet (unencrypted, largely obsolete for security reasons) and SSH (Secure Shell, encrypted), let a user operate a remote machine's command line as if sitting at it.</p>
+<p><strong>VoIP (Voice over Internet Protocol)</strong> carries voice calls over IP networks instead of traditional circuit-switched telephone lines (using protocols like SIP), enabling services such as Skype or internal office IP telephony. Instant messaging/chat and video conferencing provide real-time text/audio/video communication. Search engines index and retrieve web content by keyword.</p>
+<p>Two categories are especially relevant to banking exams: <strong>e-commerce/Internet banking</strong> services (online transactions, fund transfer, e-payment gateways) run as web applications over HTTPS, and <strong>cloud computing</strong> services deliver computing resources over the Internet on demand, categorized as IaaS (Infrastructure as a Service — raw compute/storage/network), PaaS (Platform as a Service — a development/runtime platform), and SaaS (Software as a Service — ready-to-use applications, e.g., webmail or hosted core-banking modules).</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Match service to protocol: WWW→HTTP/HTTPS, file transfer→FTP/SFTP, remote login→Telnet/SSH, voice calls→VoIP/SIP.</li>
+<li>SSH is the secure, encrypted replacement for the older, unencrypted Telnet.</li>
+<li>Cloud service models: IaaS (infrastructure), PaaS (platform), SaaS (software) — ordered from most to least customer-managed.</li>
+</ul>
+
+<h3>Internet Protocol and Addressing: IPv4, IPv6, and Subnetting</h3>
+<h4>IPv4 Addressing and Classes</h4>
+<p><strong>IPv4</strong> uses a 32-bit address, conventionally written as four decimal numbers (0–255) separated by dots (dotted-decimal notation), e.g., 192.168.1.10 — giving a theoretical maximum of about 4.3 billion unique addresses, which has proven insufficient for the modern number of Internet-connected devices. IPv4 addresses were historically divided into <strong>classes</strong> based on their leading bits, determining the split between network and host portions of the address.</p>
+<table>
+<thead>
+<tr><th>Class</th><th>First Octet Range</th><th>Default Subnet Mask</th><th>Typical Use</th></tr>
+</thead>
+<tbody>
+<tr><td>A</td><td>1 – 126</td><td>255.0.0.0 (/8)</td><td>Very large networks (~16 million hosts each)</td></tr>
+<tr><td>B</td><td>128 – 191</td><td>255.255.0.0 (/16)</td><td>Medium networks (~65,534 hosts each)</td></tr>
+<tr><td>C</td><td>192 – 223</td><td>255.255.255.0 (/24)</td><td>Small networks (254 hosts each)</td></tr>
+<tr><td>D</td><td>224 – 239</td><td>Not applicable</td><td>Multicasting</td></tr>
+<tr><td>E</td><td>240 – 255</td><td>Not applicable</td><td>Reserved / experimental</td></tr>
+</tbody>
+</table>
+<p>The 127.x.x.x range is reserved for loopback (a device referring to itself, e.g., 127.0.0.1). RFC 1918 reserves private address ranges (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) for use inside private/organizational networks; devices with private addresses reach the public Internet through <strong>NAT (Network Address Translation)</strong>, which maps them to a shared public address at the network boundary.</p>
+<h4>IPv6 and Subnetting</h4>
+<p><strong>IPv6</strong> was introduced mainly to solve IPv4 address exhaustion. It uses a 128-bit address, written as eight groups of four hexadecimal digits separated by colons (e.g., 2001:0db8:0000:0000:0000:ff00:0042:8329, which can be abbreviated by omitting leading zeros and collapsing one run of all-zero groups with "::"). Its vastly larger address space (roughly 340 undecillion addresses) removes the practical need for NAT, and it also has a simplified header for faster routing, built-in support for IPSec security, and automatic address configuration.</p>
+<p><strong>Subnetting</strong> divides one larger network into smaller logical sub-networks by borrowing bits from the host portion of an address for additional network identification, using a subnet mask (or CIDR notation such as /26, meaning the first 26 bits are the network portion). Subnetting improves address utilization efficiency, reduces the size of broadcast domains, and improves security/manageability by isolating traffic — e.g., a 192.168.1.0/24 network subnetted into /26 blocks creates four subnets of 64 addresses each (62 usable host addresses per subnet, after reserving one address for the network identifier and one for broadcast).</p>
+<table>
+<thead>
+<tr><th>Feature</th><th>IPv4</th><th>IPv6</th></tr>
+</thead>
+<tbody>
+<tr><td>Address length</td><td>32-bit</td><td>128-bit</td></tr>
+<tr><td>Notation</td><td>Dotted decimal (e.g., 192.168.1.1)</td><td>Colon-separated hexadecimal (e.g., 2001:db8::1)</td></tr>
+<tr><td>Address space</td><td>~4.3 billion addresses</td><td>~340 undecillion addresses</td></tr>
+<tr><td>NAT requirement</td><td>Commonly required due to address shortage</td><td>Generally unnecessary given the huge address space</td></tr>
+<tr><td>Built-in security (IPSec)</td><td>Optional add-on</td><td>Natively supported</td></tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Class A/B/C default masks: /8, /16, /24 respectively; Class D = multicast; Class E = experimental.</li>
+<li>Private address ranges (RFC 1918): 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16 — used with NAT to reach the public Internet.</li>
+<li>IPv6 = 128-bit hex notation, solves IPv4 exhaustion, removes practical need for NAT, has native IPSec support.</li>
+<li>Subnetting borrows host bits to create smaller networks; CIDR notation (/n) states how many leading bits form the network portion.</li>
+</ul>
+
+<h3>Network Security</h3>
+<p>Network security aims to protect data and systems against unauthorized access, misuse, or disruption, commonly framed around the <strong>CIA triad</strong>: <strong>Confidentiality</strong> (only authorized parties can view data — enforced via encryption and access control), <strong>Integrity</strong> (data is not altered without authorization — enforced via hashing/checksums), and <strong>Availability</strong> (systems and data remain accessible to legitimate users when needed — enforced via redundancy, backups, and DDoS protection).</p>
+<p>Core defensive tools include a <strong>firewall</strong> (hardware or software that filters incoming/outgoing traffic against defined rules, typically placed at the network perimeter — using packet filtering, stateful inspection, or proxy techniques); an <strong>IDS (Intrusion Detection System)</strong>, which monitors traffic for suspicious patterns and alerts administrators, versus an <strong>IPS (Intrusion Prevention System)</strong>, which goes further and actively blocks detected threats in real time; antivirus/anti-malware software at the endpoint level; and strong <strong>authentication</strong> mechanisms such as multi-factor authentication (MFA/2FA, combining something you know like a password with something you have like an OTP device, or something you are like a fingerprint).</p>
+<p>Common threats tested include <strong>malware</strong> (a general term covering viruses, worms, trojans, ransomware, and spyware), <strong>phishing</strong> (social engineering via fake emails/websites to steal credentials), <strong>DDoS (Distributed Denial of Service)</strong> attacks (overwhelming a system with traffic from many sources so legitimate users cannot access it — an attack on availability), <strong>man-in-the-middle</strong> attacks (secretly intercepting/altering communication between two parties), and <strong>SQL injection</strong> (inserting malicious database commands through an application's input fields).</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>CIA triad: Confidentiality, Integrity, Availability — the three core goals of security; match each threat/tool to the goal it protects.</li>
+<li>IDS detects and alerts; IPS detects and actively blocks — the key distinguishing exam point.</li>
+<li>DDoS specifically targets Availability; phishing exploits human behavior, not a technical flaw.</li>
+</ul>
+
+<h3>Cryptography: Symmetric, Asymmetric, and Hashing</h3>
+<p><strong>Cryptography</strong> protects data by transforming readable plaintext into unreadable ciphertext (encryption) and back (decryption) using mathematical algorithms and keys. In <strong>symmetric-key cryptography</strong>, the same single key is used for both encryption and decryption, making it computationally fast and well suited to encrypting large volumes of data; its main weakness is the <strong>key distribution problem</strong> — both parties must somehow securely share the same secret key in advance. Examples include DES (56-bit, now considered obsolete/insecure), 3DES, and AES (Advanced Encryption Standard, 128/192/256-bit, the current widely-used standard).</p>
+<p>In <strong>asymmetric-key (public-key) cryptography</strong>, each party has a mathematically linked key pair: a <strong>public key</strong>, which can be freely shared with anyone, and a <strong>private key</strong>, which must be kept secret. Data encrypted with the public key can only be decrypted with the matching private key (and vice versa for digital signatures), which elegantly solves the key-distribution problem since no secret needs to be shared in advance — but it is significantly slower than symmetric encryption, so in practice systems like TLS use asymmetric cryptography only to securely exchange a symmetric session key, then switch to fast symmetric encryption for the bulk data. Examples include RSA, ECC (Elliptic Curve Cryptography), and Diffie-Hellman (a key-exchange method).</p>
+<p><strong>Hashing</strong> is a different, one-way process: a hash function converts input data of any size into a fixed-length output ("digest" or "hash value"), and this transformation cannot practically be reversed to recover the original input. A good hash function shows the <strong>avalanche effect</strong> (a tiny change in input produces a drastically different output) and <strong>collision resistance</strong> (it is infeasible to find two different inputs producing the same hash). Hashing is used to verify data integrity (comparing hashes before/after transfer), to store passwords securely (the system stores only the hash, not the plaintext password), and as part of digital signatures. Examples include MD5 and SHA-1 (both now considered cryptographically weak/broken for security-critical use) and SHA-256/SHA-3 (currently recommended).</p>
+<p>A <strong>digital signature</strong> combines hashing and asymmetric cryptography to prove both integrity and authenticity: the sender hashes the message, encrypts that hash with their own private key (the "signature"), and sends both; the receiver decrypts the signature with the sender's public key, independently recomputes the hash of the received message, and confirms the two match. This proves the message was not altered and could only have come from the holder of that private key (non-repudiation). This trust model is formalized through a <strong>Public Key Infrastructure (PKI)</strong>, in which a trusted <strong>Certificate Authority (CA)</strong> issues digital certificates binding a public key to a verified identity (used, for example, when a browser validates a bank's HTTPS certificate).</p>
+<table>
+<thead>
+<tr><th>Feature</th><th>Symmetric Encryption</th><th>Asymmetric Encryption</th></tr>
+</thead>
+<tbody>
+<tr><td>Keys used</td><td>One shared secret key for both encryption and decryption</td><td>A key pair: public key (shared) and private key (secret)</td></tr>
+<tr><td>Speed</td><td>Fast, suited to bulk data</td><td>Slower, computationally heavier</td></tr>
+<tr><td>Key distribution</td><td>Difficult — key must be securely shared in advance</td><td>Easier — public key can be shared openly</td></tr>
+<tr><td>Examples</td><td>DES, 3DES, AES</td><td>RSA, ECC, Diffie-Hellman</td></tr>
+<tr><td>Typical use</td><td>Encrypting bulk session data</td><td>Key exchange, digital signatures, certificates</td></tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Symmetric = one shared key (fast, key-distribution problem); Asymmetric = public/private key pair (slower, solves key distribution).</li>
+<li>Hashing is one-way (not encryption/decryption) and is used for integrity checking and secure password storage, not for confidentiality of transmitted data.</li>
+<li>Digital signature = hash + sign with sender's private key; verified using the sender's public key; provides integrity, authenticity, and non-repudiation.</li>
+<li>MD5 and SHA-1 are now considered weak; SHA-256/SHA-3 and AES are the current recommended standards.</li>
+</ul>
+<h3 class="groupdiv">Section B &middot; Units 4&ndash;6</h3>
+<h3>Operating System: Functions and Types</h3>
+<p>An operating system (OS) is system software that sits between the computer hardware and the user/application programs. It manages hardware resources (CPU, memory, storage, I/O devices) and provides common services so that application programs do not need to deal with hardware directly. Examples include Windows, Linux, UNIX, macOS, Android, and DOS.</p>
+<p>Its core functions are: process management (creating, scheduling, terminating processes), memory management (allocation, deallocation, virtual memory), file system management (creating, organizing, protecting files/directories), device management (drivers, I/O control, spooling), security and access control, providing a user interface (CLI or GUI), and error/exception handling. The OS also does resource sharing and accounting in multi-user environments.</p>
+<p>OS types are classified by how they handle jobs and users: <strong>Batch OS</strong> (jobs grouped and run without user interaction), <strong>Time-sharing/Multitasking OS</strong> (CPU time is sliced among several interactive users/processes, e.g. UNIX, Windows), <strong>Multiprocessing OS</strong> (uses more than one CPU), <strong>Distributed OS</strong> (manages a group of independent networked computers as one system), <strong>Network OS</strong> (manages network resources, e.g. Windows Server), <strong>Real-Time OS/RTOS</strong> (guarantees response within a strict deadline — hard RTOS for critical systems like ATM controllers/embedded devices, soft RTOS where occasional delay is tolerable), and <strong>Mobile OS</strong> (Android, iOS).</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>OS = resource manager + interface between user and hardware; kernel is its core component.</li>
+<li>Batch → no interaction; Time-sharing → CPU shared via time slices; RTOS → deadline-bound (hard vs soft).</li>
+<li>Single-user single-task (DOS) vs single-user multi-task (older Windows) vs multi-user multi-task (UNIX/Linux/Windows Server).</li>
+<li>MCQ trap: "Kernel" is not the whole OS — it is the core managing hardware/resources; shell is the interface to the kernel.</li>
+</ul>
+
+<h3>Process Management and Scheduling States</h3>
+<p>A process is a program in execution — it includes the program code, current activity (program counter, registers), stack, data section, and heap. Each process is represented in the OS by a <strong>Process Control Block (PCB)</strong>, which stores the process ID, state, program counter, CPU register values, memory management information, scheduling priority, and I/O status.</p>
+<p>A process moves through a well-defined set of states during its life: <strong>New</strong> (being created) → <strong>Ready</strong> (waiting to be assigned the CPU) → <strong>Running</strong> (instructions being executed) → <strong>Waiting/Blocked</strong> (waiting for an event such as I/O completion) → <strong>Terminated</strong> (execution finished). A running process can go back to Ready (if preempted by the scheduler or a timer interrupt) or move to Waiting (if it requests I/O); once the I/O completes it returns to Ready, not directly to Running. Switching the CPU from one process to another involves saving the old process's PCB and loading the new one — this is called a <strong>context switch</strong>, and it is pure overhead (no useful work is done during the switch).</p>
+<p>For example, when a word processor requests a file read, it moves from Running to Waiting; once the disk controller signals completion, it moves to Ready and waits for the CPU scheduler (dispatcher) to give it the CPU again.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Standard 5-state model: New, Ready, Running, Waiting (Blocked), Terminated.</li>
+<li>PCB holds process state, program counter, registers, memory limits, open files, scheduling info.</li>
+<li>Long-term scheduler controls degree of multiprogramming; short-term scheduler (CPU scheduler) picks the next process from Ready queue; medium-term scheduler swaps processes in/out of memory.</li>
+<li>Context switch = overhead, not useful CPU work — frequent switching reduces throughput.</li>
+</ul>
+
+<h3>CPU Scheduling Algorithms</h3>
+<p>CPU scheduling decides which process in the Ready queue gets the CPU next. Good scheduling aims to maximize CPU utilization and throughput while minimizing waiting time, turnaround time, and response time. Scheduling algorithms are either <strong>non-preemptive</strong> (a running process keeps the CPU until it finishes or blocks) or <strong>preemptive</strong> (the OS can forcibly take the CPU away, e.g. on a timer interrupt or arrival of a higher-priority process).</p>
+<p><strong>FCFS (First Come First Served)</strong> runs processes strictly in arrival order; it is simple and non-preemptive but suffers from the <strong>convoy effect</strong>, where short processes get stuck behind one long process, inflating average waiting time. <strong>SJF (Shortest Job First)</strong> picks the process with the smallest next CPU burst; it is provably optimal for minimum average waiting time, but requires knowing/estimating burst length in advance and can cause <strong>starvation</strong> of long processes. Its preemptive version is called <strong>SRTF (Shortest Remaining Time First)</strong>. <strong>Round Robin (RR)</strong> is preemptive and gives each process a fixed <strong>time quantum</strong>; it is fair and ideal for time-sharing systems, but performance depends heavily on quantum size — too large behaves like FCFS, too small causes excessive context-switch overhead. <strong>Priority Scheduling</strong> assigns a priority number to each process and runs the highest priority first (can be preemptive or non-preemptive); it can starve low-priority processes indefinitely, a problem solved by <strong>aging</strong> (gradually increasing the priority of processes that wait too long).</p>
+<table>
+<thead>
+<tr><th>Algorithm</th><th>Preemptive?</th><th>Optimizes</th><th>Main drawback</th></tr>
+</thead>
+<tbody>
+<tr><td>FCFS</td><td>No</td><td>Simplicity</td><td>Convoy effect, poor average waiting time</td></tr>
+<tr><td>SJF / SRTF</td><td>Non-preemptive / Preemptive</td><td>Minimum average waiting time</td><td>Needs burst-time estimate; starvation of long jobs</td></tr>
+<tr><td>Round Robin</td><td>Yes</td><td>Fairness, response time</td><td>Performance sensitive to quantum size</td></tr>
+<tr><td>Priority</td><td>Either</td><td>Importance/urgency of jobs</td><td>Starvation (fixed by aging)</td></tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Turnaround time = completion time − arrival time; Waiting time = turnaround time − burst time.</li>
+<li>SJF is provably optimal for average waiting time among non-preemptive algorithms.</li>
+<li>RR is the basis of time-sharing OS; quantum typically 10–100 ms in practice.</li>
+<li>Aging = remedy for starvation in priority scheduling.</li>
+</ul>
+
+<h3>DOS, UNIX and Windows: A Comparison</h3>
+<p><strong>DOS (Disk Operating System)</strong>, notably MS-DOS, is a single-user, single-tasking, command-line OS from the 1980s. It has no memory protection, no built-in networking or multi-user security, and uses simple batch files. It was the base of early PCs before GUI operating systems took over.</p>
+<p><strong>UNIX</strong> is a multi-user, multitasking OS developed at Bell Labs, written largely in C, known for portability, stability, and a hierarchical file system rooted at "/". It follows the "everything is a file" philosophy and enforces read/write/execute permissions for owner, group, and others. UNIX and its derivatives (Linux, Solaris, AIX, BSD) are widely used for servers, including core banking and database servers, because of their robustness and fine-grained security model.</p>
+<p><strong>Windows</strong> is Microsoft's GUI-based OS family; modern versions run on the NT kernel with preemptive multitasking, plug-and-play hardware support, and the NTFS file system with ACL-based permissions. Desktop editions are largely single-interactive-user, while Windows Server supports many concurrent users/services (Active Directory, Terminal/Remote Desktop Services) and is common for enterprise and banking back-office systems alongside UNIX/Linux.</p>
+<table>
+<thead>
+<tr><th>Feature</th><th>DOS</th><th>UNIX</th><th>Windows</th></tr>
+</thead>
+<tbody>
+<tr><td>Interface</td><td>Command line only</td><td>Shell (CLI), GUI optional</td><td>GUI primary, CLI/PowerShell available</td></tr>
+<tr><td>Multi-user</td><td>No</td><td>Yes</td><td>Limited (desktop); Yes (Server)</td></tr>
+<tr><td>Multitasking</td><td>No</td><td>Yes, preemptive</td><td>Yes, preemptive</td></tr>
+<tr><td>Source</td><td>Proprietary</td><td>Proprietary / Open (Linux)</td><td>Proprietary</td></tr>
+<tr><td>Typical use</td><td>Legacy PCs</td><td>Servers, core systems</td><td>Desktops, servers</td></tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>DOS = single-user/single-task; UNIX and Windows (modern) = multi-user/multitasking.</li>
+<li>UNIX permission model: rwx for user/group/other; Windows uses ACLs on NTFS.</li>
+<li>Banks typically run core banking on UNIX/Linux servers with Windows for desktop/office use.</li>
+</ul>
+
+<h3>Identifying and Managing Security Threats in OS</h3>
+<p>An operating system is a prime attack target because compromising it gives control over all applications and data it hosts. Common OS-level threats include viruses, worms, trojans, ransomware, rootkits (which hide an attacker's presence and often gain kernel/administrator-level control), keyloggers, buffer-overflow exploits, privilege escalation attacks, and logic bombs.</p>
+<p>Identifying threats relies on monitoring: audit logs, system/security event logs, intrusion detection systems (IDS), file-integrity monitoring, and antivirus/endpoint detection scanning for known signatures or anomalous behavior. Managing/mitigating them involves patch management (closing known vulnerabilities promptly), enforcing the principle of least privilege, strong access control (user accounts, permissions, ACLs), disabling unnecessary services/ports, using firewalls and IDS/IPS, encrypting sensitive data at rest, sandboxing untrusted applications, and regular backups so systems can be restored after an incident.</p>
+<p>For example, Windows Defender/endpoint protection plus regular Windows Update patching, and on Linux, SELinux/AppArmor (mandatory access control) combined with timely kernel patching, are standard OS-hardening measures used in banking IT environments.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Rootkit = hides malicious presence, often the hardest malware to detect/remove.</li>
+<li>Least privilege + patch management are the two most tested OS-hardening concepts.</li>
+<li>IDS detects intrusions; IPS/firewall actively blocks them.</li>
+</ul>
+
+<h3>DBMS Basics and DBMS vs File System</h3>
+<p>A Database Management System (DBMS) is software that lets users define, create, maintain, and control access to a database — a structured, shared collection of related data. Examples: Oracle, MySQL, SQL Server, PostgreSQL — all commonly used in banking core systems.</p>
+<p>Traditional file-based systems store data in independent files per application, which causes data redundancy, inconsistency (the same fact stored differently in different files), poor data isolation, integrity problems (constraints scattered across program code), difficulty with concurrent access, and weak security. A DBMS solves these problems through a centralized, controlled repository with a defined schema.</p>
+<p>Key DBMS advantages: controlling redundancy, enforcing data integrity and consistency through constraints, providing data independence (the ANSI-SPARC three-level architecture — external, conceptual, internal — isolates applications from physical storage changes), concurrent access control (transactions, locking), backup and recovery facilities, centralized security/authorization, and a standard query language (SQL) for flexible retrieval instead of writing custom programs for every report.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>DBMS advantages: less redundancy, better integrity, controlled concurrent access, security, backup/recovery, data independence.</li>
+<li>Three-level ANSI-SPARC architecture: External (user view) → Conceptual (logical schema) → Internal (physical storage).</li>
+<li>File system = program-data dependence; DBMS = program-data independence.</li>
+</ul>
+
+<h3>Table, Record, Relationship and Indexing</h3>
+<p>In a relational database, data is organized as <strong>tables</strong> (also called relations). Each table has <strong>columns</strong> (fields/attributes, e.g. AccountNo, Name) and <strong>rows</strong> (records/tuples, e.g. one customer's data). A <strong>primary key</strong> uniquely identifies each record; a <strong>foreign key</strong> is a column in one table that references the primary key of another table, implementing a <strong>relationship</strong> between tables.</p>
+<p>Relationships between tables can be <strong>one-to-one</strong> (one record in Table A relates to exactly one in Table B), <strong>one-to-many</strong> (one Customer can have many Accounts — the most common banking relationship), or <strong>many-to-many</strong> (usually implemented through a junction/bridge table with two foreign keys, e.g. Students-Courses).</p>
+<p><strong>Indexing</strong> is a data structure (commonly a B-tree or B+ tree, or a hash table for pure equality lookups) built on one or more columns to speed up data retrieval without scanning the whole table. A <strong>clustered index</strong> determines the actual physical storage order of table data (only one per table), while a <strong>non-clustered index</strong> is a separate structure with pointers back to the data rows (multiple allowed per table). Indexes speed up SELECT/search but add overhead to INSERT/UPDATE/DELETE, so they must be used selectively.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Table = relation; Row = record/tuple; Column = field/attribute.</li>
+<li>Primary key (unique, not null) vs foreign key (references another table's primary key, enforces referential integrity).</li>
+<li>B+ tree is the most common index structure in RDBMS because it supports fast range queries too.</li>
+<li>Trade-off: indexes speed up reads but slow down writes and consume extra storage.</li>
+</ul>
+
+<h3>Data Warehousing and the ETL Process</h3>
+<p>A data warehouse is a large, centralized repository of integrated data from multiple sources, built specifically to support reporting, analysis, and decision-making (not day-to-day transaction processing). Bill Inmon's classic definition describes it as <strong>subject-oriented, integrated, time-variant, and non-volatile</strong>.</p>
+<p>Data typically arrives in the warehouse through the <strong>ETL process</strong>: <strong>Extract</strong> — pull raw data from heterogeneous operational sources (core banking system, ATM switch, mobile/internet banking, CRM); <strong>Transform</strong> — clean, deduplicate, standardize formats/units, apply business rules, and aggregate the data; <strong>Load</strong> — write the transformed data into the warehouse, usually organized as a <strong>star schema</strong> (a central fact table holding measurable events/transactions, surrounded by dimension tables holding descriptive attributes like customer, branch, time, product) or its normalized variant, the snowflake schema.</p>
+<p>For example, a bank might extract daily transaction data from its core banking system, transform it (currency normalization, removing test records), and load it into a warehouse used by management for OLAP-based reports on branch performance, product profitability, or NPA trends.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Data warehouse traits (Inmon): subject-oriented, integrated, time-variant, non-volatile.</li>
+<li>ETL = Extract, Transform, Load — the standard pipeline for populating a warehouse.</li>
+<li>Star schema = fact table + dimension tables; used for fast analytical (OLAP) queries.</li>
+<li>Warehouse supports OLAP/decision support; OLTP (core banking) supports daily transactions — keep this distinction clear for MCQs.</li>
+</ul>
+
+<h3>Data Mining</h3>
+<p>Data mining is the process of discovering meaningful patterns, correlations, and trends hidden in large datasets, using statistical, mathematical, and machine-learning techniques. It is typically applied on data already consolidated in a data warehouse.</p>
+<p>Common techniques include <strong>classification</strong> (assigning records to predefined categories, e.g. decision trees for credit approval), <strong>clustering</strong> (grouping similar records without predefined labels, e.g. k-means for customer segmentation), <strong>association rule mining</strong> (finding "if X then Y" patterns, e.g. market-basket analysis using the Apriori algorithm), <strong>regression</strong> (predicting a numeric value), and <strong>anomaly/outlier detection</strong> (spotting unusual patterns, central to fraud detection).</p>
+<p>In banking, data mining is used for credit scoring, fraud/anomaly detection on transactions, customer segmentation for targeted cross-selling, and churn prediction.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Data mining finds patterns; data warehousing stores/organizes the data that mining works on.</li>
+<li>Classification and regression are supervised techniques; clustering is unsupervised.</li>
+<li>Common banking use: fraud detection, credit scoring, customer segmentation.</li>
+</ul>
+
+<h3>HTML and Scripting Languages</h3>
+<p>HTML (HyperText Markup Language) is the standard markup language used to structure content on the web using elements/tags (e.g. <code>&lt;p&gt;</code>, <code>&lt;table&gt;</code>, <code>&lt;form&gt;</code>). It is not a programming language — it has no logic or computation — it simply describes structure and content that a browser renders.</p>
+<p>Scripting languages add behavior/logic to otherwise static HTML. <strong>Client-side scripting</strong> (chiefly JavaScript) runs inside the user's browser: it manipulates the DOM, validates form input before submission, handles events (clicks, keypresses), and can fetch data asynchronously (AJAX) without reloading the page. <strong>Server-side scripting</strong> (PHP, ASP.NET, Node.js, Python/Django, JSP) runs on the web server: it processes requests, applies business logic, talks to the database, and generates the HTML/response sent back to the browser.</p>
+<p>Example: on an internet-banking login form, JavaScript checks that fields are not empty before submission (client-side), and once submitted, a server-side script validates credentials against the database and returns the account dashboard.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>HTML = structure/markup, not a programming language.</li>
+<li>Client-side script executes in the browser (JavaScript); server-side script executes on the server (PHP/ASP.NET/etc.) before response delivery.</li>
+<li>AJAX lets JavaScript fetch/send data in the background without a full page reload.</li>
+</ul>
+
+<h3>Stylesheets (CSS)</h3>
+<p>CSS (Cascading Style Sheets) controls the presentation and layout of HTML content — fonts, colors, spacing, positioning — while keeping content (HTML) and presentation (CSS) separate. This separation makes websites easier to maintain and keeps a consistent look across many pages.</p>
+<p>CSS can be applied three ways: <strong>inline</strong> (a style attribute directly on one element — highest priority but hardest to maintain), <strong>internal</strong> (a <code>&lt;style&gt;</code> block inside the page's head), and <strong>external</strong> (a separate .css file linked from many HTML pages — best practice, since one file updates the look of an entire site and can be cached by the browser). CSS rules use <strong>selectors</strong> (element, class, id, pseudo-class) matched to declaration blocks of property:value pairs, and follow rules of <strong>cascading, specificity, and inheritance</strong> to resolve conflicting rules.</p>
+<p>Example: a bank's website uses one external stylesheet so its logo colors, fonts, and header/footer layout stay identical across every page, and can be updated in one place for a rebranding.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Three ways to add CSS: inline, internal, external — external is best practice for large sites.</li>
+<li>"Cascading" = later/more specific rules override earlier/less specific ones.</li>
+<li>CSS = presentation layer; HTML = content/structure layer — kept separate by design.</li>
+</ul>
+
+<h3>XML</h3>
+<p>XML (eXtensible Markup Language) is a markup language designed to store and transport data between different systems in a structured, platform- and language-independent way. Unlike HTML, which has a fixed set of tags for display, XML tags are <strong>user-defined</strong> to describe the meaning of data (e.g. <code>&lt;AccountNumber&gt;</code>, <code>&lt;Balance&gt;</code>).</p>
+<p>An XML document must be <strong>well-formed</strong> (properly nested tags, single root element, matching opening/closing tags); it may further be validated as <strong>valid</strong> against a schema — a DTD (Document Type Definition) or XSD (XML Schema Definition) — which defines the allowed structure and data types. XML's hierarchical, self-describing nature makes it suitable for configuration files, data interchange between heterogeneous systems, and web service messaging (SOAP is XML-based). JSON has become a lighter-weight alternative for many modern web/REST APIs, but XML remains widely used in inter-bank and inter-system messaging (e.g. ISO 20022-based financial messages).</p>
+<p>Example: two different banking applications exchange customer data as an XML file, where each system parses the same self-describing tags regardless of its own internal database structure.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>XML tags are user-defined; HTML tags are predefined/fixed.</li>
+<li>Well-formed (syntax correct) vs Valid (conforms to a DTD/XSD schema) — different concepts, common MCQ trap.</li>
+<li>Used for data exchange between heterogeneous systems and as the basis of SOAP web services.</li>
+</ul>
+
+<h3>Web Server and Proxy Server</h3>
+<p>A <strong>web server</strong> is software (often paired with dedicated hardware) that listens for HTTP/HTTPS requests (typically on port 80/443) and serves web pages or other content to clients. Common examples are Apache HTTP Server, Nginx, and Microsoft IIS. It may serve static files directly or work with an application server/scripting engine to generate dynamic content.</p>
+<p>A <strong>proxy server</strong> is an intermediary that sits between a client and the destination server, forwarding requests on the client's behalf. Benefits include caching frequently requested content (faster access, reduced bandwidth), content/URL filtering, access control and logging, anonymizing the client's real IP address, and load balancing. A <strong>forward proxy</strong> represents clients to the internet (e.g. filtering employee internet access), while a <strong>reverse proxy</strong> sits in front of one or more servers and represents them to the outside world (e.g. for load balancing, SSL termination, and hiding internal server details).</p>
+<p>Example: a bank's internet banking portal runs on a web server (or server farm) reachable by customers, while staff internet access is routed through a forward proxy for content filtering and monitoring, and a reverse proxy in front of internal application servers adds another layer of security.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Web server = delivers content to clients; Proxy server = intermediary that forwards/filters/caches requests.</li>
+<li>Forward proxy protects/represents the client side; reverse proxy protects/represents the server side.</li>
+<li>Proxy benefits: caching, filtering, anonymity, load balancing, security (hides internal IPs).</li>
+</ul>
+
+<h3>Disaster Recovery Planning</h3>
+<p>Disaster Recovery Planning (DRP) is a documented set of procedures and resources an organization uses to recover its IT infrastructure and resume operations after a disruptive event (fire, earthquake, cyberattack, hardware failure). It is a key part of a broader Business Continuity Plan (BCP).</p>
+<p>Two central metrics define DR objectives: <strong>RTO (Recovery Time Objective)</strong> — the maximum acceptable time to restore a system/service after a disruption — and <strong>RPO (Recovery Point Objective)</strong> — the maximum acceptable amount of data loss, measured as time (e.g. an RPO of 15 minutes means backups/replication must occur at least every 15 minutes). A lower RPO demands more frequent backups or real-time replication; a lower RTO demands faster failover mechanisms and often more expensive standby infrastructure.</p>
+<p>Backup strategies include <strong>full backup</strong> (complete copy every time — simplest restore, most storage/time), <strong>incremental backup</strong> (only data changed since the last backup of any type — fastest to take, slower/more complex to restore since all increments must be applied in order), and <strong>differential backup</strong> (data changed since the last full backup — a middle ground). DR sites are classified as <strong>hot site</strong> (fully equipped, live data replication, near-instant failover, most costly), <strong>warm site</strong> (partially equipped, data synced periodically, moderate recovery time), and <strong>cold site</strong> (basic infrastructure only, no ready data, longest recovery time, cheapest).</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>RTO = how long to recover (downtime tolerance); RPO = how much data you can afford to lose (measured in time).</li>
+<li>Full vs Incremental vs Differential backup — know the restore-speed vs backup-speed trade-off.</li>
+<li>Hot / Warm / Cold DR sites differ in cost and recovery speed (hot = fastest/costliest).</li>
+<li>Banks typically require near-zero RPO/RTO for core banking, met via synchronous/asynchronous data replication to a DR site.</li>
+</ul>
+
+<h3>Introduction to Cyber Security</h3>
+<p>Cyber security is the practice of protecting systems, networks, applications, and data from digital attacks that aim to access, alter, destroy, or steal information, or disrupt normal operations. It is built around the classic <strong>CIA triad</strong>: <strong>Confidentiality</strong> (data accessible only to authorized parties), <strong>Integrity</strong> (data is accurate and unaltered except by authorized action), and <strong>Availability</strong> (systems/data accessible when needed by legitimate users). Extended goals often added are authenticity and non-repudiation.</p>
+<p>Cyber security is implemented in layers (defense in depth): network security (firewalls, IDS/IPS, segmentation), application security (secure coding, patching), information/data security (encryption, DLP), operational security (access policies, procedures), disaster recovery/business continuity, and end-user education — since people are often the weakest link.</p>
+<p>Example: a bank's layered defense might include a perimeter firewall, network IDS/IPS, encrypted channels for internet banking (HTTPS/TLS), database encryption for sensitive customer data, and mandatory annual security-awareness training for staff.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>CIA triad: Confidentiality, Integrity, Availability — the foundation of every security control.</li>
+<li>"Defense in depth" = multiple overlapping layers of security rather than one single control.</li>
+<li>Non-repudiation = sender cannot deny having sent a message (achieved via digital signatures).</li>
+</ul>
+
+<h3>Access Control Mechanisms</h3>
+<p>Access control determines who or what can view or use resources in a computing environment, enforcing the principle of <strong>least privilege</strong> (give only the minimum access needed) and <strong>need-to-know</strong>. It is usually implemented after successful authentication.</p>
+<p>Major models: <strong>DAC (Discretionary Access Control)</strong> — the resource owner decides who gets access (e.g. standard Unix file permissions, Windows NTFS ACLs); <strong>MAC (Mandatory Access Control)</strong> — access is enforced by the system based on fixed security labels/classifications, and users cannot override it (used in government/military-grade systems, e.g. SELinux); <strong>RBAC (Role-Based Access Control)</strong> — permissions are attached to roles, and users are assigned roles (very common in banking systems, e.g. "Teller," "Branch Manager," "System Admin" each with defined rights); and <strong>ABAC (Attribute-Based Access Control)</strong> — access decisions use dynamic attributes of the user, resource, and environment (e.g. time of day, location), offering the most fine-grained and flexible control.</p>
+<p>Example: in core banking, a teller role (RBAC) can post transactions but cannot approve them; a "maker-checker" segregation-of-duties rule ensures one staff member enters a transaction and a different, authorized staff member approves it, preventing a single person from committing fraud alone.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>DAC = owner-controlled; MAC = system-enforced, fixed labels; RBAC = role-based (most used in enterprise/banking); ABAC = attribute/context-based, most flexible.</li>
+<li>Least privilege and separation/segregation of duties (maker-checker) are core banking IT control concepts.</li>
+</ul>
+
+<h3>Threats, Vulnerabilities and Security Attacks</h3>
+<p>A <strong>threat</strong> is any potential danger that could exploit a weakness to cause harm (e.g. a hacker, a malware strain, a natural disaster). A <strong>vulnerability</strong> is a weakness in a system, process, or control that can be exploited (e.g. unpatched software, weak password policy, misconfigured firewall). <strong>Risk</strong> is the likelihood of a threat exploiting a vulnerability combined with the resulting impact. An <strong>attack</strong> is the actual attempt to exploit a vulnerability.</p>
+<p>Attacks are broadly classed as <strong>passive</strong> — the attacker only observes/intercepts data without altering it (e.g. eavesdropping, packet sniffing, traffic analysis) — hard to detect but preventable through encryption; or <strong>active</strong> — the attacker actually modifies data, systems, or availability (e.g. masquerade/impersonation, message modification, replay attacks, denial of service) — easier to detect but harder to fully prevent.</p>
+<p>Example: an unpatched web server (vulnerability) exposed to the internet represents a risk; when an attacker actually exploits that flaw to deface the site (attack), the underlying danger that made it possible was the threat of a motivated attacker existing at all.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Threat = potential danger; Vulnerability = exploitable weakness; Risk = likelihood × impact; Attack = actual exploitation attempt.</li>
+<li>Passive attacks: confidentiality-focused, hard to detect (sniffing, traffic analysis).</li>
+<li>Active attacks: integrity/availability-focused, easier to detect (replay, modification, DoS, masquerade).</li>
+</ul>
+
+<h3>Authentication and Authorization</h3>
+<p><strong>Authentication</strong> is the process of verifying that a user (or system) is who it claims to be. It relies on one or more factors: something you <strong>know</strong> (password, PIN), something you <strong>have</strong> (OTP token, smart card, mobile device), or something you <strong>are</strong> (biometrics — fingerprint, face, iris). Combining two or more factors is called <strong>Multi-Factor Authentication (MFA)</strong> or Two-Factor Authentication (2FA), and it significantly reduces the risk of a compromised credential leading to unauthorized access.</p>
+<p><strong>Authorization</strong> happens after successful authentication: it determines what the now-verified user is actually permitted to do — which data, transactions, or functions they can access — implemented through access control models such as RBAC or ACLs.</p>
+<p>Example: logging into internet banking with a password plus an SMS/app-based OTP is authentication; the system then checking whether that specific customer is allowed to transfer above a certain limit, or whether a bank staff member can approve a loan, is authorization.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Authentication = "who are you?"; Authorization = "what are you allowed to do?" — always in that order.</li>
+<li>Three authentication factor categories: knowledge, possession, inherence (biometric).</li>
+<li>MFA/2FA combines factors from different categories for stronger security.</li>
+</ul>
+
+<h3>Password Management</h3>
+<p>Password management covers the policies and technical controls used to keep authentication credentials strong and protected throughout their lifecycle. Weak or poorly managed passwords remain one of the most common entry points for attackers.</p>
+<p>Good practice includes enforcing minimum length and complexity (mix of upper/lower case, digits, special characters), regular password expiration/rotation, preventing reuse of recent passwords (password history), locking or throttling accounts after repeated failed login attempts, and never storing passwords in plaintext — instead storing a salted cryptographic hash (e.g. using bcrypt, PBKDF2, or Argon2) so that even a database breach does not directly reveal usable passwords. Organizations increasingly encourage long passphrases over short complex strings, discourage dictionary/common passwords, and pair passwords with MFA rather than relying on passwords alone.</p>
+<p>Example: an internal bank system policy might require a minimum 8-character password with at least one digit and one special character, forced change every 90 days, no reuse of the last 5 passwords, and automatic account lockout after 3–5 failed attempts.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Passwords should be hashed with a salt (never plaintext or reversible encryption) in storage.</li>
+<li>Key controls: complexity, expiration, history/no-reuse, lockout on failed attempts, MFA.</li>
+<li>Account lockout/throttling defends against brute-force and credential-stuffing attacks.</li>
+</ul>
+
+<h3>Social Engineering</h3>
+<p>Social engineering is the manipulation of people — rather than technical hacking of systems — to trick them into revealing confidential information or performing actions that compromise security. It exploits human trust, fear, urgency, or curiosity, and is often the easiest way to bypass strong technical controls.</p>
+<p>Common types: <strong>phishing</strong> (fraudulent email), <strong>vishing</strong> (voice/phone-based), <strong>smishing</strong> (SMS-based), <strong>pretexting</strong> (inventing a false scenario, e.g. posing as IT support, to extract information), <strong>baiting</strong> (leaving an infected USB drive or offering something enticing to lure a victim), <strong>tailgating/piggybacking</strong> (following an authorized person into a restricted physical area without their own credentials), <strong>quid pro quo</strong> (offering a fake service/benefit in exchange for information), and <strong>shoulder surfing</strong>/<strong>dumpster diving</strong> (observing or physically retrieving sensitive information).</p>
+<p>Example: a fraudster calls a bank employee pretending to be from the IT helpdesk, claiming an urgent system issue, and asks the employee to "confirm" their password — a classic pretexting/vishing attack.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Social engineering targets people/psychology, not software vulnerabilities.</li>
+<li>Know the distinct types: phishing (email), vishing (voice), smishing (SMS), pretexting, baiting, tailgating, quid pro quo.</li>
+<li>Best defense: continuous staff security-awareness training and verification procedures.</li>
+</ul>
+
+<h3>Malware Types</h3>
+<p>Malware (malicious software) is any software designed to damage, disrupt, or gain unauthorized access to a system. Different malware types are distinguished mainly by how they spread and what they do once active.</p>
+<p>A <strong>virus</strong> attaches itself to a host program/file and spreads only when that host is executed and shared. A <strong>worm</strong> is standalone and self-replicating — it spreads automatically across networks without needing a host file or user action, often exhausting bandwidth/resources. A <strong>trojan horse</strong> disguises itself as legitimate software but does not self-replicate; instead, it typically opens a backdoor for an attacker. <strong>Ransomware</strong> encrypts the victim's files/systems and demands payment for the decryption key (e.g. WannaCry). <strong>Spyware</strong> covertly monitors and exfiltrates user activity/data; <strong>adware</strong> displays unwanted advertisements; a <strong>keylogger</strong> records keystrokes to capture credentials; a <strong>rootkit</strong> hides an attacker's presence and often achieves administrator/kernel-level control, making it very hard to detect; a <strong>logic bomb</strong> is malicious code that stays dormant until triggered by a specific condition, date, or event; and a <strong>botnet</strong> is a network of compromised "zombie" machines controlled remotely, often used to launch DDoS attacks or send spam.</p>
+<p>Example: an employee opens an email attachment that looks like an invoice (trojan behavior), which then downloads ransomware that encrypts the branch's shared drive.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Virus needs a host file and user action to spread; worm is standalone and self-spreading over networks.</li>
+<li>Trojan disguises itself as legitimate but doesn't self-replicate; ransomware encrypts data for extortion.</li>
+<li>Rootkit = hides attacker presence/privileged access; logic bomb = dormant until a trigger condition.</li>
+</ul>
+
+<h3>DoS and DDoS Attacks</h3>
+<p>A <strong>Denial of Service (DoS)</strong> attack overwhelms a system, network, or service with excessive requests or traffic from a single source, making it unavailable to legitimate users. A <strong>Distributed Denial of Service (DDoS)</strong> attack does the same thing but from many distributed sources simultaneously — typically a <strong>botnet</strong> of compromised machines — which makes it far larger in scale and much harder to block, since traffic originates from many different IP addresses that look legitimate individually.</p>
+<p>Attacks are generally grouped into: <strong>volumetric attacks</strong> (flooding bandwidth with high traffic volume, e.g. UDP/ICMP floods), <strong>protocol attacks</strong> (exploiting weaknesses in network protocols to exhaust server or network equipment resources, e.g. SYN flood, Ping of Death), and <strong>application-layer attacks</strong> (targeting a specific application with seemingly legitimate requests, e.g. HTTP flood, Slowloris — often the hardest to detect since traffic resembles normal usage).</p>
+<p>Mitigation includes firewalls and IPS, rate limiting, traffic-scrubbing/anti-DDoS services, content delivery networks (CDNs) that absorb traffic, redundant infrastructure, and anycast network distribution. Example: a botnet floods a bank's internet-banking portal with fake login requests during business hours, denying real customers access — a classic application-layer DDoS.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>DoS = single source; DDoS = multiple distributed sources (usually a botnet) — DDoS is far harder to block.</li>
+<li>Three categories: volumetric, protocol, application-layer.</li>
+<li>Targets availability, the "A" in the CIA triad.</li>
+</ul>
+
+<h3>Phishing and Its Types</h3>
+<p>Phishing is a social-engineering attack in which the attacker disguises itself as a trustworthy entity (a bank, a colleague, a well-known company) — typically via email — to trick the victim into revealing sensitive information (passwords, card details, OTPs) or clicking a malicious link/attachment.</p>
+<p>Key variants: <strong>spear phishing</strong> (a targeted attack on a specific individual or organization using personalized details to appear more convincing), <strong>whaling</strong> (spear phishing aimed at high-profile targets like CEOs/executives), <strong>vishing</strong> (voice-call phishing), <strong>smishing</strong> (SMS-based phishing), <strong>pharming</strong> (redirecting a victim to a fake website via DNS poisoning or host-file tampering, without requiring the victim to click any link), and <strong>clone phishing</strong> (duplicating a previously delivered legitimate email but swapping the link/attachment for a malicious one).</p>
+<p>Example: a customer receives an email that looks like it is from RBB, warning that their account will be suspended unless they "verify" their details by clicking a link to a fake look-alike website that captures their login credentials.</p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Phishing = mass/generic; spear phishing = targeted individual; whaling = targeted at executives.</li>
+<li>Pharming redirects via DNS/host-file manipulation — victim need not click anything.</li>
+<li>Vishing = voice call; Smishing = SMS — both are phishing delivered over different channels.</li>
+</ul>
+
+<h3>ICT Policy of Nepal, 2072</h3>
+<p>The Information and Communication Technology (ICT) Policy, 2072 (2015), issued by the Government of Nepal, is a national policy framework intended to guide the overall development and use of ICT in the country. It succeeded earlier IT policies and set the direction for using technology to support governance, economic growth, and social development.</p>
+<p>Its broad themes generally include: expanding ICT infrastructure and broadband/internet connectivity nationwide (including rural and remote areas, to reduce the digital divide); promoting <strong>e-governance</strong> to make government service delivery more transparent, efficient, and accessible; developing the IT/software industry as an export-oriented economic sector and encouraging private investment; building ICT human resources and skills; strengthening cyber law, data protection, and IT security; and promoting research, innovation, and use of Nepali language in ICT applications.</p>
+<p>For a Level 5 IT exam, the key takeaway is that this policy is the overarching national umbrella framework for ICT development — distinct from NRB's sector-specific IT/cyber guidelines, which apply the policy's security and governance spirit specifically to banks and financial institutions. <em>(Confirm exact clause numbers, dates, and specific provisions from the official ICT Policy 2072 document.)</em></p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>ICT Policy 2072 = national-level policy by the Government of Nepal, not an NRB-specific regulation.</li>
+<li>Core themes: infrastructure/connectivity, e-governance, IT industry promotion, human resource development, cyber law/security, digital-divide reduction.</li>
+<li>Do not memorize invented clause numbers — the exam typically tests broad purpose/themes, not legal citations.</li>
+</ul>
+
+<h3>IT Guidelines Issued by Nepal Rastra Bank</h3>
+<p>Nepal Rastra Bank (NRB), as the central bank and regulator of banks and financial institutions (BFIs), issues IT-related directives/guidelines to ensure that BFIs manage their growing dependence on information technology in a safe, sound, and well-governed manner. The underlying purpose is to protect depositors, ensure operational resilience, and maintain confidence in the financial system as banking becomes increasingly technology- and channel-driven (ATM, mobile banking, internet banking).</p>
+<p>These guidelines typically address areas such as: IT governance (board and senior management oversight, IT steering committee, clear IT policy/organization structure); IT operations management (data center standards, network management, change and capacity management, patch management); information security policy and access control; business continuity and disaster recovery planning for critical systems; IT audit requirements; management of outsourced IT services/vendors; and security requirements for alternative delivery channels (ATM, POS, mobile and internet banking).</p>
+<p>In essence, the NRB IT guidelines set the minimum expected IT control baseline for every licensed BFI in Nepal, and examiners/internal auditors assess compliance against them. <em>(Confirm the specific clauses, issue date, and detailed requirements from the official NRB IT Guidelines document.)</em></p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Purpose: sound IT governance and risk management in BFIs, proportionate to size/complexity of operations.</li>
+<li>Covers: governance, operations, security, BCP/DRP, audit, outsourcing, and channel-banking security.</li>
+<li>Applies specifically to banks/financial institutions regulated by NRB, unlike the broader national ICT Policy.</li>
+</ul>
+
+<h3>NRB Cyber Resilience Guidelines, 2023</h3>
+<p>The Cyber Resilience Guidelines, 2023, issued by Nepal Rastra Bank, respond to the rising frequency and sophistication of cyberattacks and frauds targeting the financial sector. Their purpose is to ensure that BFIs build a structured, proactive capability not just to prevent cyber incidents but to detect, respond to, and recover from them quickly — i.e., genuine "resilience," not just perimeter defense.</p>
+<p>Typical themes covered include: board and senior-management level accountability and governance for cyber risk; a formal cyber security policy/framework tailored to the institution's risk profile; identification and protection of critical information assets; layered technical controls (network security, endpoint protection, encryption, access control); continuous monitoring and detection capability; a documented incident response and recovery plan, including reporting of significant cyber incidents to NRB within a stipulated timeframe; regular cyber-drills/simulation exercises; management of third-party/vendor cyber risk; mandatory staff training and awareness; and periodic Vulnerability Assessment and Penetration Testing (VAPT) of critical systems.</p>
+<p>These themes broadly mirror globally recognized cyber-resilience approaches (such as the Identify–Protect–Detect–Respond–Recover structure popularized by frameworks like NIST), adapted to Nepal's banking context. <em>(Confirm the exact clause numbers, effective date, and detailed compliance requirements from the official NRB Cyber Resilience Guidelines, 2023 document.)</em></p>
+<ul>
+<li><strong>Exam pointers</strong></li>
+<li>Focus = resilience: Identify, Protect, Detect, Respond, Recover — not just prevention.</li>
+<li>Key requirements: board oversight, incident response plan, mandatory incident reporting to NRB, VAPT, staff training, third-party risk management.</li>
+<li>Distinguish from the general NRB IT Guidelines: Cyber Resilience Guidelines 2023 focus specifically on cyber-threat preparedness and incident handling, issued in response to growing cyber risk.</li>
+</ul>
+
+</section>
+    </div><!-- /body-wrap -->
+    <footer class="doc-foot">Built from the official RBB syllabus. This handbook teaches concepts; always confirm current figures, dates and amendments on <strong>nrb.org.np</strong> and <strong>rbb.com.np</strong> before the exam. The written exam may be answered in Nepali or English — key terms are given in both. All the best.</footer>
+  </main>
+</div>
+<button class="totop" id="totop" type="button" aria-label="Back to top">&#8593; Top</button>
+<script>
+(function(){
+  var main=document.getElementById('content');
+  var wrap=main.querySelector('.body-wrap');
+  var each=function(list,fn){Array.prototype.forEach.call(list,fn);};
+
+  /* 1. wrap wide tables so the page never scrolls sideways */
+  each(wrap.querySelectorAll('table'),function(t){
+    if(t.parentNode.classList.contains('tbl-scroll'))return;
+    var d=document.createElement('div');d.className='tbl-scroll';
+    t.parentNode.insertBefore(d,t);d.appendChild(t);
+  });
+
+  /* 2. turn "Exam pointers" lists into textbook key-boxes */
+  each(wrap.querySelectorAll('ul'),function(ul){
+    var first=ul.querySelector('li');
+    if(!first)return;
+    var label=(first.textContent||'').trim().toLowerCase();
+    if(label.indexOf('exam pointer')===0||label.indexOf('key point')===0){
+      ul.classList.add('kp');
+      first.classList.add('kp-h');
+      first.textContent=first.textContent.trim();
+    }
+  });
+
+  /* 3. mark "Group ..." headings as dividers */
+  each(wrap.querySelectorAll('h3'),function(h){
+    if(!h.classList.contains('groupdiv') && /^group\b/i.test((h.textContent||'').trim())){
+      h.classList.add('groupdiv');
+    }
+  });
+
+  /* 4. build the contents list */
+  var nav=document.getElementById('toc-nav');
+  var used={};
+  function slug(s){
+    s=(s||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,48)||'sec';
+    if(used[s]!=null){used[s]++;s=s+'-'+used[s];}else{used[s]=0;}
+    return s;
+  }
+  var items=[];
+  each(wrap.querySelectorAll('h2, h3'),function(h){
+    if(!h.id)h.id=slug(h.textContent);
+    var a=document.createElement('a');
+    a.href='#'+h.id;
+    a.textContent=(h.textContent||'').replace(/\s+/g,' ').trim();
+    a.className = h.tagName==='H2' ? 'lv2' : (h.classList.contains('groupdiv') ? 'lv3group' : 'lv3');
+    nav.appendChild(a);
+    items.push({a:a,h:h});
+  });
+
+  /* 5. scroll-spy */
+  if('IntersectionObserver' in window){
+    var spy=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){
+          items.forEach(function(it){it.a.classList.toggle('active',it.h===e.target);});
+        }
+      });
+    },{rootMargin:'0px 0px -82% 0px',threshold:0});
+    items.forEach(function(it){spy.observe(it.h);});
+  }
+
+  /* 6. back-to-top */
+  var tt=document.getElementById('totop');
+  window.addEventListener('scroll',function(){tt.classList.toggle('show',window.scrollY>640);},{passive:true});
+  tt.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'});});
+
+  /* 7. light / dark reading mode, remembered per browser */
+  var tb=document.getElementById('theme');
+  try{var saved=localStorage.getItem('rbb-theme');if(saved)document.documentElement.setAttribute('data-theme',saved);}catch(e){}
+  tb.addEventListener('click',function(){
+    var cur=document.documentElement.getAttribute('data-theme');
+    var dark=cur?cur==='dark':window.matchMedia('(prefers-color-scheme:dark)').matches;
+    var next=dark?'light':'dark';
+    document.documentElement.setAttribute('data-theme',next);
+    try{localStorage.setItem('rbb-theme',next);}catch(e){}
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1872 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RBB Level 6 (IT) — Practice Question Bank</title>
+<style>
+  :root{
+    --paper:#f4f3ef; --paper-2:#eceae3; --panel:#faf9f5;
+    --ink:#23262b; --ink-2:#585650; --ink-3:#8c887e;
+    --rule:#d9d5cb; --rule-2:#e7e3d9;
+    --spot:#1f3d6e; --spot-2:#16305a; --spot-tint:#e8ecf3; --on-spot:#ffffff;
+    --warn:#8a5410; --code-bg:#eceae3; --sel:#cddbef;
+    --serif:"Constantia","Cambria",Georgia,"Palatino Linotype",Palatino,"Times New Roman",serif;
+    --sans:"Segoe UI","Calibri",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+    --mono:"Cascadia Code",Consolas,"SFMono-Regular",Menlo,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --paper:#17191c; --paper-2:#1e2124; --panel:#1c1f22;
+      --ink:#e8e5de; --ink-2:#aca89f; --ink-3:#7e7a72;
+      --rule:#32353a; --rule-2:#292c30;
+      --spot:#8fb0e0; --spot-2:#a9c3ea; --spot-tint:#1a2536; --on-spot:#12161f;
+      --warn:#d7a250; --code-bg:#1e2124; --sel:#28374f;
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f3ef; --paper-2:#eceae3; --panel:#faf9f5;
+    --ink:#23262b; --ink-2:#585650; --ink-3:#8c887e;
+    --rule:#d9d5cb; --rule-2:#e7e3d9;
+    --spot:#1f3d6e; --spot-2:#16305a; --spot-tint:#e8ecf3; --on-spot:#ffffff;
+    --warn:#8a5410; --code-bg:#eceae3; --sel:#cddbef;
+  }
+  :root[data-theme="dark"]{
+    --paper:#17191c; --paper-2:#1e2124; --panel:#1c1f22;
+    --ink:#e8e5de; --ink-2:#aca89f; --ink-3:#7e7a72;
+    --rule:#32353a; --rule-2:#292c30;
+    --spot:#8fb0e0; --spot-2:#a9c3ea; --spot-tint:#1a2536; --on-spot:#12161f;
+    --warn:#d7a250; --code-bg:#1e2124; --sel:#28374f;
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:var(--serif);font-size:18px;line-height:1.72;
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  ::selection{background:var(--sel)}
+
+  .app{display:grid;grid-template-columns:280px minmax(0,1fr)}
+
+  /* ---------- Contents (book-style, not a dashboard) ---------- */
+  .toc{position:sticky;top:0;align-self:start;height:100vh;overflow:auto;
+    background:var(--paper-2);border-right:1px solid var(--rule);padding:26px 14px 48px}
+  .toc-brand{font-family:var(--serif);font-size:18px;color:var(--ink);font-weight:700;
+    padding:0 10px 12px;line-height:1.25}
+  .toc-brand span{display:block;font-family:var(--sans);font-size:11.5px;font-weight:600;
+    letter-spacing:.03em;color:var(--ink-3);margin-top:4px;text-transform:uppercase}
+  .toc-lead{font-family:var(--sans);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--ink-3);padding:0 10px;margin:6px 0 10px;border-top:1px solid var(--rule);padding-top:14px}
+  .toc-nav{display:flex;flex-direction:column}
+  .toc-nav a{text-decoration:none;color:var(--ink-2);font-family:var(--sans);font-size:12.5px;
+    line-height:1.35;padding:3px 8px 3px 12px;border-left:2px solid transparent;transition:color .12s}
+  .toc-nav a.lv2{font-weight:700;color:var(--ink);text-transform:uppercase;letter-spacing:.05em;
+    font-size:11px;margin-top:18px}
+  .toc-nav a.lv3{padding-left:16px}
+  .toc-nav a.lv3group{color:var(--spot);font-weight:700;font-variant:small-caps;
+    letter-spacing:.02em;font-size:12.5px;padding-left:12px;margin-top:10px}
+  .toc-nav a:hover{color:var(--ink)}
+  .toc-nav a.active{color:var(--spot);font-weight:700;border-left-color:var(--spot)}
+
+  /* ---------- Reading column ---------- */
+  .content{padding:0 clamp(22px,5vw,70px) 96px;min-width:0}
+  .topbar{max-width:46rem;margin:0 auto;display:flex;justify-content:space-between;align-items:center;
+    padding:14px 0 10px}
+  .crumb{font-family:var(--sans);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3)}
+  .theme{appearance:none;border:1px solid var(--rule);background:var(--panel);color:var(--ink-2);
+    width:34px;height:34px;border-radius:3px;cursor:pointer;font-size:15px;line-height:1}
+  .theme:hover{color:var(--spot);border-color:var(--spot)}
+  .theme:focus-visible{outline:2px solid var(--spot);outline-offset:2px}
+
+  .doc-head{max-width:46rem;margin:0 auto;padding:14px 0 6px;border-bottom:1px solid var(--rule)}
+  .eyebrow{font-family:var(--sans);font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--spot);font-weight:700}
+  .doc-head h1{font-family:var(--sans);font-size:clamp(27px,4.4vw,38px);font-weight:700;
+    margin:14px 0 12px;line-height:1.14;letter-spacing:-.015em;color:var(--ink);text-wrap:balance}
+  .doc-head .sub{color:var(--ink-2);font-size:17.5px;max-width:40em}
+  .doc-head .disc{margin:16px 0 6px;font-family:var(--sans);font-size:13px;line-height:1.55;color:var(--ink-2);
+    background:var(--panel);border:1px solid var(--rule);padding:12px 15px 12px 16px;max-width:40em}
+  .doc-head .disc strong{font-family:var(--sans);text-transform:uppercase;letter-spacing:.08em;
+    font-size:11px;color:var(--spot);display:block;margin-bottom:4px}
+  .doc-head .disc em{color:var(--warn);font-style:italic;font-weight:400}
+
+  .body-wrap{max-width:46rem;margin:0 auto}
+
+  /* ---------- Chapter (h2) & section (h3) headings ---------- */
+  .body-wrap h2{font-family:var(--sans);font-weight:700;font-size:clamp(22px,3vw,28px);color:var(--ink);
+    letter-spacing:-.01em;margin:0;padding:0 0 .34em;border-bottom:3px solid var(--spot);
+    text-wrap:balance;scroll-margin-top:16px}
+  .sec{margin-top:64px}
+  .sec:first-of-type{margin-top:34px}
+  .body-wrap h3{font-family:var(--sans);font-weight:700;font-size:19.5px;color:var(--spot);
+    margin:38px 0 .35em;padding-bottom:.28em;border-bottom:1px solid var(--rule);
+    line-height:1.3;text-wrap:balance;scroll-margin-top:16px}
+  .body-wrap h3.groupdiv{color:var(--ink-2);font-variant:small-caps;letter-spacing:.04em;font-size:16px;
+    text-align:center;border-bottom:none;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
+    padding:.5em 0;margin:52px 0 8px;background:none}
+  .body-wrap h4{font-family:var(--sans);font-weight:700;font-size:15px;color:var(--ink);margin:22px 0 4px}
+  .secno{color:var(--spot);font-weight:700;margin-right:.45em}
+
+  /* ---------- Body text: book setting (justified, first-line indent) ---------- */
+  .body-wrap p{margin:.15em 0 .55em;text-align:justify;hyphens:auto;text-indent:1.4em}
+  .body-wrap h2 + p,.body-wrap h3 + p,.body-wrap h4 + p,.body-wrap p:first-child,
+  .body-wrap blockquote + p,.body-wrap ul + p,.body-wrap ol + p,.body-wrap .tbl-scroll + p{text-indent:0}
+  .body-wrap strong{color:var(--ink);font-weight:700}
+  .body-wrap em{color:var(--warn);font-style:italic}
+  .body-wrap a{color:var(--spot);text-underline-offset:2px}
+
+  /* chapter-intro paragraph with a drop cap */
+  .lede{font-size:17px;color:var(--ink-2);text-indent:0 !important;margin-top:14px}
+  .lede::first-letter{font-family:var(--serif);float:left;font-size:3.05em;line-height:.82;
+    font-weight:700;color:var(--spot);padding:.02em .1em 0 0}
+
+  /* ---------- Normal lists ---------- */
+  .body-wrap ul,.body-wrap ol{margin:.5em 0 1em;padding-left:1.5em}
+  .body-wrap li{margin:.28em 0}
+  .body-wrap li::marker{color:var(--spot)}
+
+  /* ---------- "Exam pointers" key-box (built by JS) ---------- */
+  .kp{list-style:none;margin:1.15em 0 1.4em;padding:0;border:1px solid var(--spot);background:var(--spot-tint)}
+  .kp li{margin:0}
+  .kp li.kp-h{background:var(--spot);color:var(--on-spot);font-family:var(--sans);font-weight:700;
+    text-transform:uppercase;letter-spacing:.11em;font-size:11px;padding:.5em 1.1em}
+  .kp li:not(.kp-h){display:list-item;list-style:square;margin:.34em 0 .34em 2.5em;padding-right:1.1em;
+    font-size:16.5px;line-height:1.55}
+  .kp li:not(.kp-h)::marker{color:var(--spot)}
+  .kp li:not(.kp-h):first-of-type{margin-top:.6em}
+  .kp li:not(.kp-h):last-of-type{margin-bottom:.7em}
+
+  /* ---------- Tables (ruled, print-style) ---------- */
+  .tbl-scroll{overflow-x:auto;margin:1.1em 0 1.3em}
+  .body-wrap table{border-collapse:collapse;width:100%;font-family:var(--sans);font-size:14.5px;
+    line-height:1.5;border-top:2px solid var(--ink-2)}
+  .body-wrap th,.body-wrap td{text-align:left;padding:.5em .85em;border-bottom:1px solid var(--rule);vertical-align:top}
+  .body-wrap thead th{border-bottom:2px solid var(--spot);color:var(--spot);font-size:12px;
+    letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
+
+  .body-wrap blockquote{margin:1em 0;padding:.2em 0 .2em 1.1em;border-left:3px solid var(--rule);
+    color:var(--ink-2);font-style:italic}
+  /* ---------- Practice question bank ---------- */
+  .tb-actions{display:flex;gap:8px;align-items:center}
+  .btn{appearance:none;border:1px solid var(--spot);background:transparent;color:var(--spot);
+    font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.03em;
+    padding:8px 12px;border-radius:3px;cursor:pointer;line-height:1}
+  .btn:hover{background:var(--spot);color:var(--on-spot)}
+  .btn:focus-visible{outline:2px solid var(--spot);outline-offset:2px}
+  .body-wrap .q{margin:20px 0 22px}
+  .body-wrap p.qtext{margin:0 0 .45em;text-indent:0;text-align:left;font-size:17.5px;line-height:1.55}
+  .qn{font-family:var(--sans);font-weight:700;color:var(--spot);margin-right:.4em}
+  .marks{font-family:var(--sans);font-size:11.5px;font-weight:700;color:var(--ink-3);
+    border:1px solid var(--rule);border-radius:3px;padding:1px 6px;margin-right:.35em;white-space:nowrap;letter-spacing:.03em}
+  .body-wrap ol.opts{margin:.35em 0 .55em;padding-left:1.8em}
+  .body-wrap ol.opts li{margin:.18em 0;font-family:var(--sans);font-size:15.5px;line-height:1.5;text-align:left}
+  .body-wrap ol.opts li::marker{color:var(--spot);font-weight:700}
+  .body-wrap details.ans{margin:.3em 0 0}
+  .body-wrap details.ans>summary{cursor:pointer;display:inline-block;font-family:var(--sans);font-size:11.5px;
+    font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--spot);padding:.3em 0;
+    list-style:none;-webkit-user-select:none;user-select:none}
+  .body-wrap details.ans>summary::-webkit-details-marker{display:none}
+  .body-wrap details.ans>summary::before{content:"\25B8";margin-right:.45em}
+  .body-wrap details.ans[open]>summary::before{content:"\25BE"}
+  .body-wrap details.ans[open]{background:var(--spot-tint);border:1px solid var(--rule);border-radius:4px;
+    padding:.15em 1em .7em;margin-top:.4em}
+  .body-wrap details.ans[open]>summary{color:var(--ink-2)}
+  .body-wrap .ans .key{display:inline-block;font-family:var(--sans);font-weight:700;font-size:13px;
+    background:var(--spot);color:var(--on-spot);border-radius:3px;padding:0 .5em;margin-right:.45em}
+  .body-wrap .ans p{margin:.5em 0;text-indent:0;text-align:left}
+  .body-wrap .ans ul,.body-wrap .ans ol{margin:.5em 0 .3em;padding-left:1.4em}
+  .body-wrap .ans li{margin:.25em 0}
+  .body-wrap code{font-family:var(--mono);font-size:.84em;background:var(--code-bg);
+    padding:.1em .42em;border-radius:2px}
+
+  .doc-foot{max-width:46rem;margin:66px auto 0;padding-top:18px;border-top:1px solid var(--rule);
+    font-family:var(--sans);color:var(--ink-3);font-size:12.5px;line-height:1.6}
+
+  .totop{position:fixed;right:20px;bottom:20px;z-index:30;appearance:none;
+    border:1px solid var(--rule);background:var(--panel);color:var(--ink-2);border-radius:3px;
+    padding:7px 13px;font-family:var(--sans);font-size:12px;font-weight:600;cursor:pointer;
+    opacity:0;pointer-events:none;transition:opacity .2s}
+  .totop.show{opacity:1;pointer-events:auto}
+  .totop:hover{color:var(--spot);border-color:var(--spot)}
+
+  @media (max-width:900px){
+    .app{grid-template-columns:1fr}
+    .toc{position:static;height:auto;max-height:46vh;border-right:none;border-bottom:1px solid var(--rule)}
+    body{font-size:17px}
+    .body-wrap p{text-align:left;text-indent:0;margin:.4em 0 .7em}
+    .lede::first-letter{font-size:2.6em}
+  }
+  @media print{
+    .toc,.totop,.topbar{display:none}
+    .app{display:block}.content{padding:0}
+    body{font-size:11pt;background:#fff;color:#000}
+    :root{--paper:#fff;--ink:#000;--spot:#1f3d6e;--rule:#bbb}
+    .body-wrap h2,.body-wrap h3,.body-wrap h4{break-after:avoid}
+    .kp,.tbl-scroll,.body-wrap li,.body-wrap p{break-inside:avoid}
+    .sec{margin-top:34px}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="toc" id="toc">
+    <div class="toc-brand">RBB Practice Bank<span>Level 6 · सहायक प्रबन्धक (सूचना प्रविधि)</span></div>
+    <div class="toc-lead">Contents</div>
+    <nav class="toc-nav" id="toc-nav" aria-label="Contents"></nav>
+  </aside>
+  <main class="content" id="content">
+    <div class="topbar">
+      <div class="crumb">Level 6 · Practice Bank</div>
+      <div class="tb-actions">
+        <button class="btn" id="revealAll" type="button">Reveal all answers</button>
+        <button class="theme" id="theme" type="button" aria-label="Toggle light / dark reading mode" title="Reading mode">◐</button>
+      </div>
+    </div>
+    <header class="doc-head">
+      <div class="eyebrow">Rastriya Banijya Bank — IT Recruitment</div>
+      <h1>Level 6 — Practice Question Bank</h1>
+      <p class="sub">Self-test questions across the whole syllabus. Try each one first, then click <em>Model answer</em> to check — or use <strong>Reveal all answers</strong> (top-right) for review mode.</p>
+      <p class="disc"><strong>Exam pattern &amp; self-test rules</strong>Both papers are fully subjective: 100 marks, 3 hours, five groups (क&ndash;ङ), one compulsory ~20-mark question per group &mdash; no choice, so no group can be skipped. Practise writing full answers <em>by hand</em> in about 30 minutes each, with a diagram where relevant. Confirm any current figure or Act provision from nrb.org.np.</p>
+    </header>
+    <div class="body-wrap">
+<section class="sec"><h2>Paper I &mdash; Banking, Accounting, Economic Policy &amp; Management</h2>
+<p class="lede">Paper I is fully subjective: 100 marks in 3 hours, five compulsory ~20-mark questions (one from each group). This is the decisive paper for an engineer &mdash; write each answer by hand, then reveal the model key points to compare structure and coverage.</p>
+<h3>Group क (Banking) — Subjective Questions</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> <span class="marks">[20 marks]</span> Trace the concept and historical development of banking, and evaluate the major opportunities and challenges facing the banking sector in Nepal today.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li><strong>Intro:</strong> Banking is a financial intermediary business that accepts deposits [<em>nikshep</em>] repayable on demand or otherwise, and lends [<em>karja</em>] or invests those funds for profit; a bank connects savers (surplus units) with borrowers (deficit units).</li>
+<li><strong>Origin of the word:</strong> "Bank" is commonly traced to the Italian <em>banco</em>/German <em>banck</em> (a bench or money-changer's table); early banking evolved from moneylenders, goldsmiths, and merchants.</li>
+<li><strong>Stages of development:</strong> (a) primitive/merchant banking (goldsmiths issuing receipts that circulated as early notes); (b) formal commercial banks; (c) central banking and regulated systems; (d) modern era — universal banking, digital/electronic banking, and financial inclusion.</li>
+<li><strong>Development in Nepal (milestones):</strong> Tejarath Adda (state credit office) as an early institution; Nepal Bank Limited (established 1994 B.S.) as the first commercial bank; Nepal Rastra Bank established 2013 B.S. as the central bank; later the second commercial bank and a wave of joint-venture and private banks after the liberalisation of the 1980s–1990s <em>(verify exact dates/figures)</em>.</li>
+<li><strong>Present structure:</strong> NRB-licensed institutions are grouped into classes — "A" commercial banks, "B" development banks, "C" finance companies, "D" microfinance — plus infrastructure development banks.</li>
+<li><strong>Opportunities:</strong> low but rising banking penetration (room to grow deposits and access); remittance inflows as a deposit and business base; digital banking, mobile/QR payments and fintech; hydropower, tourism, agriculture and SME financing; financial inclusion drive; expansion into under-banked rural areas.</li>
+<li><strong>Challenges:</strong> excess liquidity vs. credit-deposit gaps and interest-rate volatility; rising non-performing loans [<em>niskriya karja</em>]; over-crowding and thin margins driving mergers/acquisitions; cyber-security and digital fraud risk; AML/KYC compliance burden; governance and related-party lending; limited financial literacy; concentration of credit in unproductive sectors (real estate, imports).</li>
+<li><strong>Conclusion:</strong> Nepal's banking has matured from informal lending to a regulated, technology-driven system; sustainable growth needs prudent risk management, good governance, and steering credit toward productive sectors.</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">2.</span> <span class="marks">[20 marks]</span> What is meant by corporate governance in a bank? Discuss its key pillars and explain why sound governance is critical for banks and financial institutions (BFIs) in Nepal.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li><strong>Definition:</strong> Corporate governance [<em>sansthagat sushasan</em>] is the system of rules, practices, and processes by which a company is directed and controlled — balancing the interests of shareholders, depositors, management, regulators, and the wider public.</li>
+<li><strong>Why banks are special:</strong> Banks are highly leveraged, use mostly other people's money (depositors' funds), and their failure creates systemic risk — so governance standards are stricter than for ordinary firms.</li>
+<li><strong>Key pillars/principles:</strong> accountability; transparency and disclosure; fairness/equitable treatment of shareholders; responsibility and independence of the board; risk management and internal control; ethical conduct and integrity.</li>
+<li><strong>Board of Directors:</strong> a competent, adequately independent board sets strategy and oversees management; needs fit-and-proper directors, independent directors, and functioning committees (audit committee, risk management committee).</li>
+<li><strong>Control functions:</strong> internal audit, compliance, and risk management functions with independence; robust internal controls to prevent fraud and insider abuse.</li>
+<li><strong>Disclosure:</strong> timely and accurate financial reporting, audited statements, and disclosure of related-party transactions.</li>
+<li><strong>Regulatory framework in Nepal:</strong> NRB directives on corporate governance, fit-and-proper criteria, limits on directors' tenure and cross-holdings, single-obligor and related-party lending limits; BAFIA 2073 and Company Act 2063 provisions <em>(verify current directive figures)</em>.</li>
+<li><strong>Consequences of weak governance:</strong> related-party/insider lending, evergreening of bad loans, misreporting, loss of depositor confidence, and bank failure requiring regulatory intervention.</li>
+<li><strong>Conclusion:</strong> Sound governance protects depositors, preserves financial stability, and sustains public trust — the foundation on which the whole banking system rests.</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">3.</span> <span class="marks">[20 marks]</span> Explain the principles of sound credit lending. Describe the "5 Cs of credit" and how a bank uses them, together with other safeguards, to appraise a loan proposal and protect itself from default.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li><strong>Intro:</strong> Lending [<em>karja pravaha</em>] is a bank's main income-earning and highest-risk activity; sound credit appraisal balances profitability with safety and liquidity.</li>
+<li><strong>Cardinal principles of lending:</strong> safety (recoverability), liquidity, profitability, purpose, security/collateral, diversification (spreading risk), and national/priority-sector interest.</li>
+<li><strong>The 5 Cs of credit:</strong>
+<ul>
+<li><strong>Character:</strong> borrower's integrity, credit history, willingness to repay (CIB/credit-bureau report).</li>
+<li><strong>Capacity:</strong> ability to repay from cash flow — income, debt-service coverage, repayment capacity.</li>
+<li><strong>Capital:</strong> the borrower's own stake/equity in the venture ("skin in the game").</li>
+<li><strong>Collateral:</strong> security pledged as a fallback source of repayment; requires proper valuation and marketability.</li>
+<li><strong>Conditions:</strong> purpose of the loan and the economic/industry/market conditions affecting repayment.</li>
+</ul>
+</li>
+<li><strong>Sometimes a 6th C:</strong> Compliance/Control — meeting regulatory and documentation requirements.</li>
+<li><strong>Additional safeguards:</strong> credit-information bureau (CIB) checks; loan-to-value limits; single-obligor and sector exposure limits; loan covenants; guarantees; insurance of collateral; periodic monitoring and site inspection; loan-loss provisioning and classification (pass/watchlist/substandard/doubtful/loss) <em>(verify current provisioning rates)</em>.</li>
+<li><strong>Loan process:</strong> application → appraisal/credit analysis → sanction/approval per delegated authority → documentation and disbursement → monitoring/follow-up → recovery.</li>
+<li><strong>Conclusion:</strong> The 5 Cs are a structured framework to judge both willingness and ability to repay; combined with limits, security and monitoring, they keep credit risk within acceptable bounds.</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">4.</span> <span class="marks">[20 marks]</span> Write short notes on any TWO of the following: (a) Types of deposits and techniques of deposit mobilization; (b) Letter of Credit (LC) vs. Bank Guarantee; (c) Client protection principles in banking.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li><strong>(a) Deposits and deposit mobilization:</strong>
+<ul>
+<li>Deposit [<em>nikshep</em>] is the primary raw material of a bank; mobilizing deposits funds lending.</li>
+<li>Types: <strong>demand deposits</strong> — current account (no/low interest, for businesses) and savings account (small savers, limited withdrawals); <strong>time/term deposits</strong> — fixed deposit [<em>muddati</em>] for a set tenure at higher interest; recurring deposit; call deposit; margin and special deposits.</li>
+<li>Mobilization techniques: attractive interest rates and schemes; branch and ATM network expansion; digital/mobile banking; targeted products (student, senior, remittance, women's savings); good service and trust; deposit-insurance assurance; marketing and financial literacy.</li>
+</ul>
+</li>
+<li><strong>(b) LC vs. Bank Guarantee:</strong>
+<ul>
+<li><strong>Letter of Credit</strong> — a bank's written undertaking to pay the seller/exporter on presentation of compliant documents; a payment mechanism mainly in trade; the bank is the primary payer once terms are met (governed by UCP 600 in international practice).</li>
+<li><strong>Bank Guarantee</strong> — the bank's promise to pay the beneficiary if the applicant fails to perform an obligation; a contingent/secondary undertaking (default-triggered). Types: bid/tender, performance, advance-payment, financial guarantees.</li>
+<li>Key difference: an LC is invoked in the normal course of a successful transaction (payment against documents); a guarantee is invoked only on default/non-performance.</li>
+<li>Both are non-fund-based (contingent liabilities) earning commission and requiring margin/collateral.</li>
+</ul>
+</li>
+<li><strong>(c) Client protection:</strong>
+<ul>
+<li>Principles (aligned with Smart Campaign/consumer-protection norms): appropriate product design; prevention of over-indebtedness; transparent pricing and terms; responsible/fair collection practices; ethical staff behaviour; privacy and data protection; mechanisms for complaint resolution and grievance handling; fair and respectful treatment of clients.</li>
+<li>In Nepal: NRB consumer-protection/grievance directives, disclosure of interest and charges, and financial literacy support client protection.</li>
+</ul>
+</li>
+<li><strong>Conclusion cue:</strong> each note should end with one line on its importance to banking safety/trust.</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">5.</span> <span class="marks">[20 marks]</span> Distinguish between the money market and the capital market. Describe the main instruments and institutions of each, with reference to their state of development in Nepal.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li><strong>Intro:</strong> The financial market channels savings into investment; it is broadly split into the money market (short-term funds) and the capital market (long-term funds).</li>
+<li><strong>Money market:</strong> deals in short-term instruments (up to one year) for liquidity management. Instruments: treasury bills, inter-bank lending/call money, certificates of deposit, commercial paper, repos. Participants/institutions: NRB, commercial banks, and other BFIs. In Nepal the money market is dominated by treasury bills and inter-bank transactions, with NRB conducting open-market operations for monetary management.</li>
+<li><strong>Capital market:</strong> deals in long-term/medium-term securities (over one year). Instruments: shares/equity, debentures/bonds, government bonds, mutual funds. Segments: <strong>primary market</strong> (new issues — IPO, FPO, rights) and <strong>secondary market</strong> (trading of existing securities).</li>
+<li><strong>Capital-market institutions in Nepal:</strong> Securities Board of Nepal (SEBON) as regulator; Nepal Stock Exchange (NEPSE) as the sole secondary exchange; CDS and Clearing Ltd. (CDSC) for demat/settlement; merchant bankers/issue managers, brokers, and credit-rating agencies.</li>
+<li><strong>State of development in Nepal:</strong> capital market is dominated by BFI and insurance shares; largely equity-driven with a thin corporate-bond market; growing retail participation via online trading (TMS) and demat/ASBA/C-ASBA; challenges — limited product diversity, price volatility, and low institutional depth.</li>
+<li><strong>Conclusion:</strong> a developed money market ensures liquidity and effective monetary policy, while a deep capital market provides long-term investment finance; Nepal's markets are still maturing, especially on the debt side.</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">6.</span> <span class="marks">[20 marks]</span> Explain the process of credit creation by commercial banks with a suitable example. What factors and regulatory tools limit a bank's power to create credit?</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li><strong>Concept:</strong> Credit creation [<em>sadhan srijana / karja srijana</em>] is the process by which the banking system as a whole multiplies an initial deposit into a larger volume of deposits and loans; often called "deposits create loans and loans create deposits."</li>
+<li><strong>Basis:</strong> banks keep only a fraction of deposits as reserves (because not all depositors withdraw at once) and lend the rest; the borrowed money returns to the banking system as new deposits, which are again partly lent — a multiplier effect.</li>
+<li><strong>Money multiplier:</strong> credit multiplier = 1 ÷ cash-reserve ratio. Example: with a 10% reserve ratio, an initial Rs.1,000 deposit can expand total deposits to about Rs.10,000 across the banking system (1,000 × 1/0.10).</li>
+<li><strong>Worked logic:</strong> Bank A keeps Rs.100 (10%) and lends Rs.900; that Rs.900 is deposited in Bank B, which keeps Rs.90 and lends Rs.810, and so on — the series sums to a multiple of the original deposit.</li>
+<li><strong>Limiting factors:</strong> the cash-reserve ratio (CRR) and statutory liquidity ratio (SLR); cash-leakage/currency drain (public holding cash outside banks); availability of creditworthy borrowers and loan demand; banks' willingness to lend and capital adequacy; excess reserves held for safety.</li>
+<li><strong>Regulatory (NRB) tools:</strong> CRR and SLR requirements; bank rate/policy rate; open-market operations; credit-to-deposit (CD) ratio limits; capital adequacy (Basel) and sectoral credit limits <em>(verify current ratio figures)</em>.</li>
+<li><strong>Conclusion:</strong> commercial banks create credit through fractional-reserve lending, but the central bank controls the extent of expansion to manage money supply, inflation, and financial stability.</li>
+</ul>
+</details>
+</div>
+
+<h3>Group ख (Acts) — Subjective Questions</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> <span class="marks">[20 marks]</span> Explain the objectives, functions, and autonomy of Nepal Rastra Bank under the Nepal Rastra Bank Act, 2058. How does the Act empower NRB to regulate banks and financial institutions?</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li><strong>Intro:</strong> The Nepal Rastra Bank Act, 2058 (2002) is the governing statute of NRB, Nepal's central bank; it replaced the earlier 2012 Act and strengthened NRB's autonomy and mandate.</li>
+<li><strong>Objectives of NRB (per the Act):</strong> to maintain price stability and a stable balance of payments; to manage and develop a secure, healthy and efficient payment system; to promote the stability and development of the banking and financial system; to issue currency notes and coins.</li>
+<li><strong>Major functions:</strong> sole authority to issue currency; formulate and implement monetary policy; act as banker, adviser and fiscal agent to the Government; act as banker to banks ("lender of last resort"); regulate, inspect and supervise BFIs; manage foreign-exchange reserves and the exchange-rate system; regulate the payment system.</li>
+<li><strong>Autonomy:</strong> the Act grants NRB operational autonomy — a Governor and a Board of Directors, defined tenure and removal grounds, and financial/administrative independence — to insulate monetary policy from short-term political pressure.</li>
+<li><strong>Regulatory/supervisory powers:</strong> issue directives and regulations; license and revoke licences of BFIs; conduct on-site and off-site inspection; impose corrective actions, penalties and PCA (prompt corrective action); appoint an inspector/manager and take over management of a problem institution.</li>
+<li><strong>Monetary tools sanctioned by the Act:</strong> CRR, bank rate, open-market operations, and other instruments to control money supply and credit.</li>
+<li><strong>Conclusion:</strong> the 2058 Act makes NRB an autonomous central bank responsible for monetary stability and for the sound regulation of the financial system, protecting depositors and the economy <em>(verify specific section numbers)</em>.</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">2.</span> <span class="marks">[20 marks]</span> Discuss the salient features of the Banks and Financial Institutions Act (BAFIA), 2073. How does it classify and regulate banks and financial institutions in Nepal?</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li><strong>Intro:</strong> BAFIA, 2073 (2017) is the umbrella law for the establishment, operation, management, and regulation of banks and financial institutions (BFIs); it consolidated and replaced the earlier BAFIA 2063.</li>
+<li><strong>Objectives:</strong> to promote a healthy, competitive and trustworthy financial system; to protect the rights and interests of depositors; to maintain financial stability and confidence.</li>
+<li><strong>Classification:</strong> licensing into classes — Class "A" commercial banks, Class "B" development banks, Class "C" finance companies, and Class "D" microfinance financial institutions — each with different minimum paid-up capital and permitted functions <em>(verify current capital figures)</em>.</li>
+<li><strong>Incorporation and licensing:</strong> a BFI must be a public limited company and obtain a licence from NRB; provisions on memorandum/articles, minimum capital, and promoter shareholding.</li>
+<li><strong>Governance:</strong> board composition, fit-and-proper criteria for directors and CEO, independent directors, disqualifications, tenure limits, and prohibition/limits on related-party and insider dealings.</li>
+<li><strong>Prudential regulation:</strong> capital adequacy, credit and investment limits (single-obligor, sector), liquidity, provisioning, and compliance with NRB directives.</li>
+<li><strong>Depositor protection & resolution:</strong> restrictions on activities, powers of NRB for problem BFIs, merger/acquisition provisions, and voluntary/compulsory liquidation.</li>
+<li><strong>Offences and penalties:</strong> penalties for operating without licence, misusing depositor funds, and violating directives.</li>
+<li><strong>Conclusion:</strong> BAFIA 2073 provides a single, class-based framework that empowers NRB to license, supervise and, where necessary, resolve BFIs, with depositor protection at its core.</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">3.</span> <span class="marks">[20 marks]</span> Write short notes on any TWO: (a) Offences and penalties under the Banking Offence and Punishment Act, 2064; (b) Key features of the Negotiable Instruments Act, 2034; (c) Salient provisions of the Foreign Exchange (Regulation) Act, 2019.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li><strong>(a) Banking Offence and Punishment Act, 2064:</strong>
+<ul>
+<li>Purpose: to control banking offences and irregularities and maintain trust in the banking/financial system.</li>
+<li>Offences covered: opening accounts or obtaining loans using false particulars; misuse of credit (using a loan for other than its sanctioned purpose); unauthorized withdrawal/misappropriation of funds; issuing a cheque without sufficient balance [<em>dishonoured cheque</em>]; abuse of position by directors/officials/employees; forgery of banking documents; unauthorized electronic/ATM transactions.</li>
+<li>Penalties: fines linked to the amount involved and imprisonment, plus recovery of the amount; more severe for larger sums <em>(verify exact fine/imprisonment scales)</em>.</li>
+</ul>
+</li>
+<li><strong>(b) Negotiable Instruments Act, 2034:</strong>
+<ul>
+<li>Defines and governs negotiable instruments — <strong>promissory note, bill of exchange, and cheque</strong>.</li>
+<li>Key features: transferability by delivery/endorsement; holder in due course; presumption of consideration; rules on acceptance, endorsement, negotiation, and dishonour; notice of dishonour and noting/protest; liability of parties.</li>
+<li>Cheque provisions: crossing, payment, and consequences of dishonour.</li>
+</ul>
+</li>
+<li><strong>(c) Foreign Exchange (Regulation) Act, 2019:</strong>
+<ul>
+<li>Purpose: to regulate dealings in foreign exchange for economic stability and to conserve/manage foreign-currency reserves.</li>
+<li>Provisions: NRB's authority to regulate, license and control foreign-exchange transactions; requirement of licence to deal in foreign exchange (authorized dealers/money-changers); control over import/export of currency and repatriation; penalties for unauthorized dealing (hundi/illegal transfer).</li>
+</ul>
+</li>
+<li><strong>Conclusion cue:</strong> each note should close with the Act's role in protecting the financial/economic system.</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">4.</span> <span class="marks">[20 marks]</span> Explain the objectives and main provisions of the Asset (Money) Laundering Prevention Act, 2064. Relate it to the KYC/AML/CFT obligations of banks in Nepal.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li><strong>Intro:</strong> The Asset (Money) Laundering Prevention Act, 2064 [<em>Sampatti Shuddhikaran Nivaran Ain</em>] criminalises money laundering and the financing of terrorism and provides the framework for prevention, investigation, and prosecution.</li>
+<li><strong>What is money laundering:</strong> the process of making illegally obtained ("dirty") money appear legitimate through the stages of placement, layering, and integration.</li>
+<li><strong>Objectives:</strong> to prevent laundering of the proceeds of crime and terrorist financing; to protect the integrity of the financial system; to meet international obligations (FATF standards) and avoid grey-listing.</li>
+<li><strong>Main provisions:</strong> defines money laundering as an offence with fines and imprisonment and confiscation of assets; establishes the Financial Information Unit (FIU) at NRB; a Department of Money Laundering Investigation; obligations on "reporting entities" (banks, FIs, and others).</li>
+<li><strong>Obligations on banks (reporting entities):</strong> customer due diligence (CDD/KYC) — identify and verify customers and beneficial owners; enhanced due diligence for high-risk customers and PEPs (politically exposed persons); ongoing transaction monitoring; record-keeping for a prescribed period; reporting of Threshold Transaction Reports (TTR) and Suspicious Transaction Reports (STR) to the FIU; appointing a compliance officer.</li>
+<li><strong>KYC linkage:</strong> Know Your Customer is the front-line tool that operationalises AML — no anonymous/benami accounts, risk-based categorisation, and updating of customer information.</li>
+<li><strong>Penalties/consequences:</strong> criminal liability, fines and imprisonment, asset freezing/confiscation, and regulatory penalties on non-compliant institutions <em>(verify current penalty figures)</em>.</li>
+<li><strong>Conclusion:</strong> the 2064 Act, together with NRB's AML/CFT directives, makes banks the first line of defence against laundering and terrorist financing, safeguarding both national security and financial-system integrity.</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">5.</span> <span class="marks">[20 marks]</span> Answer both parts: (a) Outline the key provisions of the Companies Act, 2063 relating to incorporation, share capital, and governance of a public company. (b) Explain the main features of income taxation of banks/companies under the Income Tax Act, 2058.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li><strong>(a) Companies Act, 2063:</strong>
+<ul>
+<li>Purpose: to govern the incorporation, operation, management, and dissolution of companies in Nepal; administered through the Office of the Company Registrar.</li>
+<li>Incorporation: registration with the Registrar; memorandum of association and articles of association; distinction between private and public companies (minimum shareholders/members, restrictions on share transfer for private companies).</li>
+<li>Share capital: authorized, issued and paid-up capital; types of shares (ordinary/preference); issue of shares, debentures, and bonus/rights shares; buy-back rules.</li>
+<li>Governance: board of directors (appointment, qualification, disqualification, duties/fiduciary duty); general meetings (AGM/EGM), quorum, and resolutions (ordinary/special); company secretary requirement for larger companies; audit and auditor appointment; accounts and disclosure; protection of minority shareholders; winding up/liquidation.</li>
+</ul>
+</li>
+<li><strong>(b) Income Tax Act, 2058:</strong>
+<ul>
+<li>Scope: comprehensive, single Act taxing income on a residence and source basis; heads of income include business, employment, and investment.</li>
+<li>Key concepts: assessable income, taxable income (after deductions), resident vs. non-resident, tax year, and self-assessment.</li>
+<li>Corporate taxation: banks and financial institutions are generally taxed at a higher corporate rate than ordinary companies; deductibility of expenses; treatment of loan-loss provisions; depreciation.</li>
+<li>Withholding/TDS: tax deducted at source on interest, dividends, rent, service fees; final vs. adjustable withholding.</li>
+<li>Compliance: filing of returns, advance tax/installments, PAN, penalties and interest for non-compliance; administration by the Inland Revenue Department <em>(verify current tax rates)</em>.</li>
+</ul>
+</li>
+<li><strong>Conclusion cue:</strong> Companies Act governs corporate structure and governance; Income Tax Act governs the tax obligations arising from that corporate activity.</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">6.</span> <span class="marks">[20 marks]</span> Discuss the objectives and salient provisions of the Foreign Investment and Technology Transfer Act (FITTA), 2075. How does it promote and regulate foreign investment in Nepal, and what role do banks play?</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li><strong>Intro:</strong> FITTA, 2075 (2019) governs foreign investment and technology transfer in Nepal; it replaced the FITTA 2049 to modernise the regime and attract foreign capital.</li>
+<li><strong>Objectives:</strong> to attract foreign investment and technology, capital, and skills; to make investment procedures transparent and predictable; to promote industrialisation, employment, and export.</li>
+<li><strong>Modes of foreign investment:</strong> equity investment (shares); reinvestment of earnings; loan investment; investment through approved instruments and funds (e.g., venture funds); technology transfer via licensing, franchising, patents/trademarks, technical/management service agreements.</li>
+<li><strong>Approval and one-stop service:</strong> approval by the competent body (Department of Industry / Investment Board Nepal depending on size); a one-stop service centre for registration, visa, and facilitation; a minimum threshold for foreign investment <em>(verify current minimum amount)</em>.</li>
+<li><strong>Guarantees and facilities:</strong> repatriation of profits, dividends, and sale proceeds in convertible currency; national treatment and protection against nationalisation; business/residential visa facilities for investors.</li>
+<li><strong>Restrictions:</strong> a negative list of sectors closed to foreign investment (e.g., certain small/cottage industries, retail, and specified areas).</li>
+<li><strong>Role of banks:</strong> channelling and recording inward foreign-currency investment; NRB approval/registration of foreign loans and repatriation; opening of relevant accounts; ensuring compliance with the Foreign Exchange (Regulation) Act and AML/KYC in cross-border flows.</li>
+<li><strong>Conclusion:</strong> FITTA 2075 provides a liberalised yet regulated framework to attract and protect foreign investment, with banks and NRB as key facilitators of the foreign-exchange and repatriation process.</li>
+</ul>
+</details>
+</div>
+<h3>Group ग — Accounting (लेखा)</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> <span class="marks">[20 marks]</span> Explain the <strong>double-entry system of book-keeping</strong>. State its rules for the three traditional types of accounts (Personal, Real and Nominal), give the "golden rules" of debit and credit for each, and explain why the double-entry system is considered scientifically superior to the single-entry system.</p>
+<details class="ans"><summary>Model answer / solution</summary>
+<p><strong>Meaning.</strong> The double-entry system records every business transaction in <em>two</em> accounts — one account is debited and another is credited by an equal amount. It rests on the idea that every transaction has two aspects: a <em>receiving</em> (or benefit-getting) aspect and a <em>giving</em> (or benefit-giving) aspect.</p>
+<p><strong>Fundamental equation.</strong> The system keeps the accounting equation always in balance:</p>
+<ul>
+<li><strong>Assets = Liabilities + Capital</strong> (Owner's equity).</li>
+<li>For every transaction, total debits = total credits, so the equation never breaks.</li>
+</ul>
+<p><strong>Three traditional types of accounts and their golden rules.</strong></p>
+<table>
+<thead><tr><th>Type of account</th><th>What it covers</th><th>Golden rule (Debit / Credit)</th></tr></thead>
+<tbody>
+<tr><td>Personal account</td><td>Persons, firms, institutions (e.g. Ram's A/c, Bank A/c, Creditors)</td><td>Debit the <strong>receiver</strong>, Credit the <strong>giver</strong></td></tr>
+<tr><td>Real account</td><td>Assets and property (e.g. Cash, Machinery, Stock, Furniture)</td><td>Debit what <strong>comes in</strong>, Credit what <strong>goes out</strong></td></tr>
+<tr><td>Nominal account</td><td>Expenses, losses, incomes and gains (e.g. Salary, Rent, Interest received)</td><td>Debit all <strong>expenses and losses</strong>, Credit all <strong>incomes and gains</strong></td></tr>
+</tbody>
+</table>
+<p><strong>Simple worked example.</strong> Paid rent Rs. 5,000 by cash. Rent is a nominal account (an expense) → debit Rent Rs. 5,000. Cash is a real account going out → credit Cash Rs. 5,000. Two equal entries, books stay balanced.</p>
+<p><strong>Why double-entry is superior to single-entry.</strong></p>
+<ul>
+<li><strong>Arithmetical accuracy</strong> can be checked because total debits must equal total credits (via the trial balance).</li>
+<li><strong>Complete record</strong> — both personal and impersonal (real/nominal) accounts are kept, so full financial position is known.</li>
+<li><strong>Profit or loss</strong> can be found accurately by preparing a Profit &amp; Loss Account.</li>
+<li><strong>Financial position</strong> can be shown through a Balance Sheet.</li>
+<li><strong>Fraud and error detection</strong> is easier; comparison across years is possible.</li>
+<li>Single-entry keeps only cash and personal accounts, gives no trial balance, and cannot reliably show profit or financial position — hence it is incomplete and unscientific.</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">2.</span> <span class="marks">[20 marks]</span> From the following ledger balances of <em>Everest Traders</em> as on 31 Ashad 2081, <strong>prepare a Trial Balance</strong> and show that it agrees. Also briefly state what a trial balance is and two errors it will <em>not</em> detect.<br>
+Capital Rs. 200,000; Cash Rs. 30,000; Bank Rs. 45,000; Purchases Rs. 120,000; Sales Rs. 210,000; Salaries Rs. 40,000; Rent Rs. 15,000; Sundry Debtors Rs. 60,000; Sundry Creditors Rs. 35,000; Machinery Rs. 80,000; Drawings Rs. 20,000; Opening Stock Rs. 25,000; Wages Rs. 10,000.</p>
+<details class="ans"><summary>Model answer / solution</summary>
+<p><strong>Step 1 — Decide the normal balance of each item.</strong> Assets, expenses/losses and drawings carry <em>debit</em> balances; capital, liabilities and incomes/gains carry <em>credit</em> balances.</p>
+<p><strong>Step 2 — Prepare the Trial Balance.</strong></p>
+<table>
+<thead><tr><th>Particulars</th><th>Debit (Rs.)</th><th>Credit (Rs.)</th></tr></thead>
+<tbody>
+<tr><td>Capital</td><td></td><td>200,000</td></tr>
+<tr><td>Cash</td><td>30,000</td><td></td></tr>
+<tr><td>Bank</td><td>45,000</td><td></td></tr>
+<tr><td>Purchases</td><td>120,000</td><td></td></tr>
+<tr><td>Sales</td><td></td><td>210,000</td></tr>
+<tr><td>Salaries</td><td>40,000</td><td></td></tr>
+<tr><td>Rent</td><td>15,000</td><td></td></tr>
+<tr><td>Sundry Debtors</td><td>60,000</td><td></td></tr>
+<tr><td>Sundry Creditors</td><td></td><td>35,000</td></tr>
+<tr><td>Machinery</td><td>80,000</td><td></td></tr>
+<tr><td>Drawings</td><td>20,000</td><td></td></tr>
+<tr><td>Opening Stock</td><td>25,000</td><td></td></tr>
+<tr><td>Wages</td><td>10,000</td><td></td></tr>
+<tr><td><strong>Total</strong></td><td><strong>445,000</strong></td><td><strong>445,000</strong></td></tr>
+</tbody>
+</table>
+<p><strong>Step 3 — Verify.</strong> Debit total = 30,000 + 45,000 + 120,000 + 40,000 + 15,000 + 60,000 + 80,000 + 20,000 + 25,000 + 10,000 = <strong>Rs. 445,000</strong>. Credit total = 200,000 + 210,000 + 35,000 = <strong>Rs. 445,000</strong>. The two sides agree, so the trial balance is arithmetically correct.</p>
+<p><strong>What a trial balance is.</strong> A statement listing the debit and credit balances of all ledger accounts on a given date, prepared to test the arithmetical accuracy of the books and to serve as the basis for the final accounts.</p>
+<p><strong>Errors it will NOT detect (any two):</strong></p>
+<ul>
+<li><strong>Error of omission</strong> — a transaction completely left out of the books.</li>
+<li><strong>Error of principle</strong> — e.g. treating a capital expenditure as revenue expenditure.</li>
+<li><strong>Compensating errors</strong> — two equal and opposite errors cancelling out.</li>
+<li><strong>Error of commission</strong> — posting a correct amount to the wrong account of the same side.</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">3.</span> <span class="marks">[20 marks]</span> From the following balances of <em>Sagarmatha Stores</em> for the year ended 31 Ashad 2081, <strong>prepare the Trading and Profit &amp; Loss Account and the Balance Sheet</strong>. Closing stock is valued at Rs. 35,000.<br>
+Opening Stock Rs. 20,000; Purchases Rs. 150,000; Sales Rs. 250,000; Wages Rs. 25,000; Carriage Inward Rs. 5,000; Salaries Rs. 30,000; Rent Rs. 12,000; Advertising Rs. 8,000; Capital Rs. 200,000; Machinery Rs. 100,000; Furniture Rs. 40,000; Sundry Debtors Rs. 60,000; Cash Rs. 25,000; Sundry Creditors Rs. 40,000; Drawings Rs. 15,000.</p>
+<details class="ans"><summary>Model answer / solution</summary>
+<p><strong>Step 1 — Trading Account</strong> (finds Gross Profit; contains direct items only — opening stock, purchases, direct wages, carriage inward on the debit side; sales and closing stock on the credit side).</p>
+<table>
+<thead><tr><th>Dr — Particulars</th><th>Rs.</th><th>Cr — Particulars</th><th>Rs.</th></tr></thead>
+<tbody>
+<tr><td>Opening Stock</td><td>20,000</td><td>Sales</td><td>250,000</td></tr>
+<tr><td>Purchases</td><td>150,000</td><td>Closing Stock</td><td>35,000</td></tr>
+<tr><td>Wages</td><td>25,000</td><td></td><td></td></tr>
+<tr><td>Carriage Inward</td><td>5,000</td><td></td><td></td></tr>
+<tr><td><strong>Gross Profit c/d</strong></td><td><strong>85,000</strong></td><td></td><td></td></tr>
+<tr><td><strong>Total</strong></td><td><strong>285,000</strong></td><td><strong>Total</strong></td><td><strong>285,000</strong></td></tr>
+</tbody>
+</table>
+<p>Gross Profit = (Sales 250,000 + Closing Stock 35,000) − (Opening Stock 20,000 + Purchases 150,000 + Wages 25,000 + Carriage Inward 5,000) = 285,000 − 200,000 = <strong>Rs. 85,000</strong>.</p>
+<p><strong>Step 2 — Profit &amp; Loss Account</strong> (finds Net Profit; contains indirect/operating expenses on the debit side and gross profit plus other incomes on the credit side).</p>
+<table>
+<thead><tr><th>Dr — Particulars</th><th>Rs.</th><th>Cr — Particulars</th><th>Rs.</th></tr></thead>
+<tbody>
+<tr><td>Salaries</td><td>30,000</td><td>Gross Profit b/d</td><td>85,000</td></tr>
+<tr><td>Rent</td><td>12,000</td><td></td><td></td></tr>
+<tr><td>Advertising</td><td>8,000</td><td></td><td></td></tr>
+<tr><td><strong>Net Profit</strong> (transferred to Capital)</td><td><strong>35,000</strong></td><td></td><td></td></tr>
+<tr><td><strong>Total</strong></td><td><strong>85,000</strong></td><td><strong>Total</strong></td><td><strong>85,000</strong></td></tr>
+</tbody>
+</table>
+<p>Net Profit = Gross Profit 85,000 − (Salaries 30,000 + Rent 12,000 + Advertising 8,000) = 85,000 − 50,000 = <strong>Rs. 35,000</strong>.</p>
+<p><strong>Step 3 — Balance Sheet as at 31 Ashad 2081.</strong> Closing capital = Opening Capital 200,000 + Net Profit 35,000 − Drawings 15,000 = Rs. 220,000.</p>
+<table>
+<thead><tr><th>Liabilities</th><th>Rs.</th><th>Assets</th><th>Rs.</th></tr></thead>
+<tbody>
+<tr><td>Capital 200,000<br>Add: Net Profit 35,000<br>Less: Drawings 15,000</td><td>220,000</td><td>Machinery</td><td>100,000</td></tr>
+<tr><td>Sundry Creditors</td><td>40,000</td><td>Furniture</td><td>40,000</td></tr>
+<tr><td></td><td></td><td>Sundry Debtors</td><td>60,000</td></tr>
+<tr><td></td><td></td><td>Closing Stock</td><td>35,000</td></tr>
+<tr><td></td><td></td><td>Cash</td><td>25,000</td></tr>
+<tr><td><strong>Total</strong></td><td><strong>260,000</strong></td><td><strong>Total</strong></td><td><strong>260,000</strong></td></tr>
+</tbody>
+</table>
+<p><strong>Verification.</strong> Both sides of the Balance Sheet total Rs. 260,000, so the accounts are correctly prepared. (Note: closing stock appears only in the Trading Account and the Balance Sheet, not in the original trial balance, because it is an adjustment given at the year-end.)</p>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">4.</span> <span class="marks">[20 marks]</span> Distinguish between <strong>internal audit and external audit</strong>. Also explain the <strong>petty cash book and the imprest system</strong> of maintaining petty cash, and state why petty cash control matters in a government/public office.</p>
+<details class="ans"><summary>Model answer / solution</summary>
+<p><strong>Audit — meaning.</strong> Audit is the independent examination of the books of account and supporting records to verify that the financial statements give a true and fair view and that transactions are legal, authorised and properly recorded.</p>
+<p><strong>Internal audit vs. external audit.</strong></p>
+<table>
+<thead><tr><th>Basis</th><th>Internal audit</th><th>External audit</th></tr></thead>
+<tbody>
+<tr><td>Who performs it</td><td>An employee/internal department of the organisation</td><td>An independent qualified auditor outside the organisation (in the government sector, the Office of the Auditor General)</td></tr>
+<tr><td>Appointment</td><td>By management</td><td>By owners/shareholders or by law/statute</td></tr>
+<tr><td>Objective</td><td>Continuous review of internal controls, efficiency and compliance</td><td>To express an independent opinion on the truth and fairness of final accounts</td></tr>
+<tr><td>Scope</td><td>Decided by management; ongoing throughout the year</td><td>Fixed by statute/engagement; usually at year-end</td></tr>
+<tr><td>Reporting to</td><td>Management</td><td>Owners/legislature/regulator</td></tr>
+<tr><td>Compulsion</td><td>Generally optional (good practice)</td><td>Often legally compulsory</td></tr>
+</tbody>
+</table>
+<p><strong>Petty cash book.</strong> A subsidiary cash book used to record small, routine cash payments (postage, stationery, tea, local conveyance, minor repairs) so that the main cash book is not cluttered with tiny entries. It is kept by a <em>petty cashier</em>. The analytical (columnar) petty cash book classifies each payment under expense heads for easy posting.</p>
+<p><strong>Imprest system.</strong></p>
+<ul>
+<li>The petty cashier is given a fixed sum (the <em>imprest / float</em>) for a period — say Rs. 10,000 for a month.</li>
+<li>Payments are made and recorded against vouchers during the period.</li>
+<li>At period-end the amount actually spent is reimbursed, restoring the float back to Rs. 10,000 for the next period.</li>
+<li><strong>Example:</strong> Float Rs. 10,000; spent Rs. 7,200 in the month; reimbursement Rs. 7,200; opening float next month again Rs. 10,000.</li>
+</ul>
+<p><strong>Why petty cash control matters (public office).</strong></p>
+<ul>
+<li>Fixed float limits the cash at risk of misuse or theft.</li>
+<li>Every payment needs a supporting voucher, ensuring accountability of public money.</li>
+<li>Periodic reimbursement forces regular reconciliation and review by a senior officer.</li>
+<li>Supports transparency and clean audit findings in government accounting.</li>
+</ul>
+</details>
+</div>
+
+<h3>Group घ — Economic Policy (आर्थिक नीति)</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> <span class="marks">[20 marks]</span> Define <strong>fiscal policy</strong>. Explain its main objectives and instruments, and discuss how the Government of Nepal uses fiscal policy through the annual budget to promote growth, stability and equity.</p>
+<details class="ans"><summary>Model answer / solution</summary>
+<p><strong>Meaning.</strong> Fiscal policy is the use of <em>government revenue (taxation)</em> and <em>government expenditure</em>, together with public borrowing, to influence the level of economic activity — output, employment, prices and the distribution of income. In Nepal it is implemented mainly through the annual budget presented by the Ministry of Finance.</p>
+<p><strong>Main objectives.</strong></p>
+<ul>
+<li><strong>Economic growth</strong> — channel spending into infrastructure, agriculture, energy and human capital.</li>
+<li><strong>Price stability</strong> — restrain demand when inflation is high, support demand in a slowdown.</li>
+<li><strong>Full employment</strong> — public projects and incentives that create jobs.</li>
+<li><strong>Equitable distribution</strong> — progressive taxes and targeted subsidies/transfers to reduce inequality and poverty.</li>
+<li><strong>External and internal balance</strong> — manage the fiscal deficit and support the balance of payments.</li>
+</ul>
+<p><strong>Instruments of fiscal policy.</strong></p>
+<ul>
+<li><strong>Taxation</strong> — direct taxes (income tax, corporate tax) and indirect taxes (VAT, excise, customs). Rates and bases are adjusted to raise revenue or steer behaviour.</li>
+<li><strong>Public expenditure</strong> — recurrent (salaries, operations) and capital (development) spending.</li>
+<li><strong>Public debt/borrowing</strong> — internal borrowing (bonds, treasury bills) and external borrowing (loans, grants).</li>
+<li><strong>Subsidies and transfer payments</strong> — social security allowances, agricultural subsidies.</li>
+</ul>
+<p><strong>Expansionary vs. contractionary.</strong> In a slowdown, government raises spending and/or cuts taxes (expansionary) to boost demand; in an overheating/high-inflation phase, it cuts spending and/or raises taxes (contractionary) to cool demand.</p>
+<p><strong>Use in Nepal.</strong> The annual budget allocates capital spending to roads, hydropower and irrigation for <em>growth</em>; keeps the deficit within prudent limits for <em>stability</em>; and uses progressive income tax plus subsidies and social-security transfers for <em>equity</em>. Federalism means fiscal transfers (equalisation, conditional, complementary and special grants) also flow to provincial and local governments. <em>(Verify current tax rates, deficit and grant figures from the latest Budget Speech / Red Book of the Ministry of Finance.)</em></p>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">2.</span> <span class="marks">[20 marks]</span> Explain <strong>monetary policy</strong> and describe the main <strong>instruments (tools)</strong> a central bank uses. Who conducts monetary policy in Nepal, and what are its principal objectives?</p>
+<details class="ans"><summary>Model answer / solution</summary>
+<p><strong>Meaning.</strong> Monetary policy is the process by which the central bank manages the <em>money supply, credit and interest rates</em> in the economy to achieve macroeconomic goals such as price stability and adequate liquidity. In Nepal it is formulated and implemented by the <strong>Nepal Rastra Bank (NRB)</strong>, which issues an annual Monetary Policy.</p>
+<p><strong>Objectives.</strong></p>
+<ul>
+<li><strong>Price stability</strong> — keep inflation at a moderate, targeted level.</li>
+<li><strong>External sector stability</strong> — maintain adequate foreign-exchange reserves and support the exchange-rate peg with the Indian Rupee.</li>
+<li><strong>Financial-system stability</strong> — sound, liquid banks.</li>
+<li>Support <strong>economic growth and employment</strong> by ensuring credit flows to productive sectors.</li>
+</ul>
+<p><strong>Instruments of monetary policy.</strong></p>
+<table>
+<thead><tr><th>Instrument</th><th>How it works</th></tr></thead>
+<tbody>
+<tr><td><strong>Bank Rate / Policy Rate</strong></td><td>The rate at which the central bank lends to commercial banks. Raising it makes credit costlier (tightening); lowering it eases credit.</td></tr>
+<tr><td><strong>Open Market Operations (OMO)</strong></td><td>Buying government securities injects money; selling them absorbs money.</td></tr>
+<tr><td><strong>Cash Reserve Ratio (CRR)</strong></td><td>The share of deposits banks must keep as reserves with the central bank. Higher CRR reduces lendable funds.</td></tr>
+<tr><td><strong>Statutory Liquidity Ratio (SLR)</strong></td><td>Minimum liquid assets banks must hold. Adjusting it changes lending capacity.</td></tr>
+<tr><td><strong>Standing Liquidity Facility / Repo &amp; Reverse Repo</strong></td><td>Short-term lending to or borrowing from banks to manage day-to-day liquidity.</td></tr>
+<tr><td><strong>Selective / qualitative credit controls</strong></td><td>Margin requirements, directed lending to priority sectors, moral suasion.</td></tr>
+</tbody>
+</table>
+<p><strong>Quantitative vs. qualitative.</strong> Quantitative tools (policy rate, OMO, CRR, SLR) affect the <em>total</em> volume of credit; qualitative tools (margin requirements, directed credit, moral suasion) affect the <em>direction</em> of credit.</p>
+<p><strong>Nepal context.</strong> Because the Nepali Rupee is pegged to the Indian Rupee, NRB's monetary policy must guard foreign-exchange reserves; it uses CRR, SLR, the policy rate and standing facilities, and channels credit to priority/productive sectors. <em>(Verify the current policy rate, CRR, SLR and inflation target from NRB's latest Monetary Policy.)</em></p>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">3.</span> <span class="marks">[20 marks]</span> Distinguish between <strong>commercial (trade) policy and industrial policy</strong>. Explain the main instruments of each and their role in the economic development of a country like Nepal.</p>
+<details class="ans"><summary>Model answer / solution</summary>
+<p><strong>Commercial (trade) policy — meaning.</strong> The set of government rules and measures governing a country's <em>foreign trade</em> — its exports and imports — with the goal of improving the balance of trade, protecting domestic producers and integrating with world markets.</p>
+<p><strong>Instruments of commercial policy.</strong></p>
+<ul>
+<li><strong>Tariffs / customs duties</strong> on imports (and sometimes exports).</li>
+<li><strong>Quotas</strong> and quantitative restrictions.</li>
+<li><strong>Export promotion measures</strong> — incentives, cash subsidies, duty drawback, export processing zones.</li>
+<li><strong>Import substitution</strong> — encouraging local production to replace imports.</li>
+<li><strong>Trade agreements</strong> — bilateral/regional (e.g. with India, SAFTA) and WTO commitments.</li>
+<li><strong>Foreign-exchange and non-tariff measures</strong> — standards, licensing.</li>
+</ul>
+<p><strong>Industrial policy — meaning.</strong> The government's strategy for the <em>establishment, growth, regulation and modernisation of industries</em>, defining which sectors are promoted, how investment is attracted and how the industrial base is diversified.</p>
+<p><strong>Instruments of industrial policy.</strong></p>
+<ul>
+<li><strong>Fiscal incentives</strong> — tax holidays, rebates, concessions for priority/export/rural industries.</li>
+<li><strong>Industrial zones and infrastructure</strong> — special economic zones, industrial estates, reliable power.</li>
+<li><strong>Foreign Direct Investment (FDI) promotion</strong> and one-window facilitation.</li>
+<li><strong>Classification of industries</strong> (by size and nature) with differentiated support.</li>
+<li><strong>Credit and technology support</strong>, skill development, protection of infant industries.</li>
+</ul>
+<p><strong>Key distinction.</strong> Commercial policy looks <em>outward</em> at trade across borders; industrial policy looks <em>inward</em> at building and strengthening the production base. The two are complementary — industrial policy builds capacity to produce, commercial policy secures markets and protection for that output.</p>
+<p><strong>Role in Nepal's development.</strong> As a landlocked, trade-deficit economy, Nepal uses commercial policy to promote exports (e.g. hydropower, agro-products, carpets, ready-made garments, IT services) and manage a large import bill, while industrial policy attracts investment, develops SEZs and diversifies away from a narrow base. <em>(Verify the latest Industrial Enterprises Act / Industrial Policy and current trade-deficit figures from official sources.)</em></p>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">4.</span> <span class="marks">[20 marks]</span> Discuss <strong>economic planning in Nepal</strong> — its meaning, objectives and evolution. Also explain <strong>globalization</strong> and analyse its positive and negative impacts on the Nepali economy.</p>
+<details class="ans"><summary>Model answer / solution</summary>
+<p><strong>Economic planning — meaning.</strong> Economic planning is the deliberate allocation of a country's resources by the state, through defined targets and priorities over a set period, to achieve growth and development goals. Nepal has pursued planned development through periodic plans coordinated by the National Planning Commission (NPC), beginning with the First Plan in 1956 (2013 B.S.) and continuing through successive periodic plans.</p>
+<p><strong>Objectives of planning in Nepal.</strong></p>
+<ul>
+<li>Accelerate economic growth and raise per-capita income.</li>
+<li>Reduce poverty and regional and social inequality.</li>
+<li>Develop infrastructure — roads, energy, irrigation, communication.</li>
+<li>Generate employment and develop human capital (education, health).</li>
+<li>Achieve balanced, inclusive and sustainable development; graduate from LDC status and move toward higher-income status. <em>(Verify current plan number, period and graduation targets from the latest NPC periodic plan.)</em></li>
+</ul>
+<p><strong>Evolution.</strong> Early plans stressed physical infrastructure; later plans added basic needs, liberalisation and the private sector (from the 1990s), then poverty reduction, and now inclusive, federal and sustainable development aligned with the SDGs.</p>
+<p><strong>Globalization — meaning.</strong> The growing integration and interdependence of national economies through freer flows of goods, services, capital, technology, labour and information across borders.</p>
+<p><strong>Positive impacts on Nepal.</strong></p>
+<ul>
+<li>Access to foreign markets, capital and FDI.</li>
+<li>Inflow of technology, ideas and management know-how.</li>
+<li>Growth of services and IT/outsourcing opportunities; remittance inflows from overseas employment.</li>
+<li>Wider choice of goods and competitive prices for consumers.</li>
+</ul>
+<p><strong>Negative impacts on Nepal.</strong></p>
+<ul>
+<li>Domestic infant industries face stiff foreign competition.</li>
+<li>Widening trade deficit due to heavy import dependence.</li>
+<li>Vulnerability to external shocks and price volatility.</li>
+<li>Brain drain and heavy reliance on remittances rather than domestic production.</li>
+<li>Pressure on local culture and small producers.</li>
+</ul>
+<p><strong>Conclusion.</strong> Globalization is an opportunity if Nepal strengthens competitiveness, diversifies exports and builds domestic productive capacity through sound industrial and trade policy; otherwise it deepens dependence.</p>
+</details>
+</div>
+
+<h3>Group ङ — Management (व्यवस्थापन)</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> <span class="marks">[20 marks]</span> Explain the <strong>functions of management</strong> and Henri <strong>Fayol's 14 principles of management</strong>. How do these principles help a manager run an IT department or a public office effectively?</p>
+<details class="ans"><summary>Model answer / solution</summary>
+<p><strong>Functions of management.</strong> Management is the process of getting things done through others by planning, organising, staffing, directing/leading and controlling resources to achieve organisational goals.</p>
+<ul>
+<li><strong>Planning</strong> — setting objectives and deciding how to achieve them.</li>
+<li><strong>Organising</strong> — arranging resources, tasks and authority.</li>
+<li><strong>Staffing</strong> — recruiting, developing and retaining the right people.</li>
+<li><strong>Directing/Leading</strong> — guiding, motivating and communicating.</li>
+<li><strong>Controlling</strong> — measuring performance against standards and taking corrective action.</li>
+</ul>
+<p><strong>Fayol's 14 principles of management.</strong></p>
+<ol>
+<li><strong>Division of work</strong> — specialisation raises efficiency.</li>
+<li><strong>Authority and responsibility</strong> — the right to command must match accountability.</li>
+<li><strong>Discipline</strong> — obedience to agreed rules.</li>
+<li><strong>Unity of command</strong> — each employee reports to one superior.</li>
+<li><strong>Unity of direction</strong> — one head and one plan for each group of activities with the same objective.</li>
+<li><strong>Subordination of individual interest to general interest</strong>.</li>
+<li><strong>Remuneration</strong> — fair pay for effort.</li>
+<li><strong>Centralisation (and decentralisation)</strong> — appropriate balance of decision authority.</li>
+<li><strong>Scalar chain</strong> — a clear line of authority from top to bottom (with a "gang plank" for lateral communication).</li>
+<li><strong>Order</strong> — a place for everything/everyone and everything/everyone in its place.</li>
+<li><strong>Equity</strong> — fairness and kindness to staff.</li>
+<li><strong>Stability of tenure</strong> — reduce turnover, retain trained staff.</li>
+<li><strong>Initiative</strong> — encourage staff to originate and carry out plans.</li>
+<li><strong>Esprit de corps</strong> — build team spirit and unity.</li>
+</ol>
+<p><strong>Application to an IT department / public office.</strong></p>
+<ul>
+<li><em>Division of work</em> and <em>order</em> map cleanly to specialised roles (development, network, database, support).</li>
+<li><em>Unity of command</em> and <em>scalar chain</em> prevent confusion over who assigns and approves tasks; the "gang plank" supports fast cross-team coordination during incidents.</li>
+<li><em>Discipline, equity, stability of tenure and esprit de corps</em> reduce attrition of scarce technical staff and build teamwork.</li>
+<li><em>Initiative</em> encourages innovation and process improvement; <em>subordination of individual interest</em> keeps effort aligned with the office's public-service mission.</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">2.</span> <span class="marks">[20 marks]</span> Explain the concepts of <strong>leadership, motivation, decision-making and control</strong> in management. Briefly describe one theory of motivation and outline the steps in a rational decision-making process.</p>
+<details class="ans"><summary>Model answer / solution</summary>
+<p><strong>Leadership.</strong> The ability to influence and guide people so that they work willingly toward organisational goals. Common styles: <em>autocratic</em> (leader decides), <em>democratic/participative</em> (decisions shared), <em>laissez-faire</em> (staff largely self-directed). Good leadership combines vision, communication, integrity and the ability to motivate.</p>
+<p><strong>Motivation.</strong> The internal and external forces that arouse, direct and sustain effort. It can be <em>financial</em> (pay, bonus, allowances) or <em>non-financial</em> (recognition, growth, responsibility, good work environment).</p>
+<p><strong>One theory — Maslow's Hierarchy of Needs.</strong> People are driven by needs arranged in levels; a satisfied need no longer motivates, so the next level takes over:</p>
+<ol>
+<li>Physiological needs (food, shelter — met by basic pay).</li>
+<li>Safety/security needs (job security, safe conditions).</li>
+<li>Social/belonging needs (teamwork, relationships).</li>
+<li>Esteem needs (recognition, status, promotion).</li>
+<li>Self-actualisation (growth, achievement, realising potential).</li>
+</ol>
+<p>(Herzberg's Two-Factor theory — hygiene factors vs. motivators — is an acceptable alternative.)</p>
+<p><strong>Decision-making.</strong> The process of choosing the best course of action from available alternatives. <strong>Steps in rational decision-making:</strong></p>
+<ol>
+<li>Identify and define the problem.</li>
+<li>Gather relevant information.</li>
+<li>Identify alternatives.</li>
+<li>Evaluate each alternative (costs, benefits, risks).</li>
+<li>Select the best alternative.</li>
+<li>Implement the decision.</li>
+<li>Monitor results and provide feedback.</li>
+</ol>
+<p><strong>Control.</strong> The function of measuring actual performance against planned standards and taking corrective action. <strong>Steps:</strong> (i) set standards, (ii) measure actual performance, (iii) compare with standards to find deviations, (iv) take corrective action. Control and planning are interlinked — plans set the standards that control checks against, forming a continuous management loop.</p>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">3.</span> <span class="marks">[20 marks]</span> Explain the <strong>role of Information and Communication Technology (ICT) in modern management</strong>. Also define <strong>corporate governance</strong> and state its main principles.</p>
+<details class="ans"><summary>Model answer / solution</summary>
+<p><strong>Role of ICT in management.</strong> ICT — computers, networks, software, databases and communication systems — has transformed how managers plan, decide, coordinate and control.</p>
+<ul>
+<li><strong>Better decision-making</strong> — Management Information Systems (MIS), decision-support systems and data analytics give timely, accurate information.</li>
+<li><strong>Efficiency and automation</strong> — routine tasks (payroll, accounting, records) are automated, cutting cost and error.</li>
+<li><strong>Faster communication and coordination</strong> — email, intranets, video conferencing and collaboration tools link dispersed teams.</li>
+<li><strong>Improved planning and control</strong> — real-time dashboards and reports track performance against targets.</li>
+<li><strong>Service delivery / e-Governance</strong> — online services improve transparency and citizen access in the public sector.</li>
+<li><strong>Knowledge management and record-keeping</strong> — secure storage, quick retrieval, and data-driven strategy.</li>
+<li><strong>Cautions</strong> — cyber-security risk, cost, need for skilled staff, and change management.</li>
+</ul>
+<p><strong>Corporate governance — meaning.</strong> The system of rules, practices and processes by which an organisation is directed and controlled, balancing the interests of stakeholders — shareholders, management, employees, customers, government and the community — and ensuring the organisation is run responsibly and accountably.</p>
+<p><strong>Main principles of corporate governance.</strong></p>
+<table>
+<thead><tr><th>Principle</th><th>Meaning</th></tr></thead>
+<tbody>
+<tr><td><strong>Transparency</strong></td><td>Open, honest and timely disclosure of information.</td></tr>
+<tr><td><strong>Accountability</strong></td><td>Those in charge answer for their decisions and results.</td></tr>
+<tr><td><strong>Responsibility</strong></td><td>Compliance with law and ethical conduct.</td></tr>
+<tr><td><strong>Fairness</strong></td><td>Equitable treatment of all stakeholders, including minority interests.</td></tr>
+<tr><td><strong>Independence</strong></td><td>Objective oversight, e.g. through independent directors and audit.</td></tr>
+</tbody>
+</table>
+<p><strong>Link.</strong> ICT strengthens governance by making disclosure faster and record-keeping more reliable, thereby supporting transparency and accountability.</p>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">4.</span> <span class="marks">[20 marks]</span> What is <strong>performance appraisal</strong> and why is it important? Also explain the meaning of a <strong>budget</strong>, its main types and its importance in an organisation.</p>
+<details class="ans"><summary>Model answer / solution</summary>
+<p><strong>Performance appraisal — meaning.</strong> The systematic and periodic evaluation of an employee's job performance and contribution against defined standards and objectives, used to guide decisions on rewards, training and development.</p>
+<p><strong>Importance / objectives.</strong></p>
+<ul>
+<li>Basis for <strong>promotion, transfer, increment and reward</strong> decisions.</li>
+<li>Identifies <strong>training and development</strong> needs.</li>
+<li>Gives employees <strong>feedback</strong> and sets future goals.</li>
+<li>Improves communication between manager and staff and boosts motivation.</li>
+<li>Helps in <strong>human-resource planning</strong> and validating recruitment/selection.</li>
+</ul>
+<p><strong>Common methods.</strong> Rating scales, ranking, management by objectives (MBO), 360-degree feedback, checklist. Appraisal should be fair, objective and free from bias (e.g. halo effect, leniency).</p>
+<p><strong>Budget — meaning.</strong> A budget is a quantitative financial plan for a future period, expressing expected income and expenditure, prepared to guide and control operations.</p>
+<p><strong>Main types of budget.</strong></p>
+<table>
+<thead><tr><th>Basis</th><th>Type</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td>Function</td><td>Sales, Production, Cash, Purchase budgets</td><td>Cover a specific activity or function.</td></tr>
+<tr><td>Scope</td><td>Master budget</td><td>Consolidated summary of all functional budgets.</td></tr>
+<tr><td>Flexibility</td><td>Fixed vs. Flexible budget</td><td>Fixed stays unchanged; flexible adjusts to activity level.</td></tr>
+<tr><td>Nature</td><td>Capital vs. Revenue (operating) budget</td><td>Long-term assets vs. day-to-day operations.</td></tr>
+<tr><td>Approach</td><td>Zero-based budget</td><td>Every item justified afresh from zero, not from last year's figures.</td></tr>
+<tr><td>Balance</td><td>Surplus, Balanced, Deficit budget</td><td>Income greater than, equal to, or less than expenditure (used in government budgeting).</td></tr>
+</tbody>
+</table>
+<p><strong>Importance of a budget.</strong></p>
+<ul>
+<li>Acts as a <strong>plan and target</strong> for the future.</li>
+<li>Provides a <strong>standard for control</strong> — actuals are compared with the budget (variance analysis).</li>
+<li>Aids <strong>coordination</strong> across departments and efficient <strong>resource allocation</strong>.</li>
+<li>Improves <strong>accountability</strong> and helps prevent wasteful spending — vital in public financial management.</li>
+</ul>
+</details>
+</div>
+
+</section>
+<section class="sec"><h2>Paper II &mdash; Information &amp; Technology</h2>
+<p class="lede">Paper II is fully subjective: 100 marks, five groups, one compulsory question each. Familiar ground &mdash; the goal is complete, well-structured answers with diagrams (OSI, UML, ER, pipeline) written under time.</p>
+<h3>Group क</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> <span class="marks">[20 marks]</span> Distinguish between low-level and high-level programming languages. Explain the role of assemblers, compilers, and interpreters in language translation, and compare compiled versus interpreted execution.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li>Low-level languages: <strong>machine language</strong> (binary opcodes, directly executable, fully machine-dependent) and <strong>assembly language</strong> (mnemonic instructions, one-to-one mapping to machine code, still hardware-specific).</li>
+<li>High-level languages: English-like syntax, machine-independent, portable across platforms (C, Java, Python); provide abstractions — variables, control structures, functions, data types.</li>
+<li>Trade-offs: low-level gives fine hardware control, speed, small footprint (used in embedded systems, device drivers, firmware); high-level gives readability, portability, faster development and easier maintenance at some cost to raw performance.</li>
+<li><strong>Assembler</strong>: translates assembly mnemonics into machine code, essentially a one-to-one substitution plus address resolution.</li>
+<li><strong>Compiler</strong>: translates the entire high-level source into object/machine code before execution in distinct phases — lexical analysis, syntax analysis, semantic analysis, intermediate code generation, code optimization, final code generation; produces a standalone executable.</li>
+<li><strong>Interpreter</strong>: translates and executes source statement-by-statement at run time without producing a separate persistent executable; easier to debug and more portable, but generally slower per run.</li>
+<li>Hybrid model: source compiled to an intermediate bytecode, then interpreted or JIT-compiled at run time (Java JVM, .NET CLR, Python bytecode) — balances portability and performance.</li>
+<li>Compiled vs interpreted comparison: error detection time (compile-time vs run-time), execution speed (compiled generally faster), portability (interpreted more portable, needs interpreter on target machine), development/debug cycle (interpreted faster to test).</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">2.</span> <span class="marks">[20 marks]</span> Explain the need for character encoding schemes in computers. Compare EBCDIC, ASCII, and Unicode in terms of bit-width, character coverage, and typical usage.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li>Computers store and process everything in binary; a character encoding scheme is an agreed mapping between human-readable characters (letters, digits, punctuation, control characters) and binary code values, needed for consistent storage, processing, and exchange of text data.</li>
+<li>Without a common encoding, the same bit pattern could be interpreted as different characters on different systems, causing corrupted data ("mojibake") when data is exchanged.</li>
+<li><strong>EBCDIC</strong> (Extended Binary Coded Decimal Interchange Code): 8-bit code (256 characters), developed by IBM, used mainly on IBM mainframe/midrange systems; letter ranges are not contiguous, making sorting/comparison logic more complex; largely incompatible with ASCII-based systems.</li>
+<li><strong>ASCII</strong> (American Standard Code for Information Interchange): originally 7-bit (128 characters — 0–31 control codes, 32–126 printable, 127 DEL); Extended ASCII uses 8 bits (256 characters, code-page dependent for accented/graphic characters); became the de facto standard for early computers, the internet, and many protocols.</li>
+<li>Limitation of ASCII: covers only English/Latin characters, cannot represent most world scripts (Devanagari, Chinese, Arabic, Cyrillic, etc.).</li>
+<li><strong>Unicode</strong>: universal character set assigning a unique code point to virtually every character in every writing system, code space up to U+10FFFF (over 1.1 million code points); encoding forms — UTF-8 (variable 1–4 bytes, ASCII-compatible, dominant on the web), UTF-16 (2 or 4 bytes, used internally by Java/Windows), UTF-32 (fixed 4 bytes).</li>
+<li>Comparison table:</li>
+</ul>
+<table>
+<thead><tr><th>Scheme</th><th>Bit width</th><th>Characters supported</th><th>Typical usage</th></tr></thead>
+<tbody>
+<tr><td>EBCDIC</td><td>8-bit</td><td>256, non-contiguous letters</td><td>IBM mainframes</td></tr>
+<tr><td>ASCII</td><td>7-bit (8-bit extended)</td><td>128 (256 extended), Latin only</td><td>Early PCs, legacy protocols</td></tr>
+<tr><td>Unicode</td><td>Variable (UTF-8/16/32)</td><td>&gt;1.1 million code points, all scripts</td><td>Modern OS, web, multilingual software</td></tr>
+</tbody>
+</table>
+<ul>
+<li>Unicode was adopted for globalization and multilingual computing; UTF-8's first 128 code points match ASCII exactly, giving backward compatibility while removing code-page ambiguity.</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">3.</span> <span class="marks">[20 marks]</span> Give an overview of data communication and computer networking. Explain the basic components of a communication system, and differentiate between analog and digital transmission and between simplex, half-duplex, and full-duplex modes.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li>Data communication: the exchange of data between two devices through some transmission medium, governed by rules (protocols); a network is an interconnected set of nodes that share resources and communicate.</li>
+<li>Basic components of a communication system: <strong>sender/source</strong>, <strong>message</strong> (data to be communicated), <strong>transmission medium</strong>, <strong>protocol</strong> (agreed rules), <strong>receiver</strong>.</li>
+<li>All data types (text, numbers, images, audio, video) are ultimately represented and transmitted as bits.</li>
+<li><strong>Analog transmission</strong>: continuous, wave-form signal (e.g., traditional telephone voice); susceptible to noise/attenuation, needs amplification. <strong>Digital transmission</strong>: discrete 0/1 signal levels; more noise-resistant, easier to regenerate/repeat cleanly, used in modern data networks. A <em>modem</em> is required to convert digital data to analog form when transmitted over analog lines, and back again.</li>
+<li>Transmission modes: <strong>Simplex</strong> — one direction only (e.g., keyboard to CPU, TV broadcast); <strong>Half-duplex</strong> — both directions possible but only one at a time (e.g., walkie-talkie); <strong>Full-duplex</strong> — simultaneous two-way communication (e.g., telephone call).</li>
+<li>Network categories by geographic scope: PAN, LAN, MAN, WAN.</li>
+<li>Transmission media: guided (twisted pair, coaxial cable, optical fibre) and unguided/wireless (radio, microwave, satellite, infrared).</li>
+<li>Multiplexing (sharing one medium among multiple signals): Time Division Multiplexing (TDM) and Frequency Division Multiplexing (FDM), briefly noted as techniques that improve channel utilization.</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">4.</span> <span class="marks">[20 marks]</span> Explain the architecture of the Internet and the World Wide Web. Describe the client-server model, the roles of HTTP/HTTPS, DNS, and URL, and briefly discuss the evolution from Web 1.0 to Web 3.0.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li><strong>Internet</strong>: a global network of interconnected networks communicating using the TCP/IP protocol suite. <strong>WWW</strong>: a system of interlinked hypertext documents/resources accessed over the internet, built on HTTP, HTML, and URLs (proposed by Tim Berners-Lee, 1989).</li>
+<li><strong>Client-server architecture</strong>: client (browser) sends a request; server (web server) processes it and returns a response; HTTP is stateless by nature (cookies/sessions used to maintain state); real deployments often use multi-tier architecture — client tier, application/web-server tier, database tier.</li>
+<li><strong>HTTP</strong>: application-layer protocol for transferring web resources using request methods (GET, POST, PUT, DELETE) and status codes; <strong>HTTPS</strong> = HTTP secured with TLS/SSL, providing confidentiality, integrity, and server authentication.</li>
+<li><strong>DNS</strong> (Domain Name System): hierarchical, distributed database that resolves human-readable domain names to IP addresses; involves resolver, root servers, top-level-domain (TLD) servers, and authoritative name servers.</li>
+<li><strong>URL</strong> (Uniform Resource Locator) structure: <code>scheme://host:port/path?query#fragment</code> — identifies protocol, server, resource location, parameters, and page anchor.</li>
+<li>Web evolution: <strong>Web 1.0</strong> — static, read-only pages, one-way information delivery; <strong>Web 2.0</strong> — interactive, user-generated content, social media, AJAX/dynamic pages; <strong>Web 3.0</strong> — semantic web, personalization/AI-driven content, decentralized technologies.</li>
+<li>Supporting concepts: web hosting, browsers, search engines, APIs/web services (REST, SOAP) enabling machine-to-machine communication over the web.</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">5.</span> <span class="marks">[20 marks]</span> Explain the CIA triad in information security. Discuss common threats to each component and the security mechanisms used to protect information systems.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li>CIA triad — <strong>Confidentiality, Integrity, Availability</strong> — the foundational model describing the core goals of information security.</li>
+<li><strong>Confidentiality</strong>: preventing unauthorized disclosure of information. Threats: eavesdropping, shoulder surfing, data breaches, improper access control. Mechanisms: encryption (at rest and in transit), access control lists, authentication, need-to-know policies.</li>
+<li><strong>Integrity</strong>: ensuring data is accurate, complete, and not altered without authorization. Threats: man-in-the-middle attacks, unauthorized modification, malware tampering. Mechanisms: hashing, checksums, digital signatures, version control, strict access/change control.</li>
+<li><strong>Availability</strong>: ensuring authorized users can access systems/data when needed. Threats: DoS/DDoS attacks, hardware failure, natural disasters, power outage. Mechanisms: redundancy, load balancing, backups, fault-tolerant design, disaster recovery planning.</li>
+<li>Extended concepts often paired with CIA: <strong>Authentication</strong>, <strong>Authorization</strong>, <strong>Accounting (AAA)</strong>, and <strong>Non-repudiation</strong> (proof of origin/action that cannot later be denied).</li>
+<li>General security mechanisms: firewalls, intrusion detection/prevention systems (IDS/IPS), antivirus/anti-malware, symmetric and asymmetric encryption, multi-factor authentication, audit logging, security policy and awareness training.</li>
+<li>Common threat categories: malware (virus, worm, trojan, ransomware), phishing/social engineering, insider threats, SQL injection, denial-of-service attacks.</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">6.</span> <span class="marks">[20 marks]</span> (a) Explain the System Development Life Cycle (SDLC) with its major phases and common methodologies. (b) Describe the concept, characteristics, and organizational role of a Management Information System (MIS).</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<p><strong>(a) SDLC</strong></p>
+<ul>
+<li>SDLC: a structured process/methodology for planning, developing, testing, and deploying an information system.</li>
+<li>Major phases: preliminary investigation/feasibility study → requirement analysis → system design (logical and physical) → implementation/coding → testing → deployment/implementation → operation and maintenance.</li>
+<li>Feasibility study dimensions: technical, economic, operational, schedule, and legal feasibility.</li>
+<li>Common methodologies: Waterfall (sequential phases), Iterative, Prototyping, Spiral (risk-driven), Agile (incremental, adaptive).</li>
+<li>System analysis and design tools: Data Flow Diagrams (DFD), Entity-Relationship (ER) diagrams, decision tables/trees, structured English, system flowcharts.</li>
+<li>Role of the systems analyst: bridges users and developers, elicits and models requirements, evaluates alternatives, oversees design and testing.</li>
+</ul>
+<p><strong>(b) MIS</strong></p>
+<ul>
+<li>MIS: an integrated system of people, procedures, hardware, software, and data that produces timely and relevant information to support planning, control, and decision-making at all management levels.</li>
+<li>Characteristics: management-oriented, integrated across functional subsystems, provides relevant and timely information, supports both operational control and future planning.</li>
+<li>Information system hierarchy by management level: Transaction Processing System (TPS) for operational level → MIS reports for tactical/middle management → Decision Support System (DSS) and Executive Support System (ESS/EIS) for strategic level.</li>
+<li>Benefits: improved and faster decision-making, better coordination and control, increased organizational efficiency.</li>
+<li>Challenges: implementation cost, data quality/consistency issues, user resistance to change, need for ongoing maintenance as business needs evolve.</li>
+</ul>
+</details>
+</div>
+
+<h3>Group ख</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> <span class="marks">[20 marks]</span> Explain different programming language paradigms and the concept of binding time in programming languages. Illustrate the principles of structured programming using an example in C.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li>Programming paradigms: <strong>procedural</strong> (sequential instructions, e.g., C, Pascal), <strong>structured</strong> (procedural plus disciplined control constructs), <strong>object-oriented</strong> (classes/objects, e.g., C++, Java), <strong>functional</strong> (pure functions, immutability, e.g., Haskell), <strong>logic/declarative</strong> (e.g., Prolog).</li>
+<li><strong>Binding</strong>: the association of an attribute (type, value, memory address, meaning) with a name/entity. <strong>Binding time</strong> is when this association is fixed.</li>
+<li><strong>Static/early binding</strong>: resolved at compile time (e.g., statically typed variable declarations, non-virtual function calls) — faster execution, less run-time flexibility.</li>
+<li><strong>Dynamic/late binding</strong>: resolved at run time (e.g., virtual function dispatch/polymorphism, dynamically typed variables) — more flexible/extensible, small run-time overhead.</li>
+<li>Other binding examples: memory binding (static, stack, or heap allocation), procedure binding (direct call vs. dynamic dispatch).</li>
+<li>Structured programming principles (Dijkstra): top-down design, modular decomposition into functions/procedures, and use of only three control constructs — <strong>sequence</strong>, <strong>selection</strong> (if/switch), and <strong>iteration</strong> (while/for) — avoiding unrestricted GOTO.</li>
+<li>Benefits: improved readability, easier debugging and testing, better maintainability, reduced program complexity.</li>
+<li>C example illustrating structured constructs (modular function using selection and iteration):</li>
+</ul>
+<p><code>int isPrime(int n) {<br/>&nbsp;&nbsp;int i;<br/>&nbsp;&nbsp;if (n &lt; 2) return 0;<br/>&nbsp;&nbsp;for (i = 2; i * i &lt;= n; i++) {<br/>&nbsp;&nbsp;&nbsp;&nbsp;if (n % i == 0) return 0;<br/>&nbsp;&nbsp;}<br/>&nbsp;&nbsp;return 1;<br/>}</code></p>
+<ul>
+<li>Note on code generation and optimization: a compiler's back end translates intermediate representation into target machine code and applies optimizations such as constant folding, common sub-expression elimination, loop optimization, and register allocation to improve efficiency without changing program semantics.</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">2.</span> <span class="marks">[20 marks]</span> (a) Explain the purpose and typical structure of a Software Requirement Specification (SRS). (b) Differentiate between verification and validation, and describe the major levels and types of software testing. (c) Define software reliability and software quality, and describe the different types of software maintenance.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<p><strong>(a) SRS</strong></p>
+<ul>
+<li>SRS: a formal document describing the functional and non-functional requirements of a system; acts as a contract between client and developer and the basis for design and testing.</li>
+<li>Typical structure (IEEE 830 style): Introduction (purpose, scope, definitions), Overall description, Specific requirements (functional, external interface, performance, design constraints, non-functional — security/reliability/usability), Appendices.</li>
+<li>Characteristics of a good SRS: correct, unambiguous, complete, consistent, verifiable, traceable, modifiable.</li>
+</ul>
+<p><strong>(b) Verification, validation, and testing</strong></p>
+<ul>
+<li><strong>Verification</strong> — "are we building the product right?" — static checking of work products against specifications (reviews, walkthroughs, inspections, static analysis), performed throughout the SDLC.</li>
+<li><strong>Validation</strong> — "are we building the right product?" — dynamic testing of the executing software against actual user needs, performed mainly after the build.</li>
+<li>Testing levels: unit testing, integration testing, system testing, acceptance testing (UAT).</li>
+<li>Testing approaches: black-box (functional, no code knowledge — equivalence partitioning, boundary value analysis), white-box (structural, code-based — statement/branch/path coverage), grey-box (mix of both).</li>
+<li>Other testing types: regression, load/stress, security, alpha and beta testing.</li>
+</ul>
+<p><strong>(c) Reliability, quality, and maintenance</strong></p>
+<ul>
+<li><strong>Software reliability</strong>: probability of failure-free operation for a specified period in a specified environment; measured using MTBF (mean time between failures), MTTR (mean time to repair), and defect density.</li>
+<li><strong>Software quality</strong>: degree to which software meets specified requirements and user expectations; quality models (McCall's, ISO/IEC 9126, ISO/IEC 25010) define factors such as functionality, reliability, usability, efficiency, maintainability, and portability.</li>
+<li>SQA (process-oriented: standards, audits) vs. SQC (product-oriented: testing, inspection).</li>
+<li>Types of maintenance: <strong>Corrective</strong> (fixing defects found in production), <strong>Adaptive</strong> (adjusting to changes in environment/OS/hardware), <strong>Perfective</strong> (enhancing features/performance based on feedback), <strong>Preventive</strong> (improving maintainability/refactoring to avoid future faults).</li>
+<li>Maintenance challenges: legacy code, incomplete documentation, ripple effects of change, regression risk.</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">3.</span> <span class="marks">[20 marks]</span> Explain the fundamental principles of Object-Oriented Programming — encapsulation, inheritance, and polymorphism — with examples. Draw and explain a UML class diagram for a simple library management system.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li>OOP basics: a <strong>class</strong> is a blueprint defining attributes and methods; an <strong>object</strong> is an instance of a class.</li>
+<li><strong>Encapsulation</strong>: bundling data and methods within a class and restricting direct access using access modifiers (private/protected/public), exposed via getters/setters — provides data hiding and modularity.</li>
+<li><strong>Inheritance</strong>: a subclass acquires properties/behaviors of a superclass; types — single, multilevel, hierarchical, multiple (via interfaces in languages like Java) — provides code reuse and hierarchical classification.</li>
+<li><strong>Polymorphism</strong>: different objects respond differently to the same message; compile-time (method/function overloading) vs. run-time (method overriding via dynamic/virtual dispatch) — provides flexibility and extensibility.</li>
+<li><strong>Abstraction</strong> (often included as a fourth pillar): exposing essential features while hiding implementation detail, via abstract classes/interfaces.</li>
+<li>UML: a standardized modeling language for visualizing software design; broad categories — structural diagrams (class, object, component, deployment) and behavioral diagrams (use case, sequence, activity, state machine).</li>
+<li>Class diagram elements: a class box with three compartments (name, attributes, operations); relationship types — association (uses/knows), aggregation (hollow diamond, "has-a", weak/independent lifetime), composition (filled diamond, strong ownership/dependent lifetime), generalization/inheritance (hollow triangle arrow to parent); multiplicity notation (1, *, 0..1, 1..*).</li>
+<li>Example — Library Management System classes: <code>Library</code>, <code>Book</code>, <code>Member</code>, <code>Librarian</code>, <code>Loan</code>. Relationships: <code>Library</code> is composed of many <code>Book</code> objects (composition); <code>Member</code> is associated with <code>Book</code> through a <code>Loan</code> class (association with attributes loanDate, dueDate); <code>Librarian</code> manages <code>Library</code> operations.</li>
+<li>Attributes/operations to sketch: <code>Book</code> (title, ISBN, isAvailable / borrow(), returnBook()); <code>Member</code> (memberId, name / requestLoan()); <code>Loan</code> (loanDate, dueDate / calculateFine()). Candidates should draw the three boxes with these compartments and connect them with the relationship notations above.</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">4.</span> <span class="marks">[20 marks]</span> Draw and explain the OSI seven-layer reference model. Describe the function of each layer and give one associated protocol or device example.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li>Draw seven stacked layers numbered 7 (top) to 1 (bottom); show peer-layer (virtual, horizontal) communication and the actual vertical data path down one stack and up the other, with encapsulation/de-encapsulation of headers at each layer as data passes down and up (PDU names: data → segment → packet → frame → bits).</li>
+<li>Mnemonic aid: "All People Seem To Need Data Processing" (Application, Presentation, Session, Transport, Network, Data Link, Physical).</li>
+</ul>
+<table>
+<thead><tr><th>Layer</th><th>Name</th><th>Function</th><th>Example</th></tr></thead>
+<tbody>
+<tr><td>7</td><td>Application</td><td>Provides network services directly to end-user applications</td><td>HTTP, FTP, SMTP, DNS</td></tr>
+<tr><td>6</td><td>Presentation</td><td>Data translation, encryption/decryption, compression, format conversion</td><td>TLS/SSL, JPEG, character-set conversion (e.g., EBCDIC↔ASCII)</td></tr>
+<tr><td>5</td><td>Session</td><td>Establishes, manages, and terminates sessions; dialog control, synchronization</td><td>NetBIOS, RPC</td></tr>
+<tr><td>4</td><td>Transport</td><td>End-to-end reliable/unreliable delivery, segmentation, flow and error control</td><td>TCP, UDP (ports)</td></tr>
+<tr><td>3</td><td>Network</td><td>Logical addressing and routing between different networks</td><td>IP, ICMP, routers</td></tr>
+<tr><td>2</td><td>Data Link</td><td>Framing, physical (MAC) addressing, error detection, media access control</td><td>Ethernet, switches, ARP</td></tr>
+<tr><td>1</td><td>Physical</td><td>Transmission of raw bits over the medium; electrical/mechanical/timing specs</td><td>Cables, hubs, repeaters, connectors</td></tr>
+</tbody>
+</table>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">5.</span> <span class="marks">[20 marks]</span> Explain the TCP/IP reference model and compare it with the OSI model. Differentiate between packet switching and circuit switching, and explain the role of bridges, routers, and gateways in a WAN.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li>TCP/IP model has four layers — Application, Transport, Internet, Network Access (Link) — versus OSI's seven layers.</li>
+</ul>
+<table>
+<thead><tr><th>TCP/IP layer</th><th>Roughly maps to OSI layer(s)</th><th>Key protocols</th></tr></thead>
+<tbody>
+<tr><td>Application</td><td>Application, Presentation, Session (5–7)</td><td>HTTP, FTP, SMTP, DNS</td></tr>
+<tr><td>Transport</td><td>Transport (4)</td><td>TCP, UDP</td></tr>
+<tr><td>Internet</td><td>Network (3)</td><td>IP, ICMP, ARP</td></tr>
+<tr><td>Network Access</td><td>Data Link, Physical (1–2)</td><td>Ethernet, Wi-Fi</td></tr>
+</tbody>
+</table>
+<ul>
+<li>OSI is a theoretical/protocol-independent reference model (used for teaching and design comparison); TCP/IP is the practical, implemented protocol suite that actually runs the internet.</li>
+<li>Key TCP/IP protocols: IP (addressing/routing), TCP (reliable, connection-oriented, three-way handshake), UDP (connectionless, faster, no delivery guarantee).</li>
+<li><strong>Packet switching</strong>: data is broken into packets, each routed independently (possibly via different paths) and reassembled at the destination; efficient bandwidth utilization, store-and-forward, connectionless (or virtual-circuit) delivery — basis of the internet/IP networks.</li>
+<li><strong>Circuit switching</strong>: a dedicated physical path/circuit is established and held for the entire session (e.g., traditional PSTN telephone call); guarantees fixed bandwidth and ordering but wastes capacity during idle periods and requires call setup/teardown.</li>
+<li>Comparison: bandwidth utilization (packet switching efficient/shared, circuit switching dedicated/wasteful when idle), connection setup (none/per-packet vs. required before transfer), delivery order (may need reassembly vs. guaranteed order), typical use (data networks/internet vs. traditional telephony).</li>
+<li><strong>Bridge</strong>: connects two LAN segments at the data link layer, filters/forwards frames based on MAC address, reduces collision domains.</li>
+<li><strong>Router</strong>: connects different networks at the network layer, forwards packets based on IP address using routing tables and routing protocols (e.g., RIP, OSPF, BGP).</li>
+<li><strong>Gateway</strong>: connects networks using different protocols/architectures, may operate up to the application layer, performs protocol translation (e.g., an email gateway bridging different mail systems).</li>
+<li>Brief contrast with lower-layer devices: hub/repeater (physical layer, no filtering) and switch (data link layer, multi-port bridging).</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">6.</span> <span class="marks">[20 marks]</span> Write short notes on the following: (a) Modem (b) Error detection and correction techniques (c) Data compression (d) LAN topologies and Network Operating System (NOS) (e) Email systems and encryption.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<p><strong>(a) Modem</strong></p>
+<ul>
+<li>MOdulator-DEModulator: converts digital signals to analog for transmission over analog lines (modulation) and converts received analog signals back to digital (demodulation).</li>
+<li>Enables digital devices to communicate over telephone/cable lines; types — dial-up, DSL, cable modem; modulation techniques — ASK, FSK, PSK, QAM.</li>
+</ul>
+<p><strong>(b) Error detection and correction</strong></p>
+<ul>
+<li>Transmission errors occur as single-bit or burst errors due to noise/interference.</li>
+<li>Detection techniques: parity check (detects an odd number of bit errors), checksum, Cyclic Redundancy Check (CRC) — polynomial-division based, widely used in Ethernet frames.</li>
+<li>Correction techniques: Hamming code (redundant bits at power-of-two positions to detect and correct single-bit errors); Automatic Repeat reQuest — ARQ (retransmission-based: stop-and-wait, go-back-N, selective repeat); Forward Error Correction — FEC (lets the receiver correct errors without retransmission).</li>
+</ul>
+<p><strong>(c) Data compression</strong></p>
+<ul>
+<li>Reduces data size for efficient storage and transmission.</li>
+<li><strong>Lossless</strong> compression: exact reconstruction, no data loss (Huffman coding, Run-Length Encoding, LZ77/LZW) — used for text and program files.</li>
+<li><strong>Lossy</strong> compression: discards some data for a higher compression ratio, with acceptable perceptual loss (JPEG for images, MP3 for audio, MPEG for video).</li>
+<li>Benefits: reduced storage cost, faster transmission, lower bandwidth consumption.</li>
+</ul>
+<p><strong>(d) LAN topologies and NOS</strong></p>
+<ul>
+<li>Topologies: <strong>Bus</strong> (single shared backbone, cheap, single point of failure), <strong>Star</strong> (central hub/switch, easy to manage, hub failure affects all), <strong>Ring</strong> (each node linked to two neighbors, token passing, a break can affect the network unless dual-ring), <strong>Mesh</strong> (every node connected to every other, high redundancy and cost), <strong>Hybrid</strong> (combination of the above).</li>
+<li><strong>NOS</strong> (Network Operating System): software that manages network resources — file/print sharing, user administration, security (examples: Windows Server, Novell NetWare, Linux/Unix-based server OS).</li>
+<li>NOS functions: resource sharing, user/group management, network security, remote access management.</li>
+</ul>
+<p><strong>(e) Email systems and encryption</strong></p>
+<ul>
+<li>Email components: MUA (Mail User Agent, the client), MTA (Mail Transfer Agent, server-to-server relay using SMTP), MDA (Mail Delivery Agent); retrieval protocols — POP3 (download and typically delete from server) and IMAP (server-side sync across multiple devices).</li>
+<li>Protocols: SMTP for sending, POP3/IMAP for receiving.</li>
+<li><strong>Encryption</strong>: symmetric encryption uses the same key for encryption and decryption (e.g., AES, DES) — fast but has key-distribution challenges; asymmetric/public-key encryption uses a public/private key pair (e.g., RSA) — used for key exchange and digital signatures.</li>
+<li>Email/network security applications: PGP and S/MIME for end-to-end email encryption, TLS for securing email in transit.</li>
+<li><strong>Digital signature</strong>: sender signs a hash of the message with their private key; receiver verifies using the sender's public key — ensures authenticity, integrity, and non-repudiation.</li>
+</ul>
+</details>
+</div>
+<h3>Group &#2327; &mdash; Computer Organization</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> <span class="marks">[20 marks]</span> Explain the Von Neumann architecture with the help of a diagram showing its components and interconnecting buses. How does it differ from the Harvard architecture? What is the &ldquo;von Neumann bottleneck&rdquo; and how do modern processors mitigate it?</p>
+<details class="ans"><summary>Model answer &mdash; key points</summary>
+<ul>
+<li><strong>Stored-program concept:</strong> instructions and data reside in the same memory, addressed uniformly, and are indistinguishable to the memory system &mdash; this is the defining feature of the Von Neumann model.</li>
+<li>Diagram (draw as boxes connected by a single System Bus split into Address / Data / Control lines):
+<table>
+<thead><tr><th>Component</th><th>Function</th></tr></thead>
+<tbody>
+<tr><td>CPU &mdash; Control Unit</td><td>Generates timing and control signals; sequences fetch&ndash;decode&ndash;execute</td></tr>
+<tr><td>CPU &mdash; ALU</td><td>Performs arithmetic and logic operations</td></tr>
+<tr><td>CPU &mdash; Registers</td><td>PC, IR, MAR, MBR/MDR, Accumulator, general-purpose set</td></tr>
+<tr><td>Main Memory</td><td>Single unified store for both instructions and data</td></tr>
+<tr><td>I/O Unit</td><td>Interfaces external devices via the same bus</td></tr>
+<tr><td>System Bus</td><td>Address bus (unidirectional, from CPU), Data bus (bidirectional), Control bus (R/W, interrupt, clock signals)</td></tr>
+</tbody>
+</table>
+</li>
+<li><strong>Fetch&ndash;decode&ndash;execute cycle:</strong> MAR &larr; PC; MBR &larr; M[MAR]; IR &larr; MBR; PC &larr; PC+1; decode opcode; execute.</li>
+<li><strong>Harvard architecture</strong> uses physically separate memories and buses for instructions and data (e.g., DSPs, microcontrollers, and the split L1 I-cache/D-cache inside modern &ldquo;Von Neumann&rdquo; CPUs).</li>
+<li>Comparison: Von Neumann &mdash; single memory/bus, simpler hardware, cheaper, but fetch and data access compete for the same bus. Harvard &mdash; concurrent instruction fetch and data access, higher throughput, but more complex addressing and higher cost.</li>
+<li><strong>Von Neumann bottleneck:</strong> since instructions and data share one bus, CPU throughput is limited by memory bandwidth &mdash; the CPU is often idle waiting for the bus even though it can execute much faster.</li>
+<li>Mitigation techniques: multilevel cache memory (with split I-cache/D-cache at L1), pipelining to overlap fetch/execute of successive instructions, wider/multiple buses, prefetch queues (as in 8086&rsquo;s BIU), and out-of-order execution with multiple memory ports.</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">2.</span> <span class="marks">[20 marks]</span> Draw the internal block diagram of a CPU and explain the register set, ALU, and datapath. Differentiate between hardwired and microprogrammed control unit design, stating one advantage of each.</p>
+<details class="ans"><summary>Model answer &mdash; key points</summary>
+<ul>
+<li>CPU block diagram components: Register file (PC, IR, MAR, MBR, SP, general-purpose registers, PSW/flags), ALU, Control Unit, and internal buses connecting them.</li>
+<li><strong>ALU design:</strong> combinational circuit built from full adders/carry-look-ahead adder for arithmetic and gate arrays (AND/OR/XOR/NOT) for logic; a function-select code (derived from the opcode) chooses the operation; produces status flags &mdash; Zero, Carry, Sign, Overflow, Parity.</li>
+<li>Register-transfer view of the fetch cycle (micro-operations per clock):
+<table>
+<thead><tr><th>Step</th><th>Micro-operation</th></tr></thead>
+<tbody>
+<tr><td>T1</td><td>MAR &larr; PC</td></tr>
+<tr><td>T2</td><td>MBR &larr; M[MAR], PC &larr; PC+1</td></tr>
+<tr><td>T3</td><td>IR &larr; MBR</td></tr>
+<tr><td>T4</td><td>Decode opcode in Control Unit, generate control signals for execute cycle</td></tr>
+</tbody>
+</table>
+</li>
+<li><strong>Hardwired control unit:</strong> control signals generated by fixed combinational logic (decoders, PLA, sequence counter). Fast (no extra memory access), but difficult to modify &mdash; any change in instruction set requires redesigning logic. Typically used in RISC processors. <em>Advantage: speed.</em></li>
+<li><strong>Microprogrammed control unit:</strong> each machine instruction is implemented by a microprogram (sequence of microinstructions) stored in a control store/control memory; a micro-sequencer fetches and executes these. Easier to design, debug, and modify (just change the microprogram); naturally supports large/complex (CISC) instruction sets. <em>Advantage: flexibility and ease of modification.</em> Trade-off: slower due to the extra control-memory access per micro-step.</li>
+<li>Comparison summary: hardwired = rigid + fast + low-level design effort once built; microprogrammed = flexible + easier maintenance + one extra memory-access layer of overhead.</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">3.</span> <span class="marks">[20 marks]</span> Explain zero-, one-, two-, and three-address instruction formats using the expression <code>(A+B)*(C-D)</code> as an example. Explain any six addressing modes with an example and effective-address calculation for each.</p>
+<details class="ans"><summary>Model answer &mdash; key points</summary>
+<ul>
+<li><strong>Three-address</strong> (explicit source1, source2, destination &mdash; typical of RISC/compiler intermediate code):
+<ul><li><code>ADD T1, A, B</code> &nbsp;<code>SUB T2, C, D</code> &nbsp;<code>MUL T3, T1, T2</code></li></ul>
+</li>
+<li><strong>Two-address</strong> (result overwrites one operand):
+<ul><li><code>MOV T1, A</code> &nbsp;<code>ADD T1, B</code> &nbsp;<code>MOV T2, C</code> &nbsp;<code>SUB T2, D</code> &nbsp;<code>MUL T1, T2</code></li></ul>
+</li>
+<li><strong>One-address</strong> (implicit accumulator):
+<ul><li><code>LOAD A</code> &nbsp;<code>ADD B</code> &nbsp;<code>STORE T1</code> &nbsp;<code>LOAD C</code> &nbsp;<code>SUB D</code> &nbsp;<code>STORE T2</code> &nbsp;<code>LOAD T1</code> &nbsp;<code>MUL T2</code></li></ul>
+</li>
+<li><strong>Zero-address</strong> (stack machine, operands implicit &mdash; postfix <code>AB+CD-*</code>):
+<ul><li><code>PUSH A</code> &nbsp;<code>PUSH B</code> &nbsp;<code>ADD</code> &nbsp;<code>PUSH C</code> &nbsp;<code>PUSH D</code> &nbsp;<code>SUB</code> &nbsp;<code>MUL</code></li></ul>
+</li>
+<li>Addressing modes (EA = effective address):
+<table>
+<thead><tr><th>Mode</th><th>Example (8086-style)</th><th>EA / operand rule</th></tr></thead>
+<tbody>
+<tr><td>Immediate</td><td><code>MOV AX, 05H</code></td><td>Operand is embedded in the instruction itself</td></tr>
+<tr><td>Direct</td><td><code>MOV AX, [1234H]</code></td><td>EA = 1234H (address given directly)</td></tr>
+<tr><td>Register</td><td><code>MOV AX, BX</code></td><td>Operand is in a register; no memory reference</td></tr>
+<tr><td>Register Indirect</td><td><code>MOV AX, [BX]</code></td><td>EA = content of register BX</td></tr>
+<tr><td>Indexed</td><td><code>MOV AX, [SI+04H]</code></td><td>EA = SI + displacement</td></tr>
+<tr><td>Base + Indexed</td><td><code>MOV AX, [BX+SI+04H]</code></td><td>EA = BX + SI + displacement</td></tr>
+</tbody>
+</table>
+</li>
+<li>Note: fewer address fields (zero/one-address) &rarr; shorter, denser code but more instructions and memory traffic; more address fields (three-address) &rarr; fewer instructions but longer instruction words.</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">4.</span> <span class="marks">[20 marks]</span> Draw and explain the memory hierarchy of a computer system. Describe direct, associative, and set-associative cache mapping with a numerical example. What is virtual memory, and how does paging implement it?</p>
+<details class="ans"><summary>Model answer &mdash; key points</summary>
+<ul>
+<li>Hierarchy is driven by the <strong>principle of locality</strong> (temporal &mdash; recently used data reused soon; spatial &mdash; nearby addresses accessed together).</li>
+<li>Memory hierarchy diagram (fastest/smallest/costliest at top, to slowest/largest/cheapest at bottom):
+<table>
+<thead><tr><th>Level</th><th>Typical access time</th><th>Typical size</th><th>Managed by</th></tr></thead>
+<tbody>
+<tr><td>CPU Registers</td><td>&lt; 1 ns</td><td>Bytes&ndash;few hundred bytes</td><td>Compiler</td></tr>
+<tr><td>L1 Cache</td><td>~1 ns</td><td>32&ndash;64 KB</td><td>Hardware</td></tr>
+<tr><td>L2 / L3 Cache</td><td>3&ndash;15 ns</td><td>256 KB&ndash;several MB</td><td>Hardware</td></tr>
+<tr><td>Main Memory (DRAM)</td><td>50&ndash;100 ns</td><td>GBs</td><td>OS + Hardware (MMU)</td></tr>
+<tr><td>Secondary Storage (SSD/HDD)</td><td>&micro;s&ndash;ms</td><td>TBs</td><td>OS (file system)</td></tr>
+</tbody>
+</table>
+</li>
+<li><strong>Numeric example</strong> for mapping techniques: cache size = 512 KB, block size = 64 B &rarr; number of cache lines = 512K/64 = 8192.
+<ul>
+<li><strong>Direct mapping:</strong> memory block <em>b</em> can only go to line = <em>b</em> mod 8192; simple and cheap, but suffers high conflict-miss rate.</li>
+<li><strong>Fully associative:</strong> block can go to any of the 8192 lines; needs a comparator per line (content-addressable memory) and a replacement policy (LRU/FIFO/Random); best hit ratio, most expensive hardware.</li>
+<li><strong>Set-associative (k-way, e.g. 4-way):</strong> number of sets = 8192/4 = 2048; block goes to set = <em>b</em> mod 2048, and can occupy any of the 4 lines in that set &mdash; a practical compromise used by real processors.</li>
+</ul>
+</li>
+<li>Average memory access time = hit time + miss rate &times; miss penalty.</li>
+<li><strong>Virtual memory</strong> lets a program address more logical memory than physically available RAM, using secondary storage as a backing store; provides process isolation and simplifies linking/loading.</li>
+<li><strong>Paging:</strong> logical address = page number + offset; a per-process page table maps page &rarr; physical frame, with valid, dirty, and reference bits; TLB (translation look-aside buffer) caches recent translations to avoid a page-table walk on every access.</li>
+<li>Page fault handling: trap to OS &rarr; locate page on disk &rarr; select a victim frame via a replacement algorithm (LRU/FIFO/Optimal/Clock) &rarr; write back if dirty &rarr; load new page &rarr; update page table &rarr; restart instruction.</li>
+<li>Segmentation (logical, variable-sized units) vs. paging (fixed-size physical units) &mdash; many systems combine both (segmentation with paging).</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">5.</span> <span class="marks">[20 marks]</span> Compare RISC and CISC architectures in terms of instruction set size, addressing modes, instruction format, CPI, control unit design, compiler complexity, and pipelining efficiency. Name two commercial processors of each type.</p>
+<details class="ans"><summary>Model answer &mdash; key points</summary>
+<table>
+<thead><tr><th>Characteristic</th><th>RISC</th><th>CISC</th></tr></thead>
+<tbody>
+<tr><td>Instruction set size</td><td>Small, simple instructions</td><td>Large, includes complex/specialized instructions</td></tr>
+<tr><td>Instruction format</td><td>Fixed length, uniform encoding</td><td>Variable length</td></tr>
+<tr><td>Addressing modes</td><td>Few (mostly register + load/store)</td><td>Many, including memory-to-memory</td></tr>
+<tr><td>Execution model</td><td>Load-store architecture &mdash; only LOAD/STORE touch memory</td><td>Operands can be operated on directly in memory</td></tr>
+<tr><td>CPI (cycles per instruction)</td><td>Close to 1 (single-cycle, pipelined)</td><td>Varies, often &gt; 1 for complex instructions</td></tr>
+<tr><td>Control unit</td><td>Hardwired (fast)</td><td>Microprogrammed (flexible)</td></tr>
+<tr><td>Compiler role</td><td>Complex &mdash; compiler does more optimization/instruction scheduling</td><td>Simpler &mdash; hardware does more work per instruction</td></tr>
+<tr><td>Pipelining efficiency</td><td>High &mdash; uniform instruction length and few addressing modes simplify decode/fetch stages</td><td>Harder &mdash; variable length and complex operand fetch cause pipeline stalls</td></tr>
+<tr><td>Examples</td><td>ARM, MIPS, RISC-V, SPARC</td><td>Intel/AMD x86, VAX</td></tr>
+</tbody>
+</table>
+<ul>
+<li>Modern convergence: x86 (CISC) processors internally decode instructions into RISC-like micro-ops that are then pipelined/scheduled like a RISC core.</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">6.</span> <span class="marks">[20 marks]</span> a) Explain the internal architecture and register set of the 8086 microprocessor, including its segmented memory organization. b) Write an 8086 assembly program to add two 16-bit numbers and store the result. c) Explain the types of interrupts in 8086 with the structure of the interrupt vector table. d) Compare RAM, DRAM, PROM, and EPROM.</p>
+<details class="ans"><summary>Model answer &mdash; key points</summary>
+<ul>
+<li><strong>a) Architecture:</strong> 8086 is split into two functional units working concurrently &mdash;
+<ul>
+<li><strong>BIU</strong> (Bus Interface Unit): computes 20-bit physical address, fetches instructions into a 6-byte prefetch queue (an early pipelining technique), handles bus control signals.</li>
+<li><strong>EU</strong> (Execution Unit): decodes and executes instructions using the ALU, general registers, and flags; has no direct connection to the system bus.</li>
+</ul>
+</li>
+<li>Register set: general-purpose AX, BX, CX, DX (each splittable into 8-bit AH/AL etc.); pointer/index SP, BP, SI, DI; segment registers CS, DS, SS, ES; instruction pointer IP; FLAGS register (Carry, Parity, Auxiliary Carry, Zero, Sign, Trap, Interrupt-enable, Direction, Overflow).</li>
+<li>Segmented memory: physical address = Segment &times; 16 + Offset, giving a 20-bit (1 MB) address space from 16-bit registers; four segments (Code, Data, Stack, Extra), each up to 64 KB, may overlap.</li>
+<li><strong>b) Sample program</strong> (add two 16-bit numbers):
+<ul>
+<li><code>.MODEL SMALL</code></li>
+<li><code>.DATA</code></li>
+<li><code>NUM1 DW 1234H</code></li>
+<li><code>NUM2 DW 4321H</code></li>
+<li><code>RESULT DW ?</code></li>
+<li><code>.CODE</code></li>
+<li><code>MOV AX, @DATA</code></li>
+<li><code>MOV DS, AX</code></li>
+<li><code>MOV AX, NUM1</code></li>
+<li><code>ADD AX, NUM2</code></li>
+<li><code>MOV RESULT, AX</code></li>
+<li><code>MOV AH, 4CH</code></li>
+<li><code>INT 21H</code></li>
+</ul>
+</li>
+<li><strong>c) Interrupts:</strong> Hardware &mdash; maskable (INTR, can be disabled via CLI) and non-maskable (NMI, always serviced); Software &mdash; triggered by <code>INT n</code> instruction (e.g., <code>INT 21H</code> for DOS services); Internal/exceptions &mdash; divide-by-zero, single-step, overflow.</li>
+<li>Interrupt vector table: located at physical addresses 00000H&ndash;003FFH, 256 entries &times; 4 bytes each (2 bytes IP + 2 bytes CS), giving the address of each interrupt&rsquo;s service routine; e.g., Type 0 = divide error, Type 1 = single step, Type 2 = NMI, Type 3 = breakpoint, Types 32&ndash;255 = user/OS-defined (DOS/BIOS calls).</li>
+<li><strong>d) Memory device comparison:</strong>
+<table>
+<thead><tr><th>Type</th><th>Volatile</th><th>Write mechanism</th><th>Refresh needed</th><th>Erase method</th><th>Typical use</th></tr></thead>
+<tbody>
+<tr><td>RAM (SRAM)</td><td>Yes</td><td>Electrical, flip-flop cells</td><td>No</td><td>N/A (power loss clears it)</td><td>Cache memory</td></tr>
+<tr><td>DRAM</td><td>Yes</td><td>Electrical, capacitor cells</td><td>Yes (every few ms)</td><td>N/A</td><td>Main memory</td></tr>
+<tr><td>PROM</td><td>No</td><td>One-time electrical fuse programming</td><td>No</td><td>Cannot be erased</td><td>Fixed firmware, one-time use</td></tr>
+<tr><td>EPROM</td><td>No</td><td>Electrical programming</td><td>No</td><td>UV light (whole chip)</td><td>Reprogrammable firmware/BIOS (older systems)</td></tr>
+</tbody>
+</table>
+</li>
+</ul>
+</details>
+</div>
+
+<h3>Group &#2328; &mdash; Computer Architecture, Operating Systems, Data Structures &amp; Algorithms, and Database Design &amp; DBMS</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> <span class="marks">[20 marks]</span> Explain the five-stage instruction pipeline (IF, ID, EX, MEM, WB) with a timing diagram. Discuss structural, data, and control hazards and one technique to resolve each. Differentiate pipeline processors from array (vector) processors.</p>
+<details class="ans"><summary>Model answer &mdash; key points</summary>
+<ul>
+<li>Pipeline timing diagram for 5 instructions on a 5-stage pipeline (clock cycles across the top, instructions down the side):
+<table>
+<thead><tr><th>Instr.</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th></tr></thead>
+<tbody>
+<tr><td>I1</td><td>IF</td><td>ID</td><td>EX</td><td>MEM</td><td>WB</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>I2</td><td></td><td>IF</td><td>ID</td><td>EX</td><td>MEM</td><td>WB</td><td></td><td></td><td></td></tr>
+<tr><td>I3</td><td></td><td></td><td>IF</td><td>ID</td><td>EX</td><td>MEM</td><td>WB</td><td></td><td></td></tr>
+<tr><td>I4</td><td></td><td></td><td></td><td>IF</td><td>ID</td><td>EX</td><td>MEM</td><td>WB</td><td></td></tr>
+<tr><td>I5</td><td></td><td></td><td></td><td></td><td>IF</td><td>ID</td><td>EX</td><td>MEM</td><td>WB</td></tr>
+</tbody>
+</table>
+</li>
+<li>Ideal speedup for <em>n</em> instructions over <em>k</em> stages &asymp; nk / (k + n &minus; 1), approaching <em>k</em> for large <em>n</em> &mdash; but hazards prevent this ideal.</li>
+<li><strong>Structural hazard:</strong> resource conflict, e.g. one memory port needed for both instruction fetch and data access in the same cycle. <em>Fix:</em> separate instruction and data caches (Harvard-style split at L1).</li>
+<li><strong>Data hazard</strong> (RAW &mdash; read-after-write): an instruction needs a result not yet written back by a prior instruction still in the pipeline. <em>Fix:</em> operand forwarding/bypassing, or compiler instruction reordering, or stalling.</li>
+<li><strong>Control hazard:</strong> branch outcome not known until later stage, so wrong instructions may be fetched. <em>Fix:</em> branch prediction with a branch target buffer, or delayed branch slots, or speculative execution with rollback.</li>
+<li><strong>Pipeline processor:</strong> exploits temporal parallelism &mdash; overlaps different stages of successive, different instructions on one datapath.</li>
+<li><strong>Array/vector processor:</strong> exploits spatial/data parallelism (SIMD) &mdash; a single instruction is applied simultaneously to multiple data elements across many ALUs/functional units (e.g., vector supercomputers, GPUs).</li>
+<li>Reference to Flynn&rsquo;s taxonomy: SISD (scalar pipeline), SIMD (array processor), MISD (rare), MIMD (multiprocessors).</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">2.</span> <span class="marks">[20 marks]</span> Differentiate multiprogramming from time-sharing systems. For the processes below, draw the Gantt chart and compute average waiting time and turnaround time using (a) FCFS, (b) SJF (non-preemptive), and (c) Round Robin (quantum = 4).</p>
+<p class="qtext"><em>P1: Arrival 0, Burst 5 &nbsp;|&nbsp; P2: Arrival 1, Burst 3 &nbsp;|&nbsp; P3: Arrival 2, Burst 8 &nbsp;|&nbsp; P4: Arrival 3, Burst 6</em></p>
+<details class="ans"><summary>Model answer &mdash; key points</summary>
+<ul>
+<li><strong>Multiprogramming:</strong> several jobs kept resident in memory; CPU switches to another job whenever the running one blocks on I/O &mdash; goal is to maximize CPU utilization/throughput; no guarantee of quick response.</li>
+<li><strong>Time-sharing:</strong> a preemptive extension of multiprogramming using a fixed time quantum, giving each interactive user the illusion of a dedicated machine &mdash; goal is fast response time.</li>
+<li><strong>(a) FCFS</strong> (run order P1,P2,P3,P4):
+<table><thead><tr><th>Segment</th><th>Start</th><th>End</th></tr></thead><tbody>
+<tr><td>P1</td><td>0</td><td>5</td></tr><tr><td>P2</td><td>5</td><td>8</td></tr><tr><td>P3</td><td>8</td><td>16</td></tr><tr><td>P4</td><td>16</td><td>22</td></tr>
+</tbody></table>
+Turnaround: P1=5, P2=7, P3=14, P4=19 &rarr; avg = 11.25. Waiting: P1=0, P2=4, P3=6, P4=13 &rarr; avg = 5.75.
+</li>
+<li><strong>(b) SJF (non-preemptive):</strong>
+<table><thead><tr><th>Segment</th><th>Start</th><th>End</th></tr></thead><tbody>
+<tr><td>P1</td><td>0</td><td>5</td></tr><tr><td>P2</td><td>5</td><td>8</td></tr><tr><td>P4</td><td>8</td><td>14</td></tr><tr><td>P3</td><td>14</td><td>22</td></tr>
+</tbody></table>
+Turnaround: P1=5, P2=7, P4=11, P3=20 &rarr; avg = 10.75. Waiting: P1=0, P2=4, P4=5, P3=12 &rarr; avg = 5.25. (Lower average waiting time than FCFS, but risks starvation of long jobs.)
+</li>
+<li><strong>(c) Round Robin, quantum = 4:</strong>
+<table><thead><tr><th>Segment</th><th>Start</th><th>End</th></tr></thead><tbody>
+<tr><td>P1 (rem 1)</td><td>0</td><td>4</td></tr><tr><td>P2 (done)</td><td>4</td><td>7</td></tr><tr><td>P3 (rem 4)</td><td>7</td><td>11</td></tr><tr><td>P4 (rem 2)</td><td>11</td><td>15</td></tr><tr><td>P1 (done)</td><td>15</td><td>16</td></tr><tr><td>P3 (done)</td><td>16</td><td>20</td></tr><tr><td>P4 (done)</td><td>20</td><td>22</td></tr>
+</tbody></table>
+Completion: P2=7, P1=16, P3=20, P4=22. Turnaround: P1=16, P2=6, P3=18, P4=19 &rarr; avg = 14.75. Waiting: P1=11, P2=3, P3=10, P4=13 &rarr; avg = 9.25.
+</li>
+<li>Interpretation: FCFS is simple but suffers the convoy effect; SJF minimizes average waiting time but is non-preemptive here and needs burst-time prediction; RR gives the best response time for interactive/time-sharing use at the cost of higher average waiting/turnaround due to context-switch overhead and quantum size sensitivity.</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">3.</span> <span class="marks">[20 marks]</span> a) Define the critical section problem and its three required conditions. b) Explain the four necessary conditions for deadlock, and illustrate how the Banker&rsquo;s algorithm avoids deadlock using a worked example. c) Compare shared-memory and message-passing IPC.</p>
+<details class="ans"><summary>Model answer &mdash; key points</summary>
+<ul>
+<li><strong>a) Critical section</strong> conditions: Mutual exclusion (only one process in the critical section at a time), Progress (a process not in its critical section cannot block others&rsquo; decision to enter), Bounded waiting (a limit on how long a process waits before entry). Implemented via semaphores: <code>wait(S)</code>/<code>signal(S)</code> (P/V operations); binary semaphore = mutex lock, counting semaphore = resource count.</li>
+<li><strong>b) Deadlock&rsquo;s four necessary conditions:</strong> Mutual exclusion, Hold-and-wait, No preemption, Circular wait &mdash; all four must hold simultaneously.</li>
+<li>Handling strategies: Prevention (negate one condition), Avoidance (Banker&rsquo;s algorithm), Detection and recovery, or Ignore (the &ldquo;ostrich algorithm,&rdquo; used by most UNIX/Linux systems).</li>
+<li><strong>Banker&rsquo;s algorithm worked example</strong> &mdash; 5 processes, 3 resource types (A,B,C) with total instances 10,5,7:
+<table>
+<thead><tr><th>Process</th><th>Allocation (A,B,C)</th><th>Max (A,B,C)</th><th>Need = Max&minus;Alloc</th></tr></thead>
+<tbody>
+<tr><td>P0</td><td>0,1,0</td><td>7,5,3</td><td>7,4,3</td></tr>
+<tr><td>P1</td><td>2,0,0</td><td>3,2,2</td><td>1,2,2</td></tr>
+<tr><td>P2</td><td>3,0,2</td><td>9,0,2</td><td>6,0,0</td></tr>
+<tr><td>P3</td><td>2,1,1</td><td>2,2,2</td><td>0,1,1</td></tr>
+<tr><td>P4</td><td>0,0,2</td><td>4,3,3</td><td>4,3,1</td></tr>
+</tbody>
+</table>
+Available = (3,3,2). Running the safety algorithm (find a process whose Need &le; Available, add its Allocation back to Available, repeat) yields the safe sequence <strong>&lt;P1, P3, P4, P0, P2&gt;</strong> &mdash; so the current state is safe and no deadlock will occur if requests are granted in this order.
+</li>
+<li><strong>c) IPC comparison:</strong> Shared memory &mdash; processes map a common memory region; very fast (no kernel involvement after setup) but requires explicit synchronization (semaphores/mutexes) by the programmer. Message passing &mdash; kernel-mediated send/receive (pipes, message queues, sockets, RPC); simpler to reason about and works across machines (distributed systems), but slower due to system-call/copy overhead.</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">4.</span> <span class="marks">[20 marks]</span> Compare the process management and file system design of UNIX/Linux and Windows. Explain the inode structure in a UNIX/Linux file system and how directories are implemented.</p>
+<details class="ans"><summary>Model answer &mdash; key points</summary>
+<ul>
+<li><strong>Process creation:</strong> UNIX/Linux uses <code>fork()</code> (duplicate the calling process, copy-on-write) followed by <code>exec()</code> (replace image) &mdash; two-step, flexible model. Windows uses a single <code>CreateProcess()</code> call with no implicit duplication of the parent&rsquo;s address space.</li>
+<li>Process state transitions (draw as a diagram): New &rarr; Ready &rarr; Running &rarr; (Waiting &harr; Running) &rarr; Terminated, with Ready&harr;Running via scheduler dispatch/preemption and Running&rarr;Waiting on I/O or event wait.</li>
+<li><strong>Scheduling:</strong> Linux uses the Completely Fair Scheduler (CFS), which keeps runnable tasks in a red-black tree ordered by virtual runtime; Windows uses a priority-based, preemptive, multilevel feedback scheduler.</li>
+<li><strong>File systems comparison:</strong>
+<table>
+<thead><tr><th>Aspect</th><th>Linux (ext4)</th><th>Windows (NTFS)</th></tr></thead>
+<tbody>
+<tr><td>Metadata structure</td><td>inode per file</td><td>Master File Table (MFT) record per file</td></tr>
+<tr><td>Journaling</td><td>Yes (metadata/data journal)</td><td>Yes ($LogFile)</td></tr>
+<tr><td>Permissions</td><td>Owner/Group/Other rwx bits + ACLs</td><td>Per-user/group ACLs</td></tr>
+<tr><td>Case sensitivity</td><td>Case-sensitive</td><td>Case-preserving, case-insensitive</td></tr>
+</tbody>
+</table>
+</li>
+<li><strong>Inode contents:</strong> inode number, file type and permission bits, owner/group ID, timestamps (access/modify/change), file size, link count, and pointers to data blocks &mdash; typically direct block pointers plus single, double, and triple indirect pointers to address large files.</li>
+<li><strong>Directory implementation:</strong> a directory is itself a special file containing a table of {filename &rarr; inode number} pairs; the hierarchical namespace is built by nesting such directory files. A <em>hard link</em> is an extra directory entry pointing to the same inode (same data, deleted only when link count reaches zero); a <em>symbolic link</em> is a separate small file storing a path string to the target.</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">5.</span> <span class="marks">[20 marks]</span> Compare arrays, linked lists, stacks, and queues in terms of operation complexity. Explain tree traversal (inorder, preorder, postorder, level-order) with an example, and differentiate BFS from DFS on a graph. Explain the heap data structure and its use in a priority queue. Explain recursion using the factorial example and its relation to the system stack.</p>
+<details class="ans"><summary>Model answer &mdash; key points</summary>
+<ul>
+<li>Linear structure complexity comparison:
+<table>
+<thead><tr><th>Structure</th><th>Access</th><th>Insert</th><th>Delete</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td>Array</td><td>O(1)</td><td>O(n) (shifting)</td><td>O(n)</td><td>Contiguous, fixed size</td></tr>
+<tr><td>Linked list</td><td>O(n)</td><td>O(1) at known node</td><td>O(1) at known node</td><td>Dynamic size, extra pointer overhead</td></tr>
+<tr><td>Stack</td><td>O(n)</td><td>O(1) push</td><td>O(1) pop</td><td>LIFO</td></tr>
+<tr><td>Queue</td><td>O(n)</td><td>O(1) enqueue</td><td>O(1) dequeue</td><td>FIFO</td></tr>
+</tbody>
+</table>
+</li>
+<li>Example binary tree (root A, children B, C; B&rsquo;s children D, E):
+<ul><li>A
+<ul><li>B
+<ul><li>D</li><li>E</li></ul>
+</li><li>C</li></ul>
+</li></ul>
+Traversals: Preorder (root-L-R): A,B,D,E,C. Inorder (L-root-R): D,B,E,A,C. Postorder (L-R-root): D,E,B,C,A. Level-order (BFS on tree, using a queue): A,B,C,D,E.
+</li>
+<li><strong>BFS vs DFS:</strong> BFS explores level by level using a queue &mdash; finds shortest path in unweighted graphs, O(V+E). DFS explores as deep as possible before backtracking, using a stack or recursion &mdash; useful for topological sort, cycle detection, connected components, O(V+E). Graphs represented via adjacency list (space O(V+E), good for sparse graphs) or adjacency matrix (O(V&sup2;), O(1) edge lookup).</li>
+<li><strong>Heap:</strong> a complete binary tree stored in an array (parent at <em>i</em>, children at 2i+1, 2i+2) satisfying the min-heap or max-heap property. <code>heapify</code> is O(log n); <code>build-heap</code> from an unordered array is O(n); used to implement a <strong>priority queue</strong> where <code>insert</code> and <code>extract-min/max</code> both run in O(log n) &mdash; basis of heap sort and Dijkstra&rsquo;s/Prim&rsquo;s algorithms.</li>
+<li><strong>Recursion:</strong> a function calling itself with a base case (e.g., <code>factorial(0)=1</code>) and a recursive case (<code>factorial(n)=n*factorial(n-1)</code>). Each call pushes an activation record (return address, parameters, local variables) onto the system/call stack; excessive depth causes stack overflow. Fibonacci computed naively has a recursion tree with O(2&#8319;) calls due to repeated subproblems; memoization/dynamic programming reduces this to O(n). Tail-recursive forms can be optimized by some compilers into iteration.</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">6.</span> <span class="marks">[20 marks]</span> Compare the time/space complexity and stability of Bubble, Insertion, Selection, Merge, Quick, and Heap sort. Differentiate linear and binary search. Convert the infix expression <code>((A+B)*C-(D-E))/(F+G)</code> to postfix and prefix, and evaluate the postfix expression step by step using a stack for A=2, B=3, C=4, D=5, E=1, F=2, G=1.</p>
+<details class="ans"><summary>Model answer &mdash; key points</summary>
+<table>
+<thead><tr><th>Algorithm</th><th>Best</th><th>Average</th><th>Worst</th><th>Space</th><th>Stable</th></tr></thead>
+<tbody>
+<tr><td>Bubble</td><td>O(n)</td><td>O(n&sup2;)</td><td>O(n&sup2;)</td><td>O(1)</td><td>Yes</td></tr>
+<tr><td>Insertion</td><td>O(n)</td><td>O(n&sup2;)</td><td>O(n&sup2;)</td><td>O(1)</td><td>Yes</td></tr>
+<tr><td>Selection</td><td>O(n&sup2;)</td><td>O(n&sup2;)</td><td>O(n&sup2;)</td><td>O(1)</td><td>No</td></tr>
+<tr><td>Merge</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n)</td><td>Yes</td></tr>
+<tr><td>Quick</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n&sup2;)</td><td>O(log n)</td><td>No</td></tr>
+<tr><td>Heap</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n log n)</td><td>O(1)</td><td>No</td></tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Linear search:</strong> O(n), works on unsorted data, checks elements one by one. <strong>Binary search:</strong> O(log n), requires sorted data, repeatedly halves the search interval (divide and conquer).</li>
+<li><strong>Infix &rarr; Postfix</strong> (via operator-precedence stack / Shunting-yard): <code>AB+C*DE--FG+/</code></li>
+<li><strong>Infix &rarr; Prefix</strong> (reverse, convert, reverse): <code>/-*+ABC-DE+FG</code></li>
+<li><strong>Postfix evaluation</strong> for A=2,B=3,C=4,D=5,E=1,F=2,G=1 (stack contents shown after each step):
+<table>
+<thead><tr><th>Token</th><th>Action</th><th>Stack after</th></tr></thead>
+<tbody>
+<tr><td>A, B</td><td>push 2, push 3</td><td>2, 3</td></tr>
+<tr><td>+</td><td>pop 3,2 &rarr; push 5</td><td>5</td></tr>
+<tr><td>C</td><td>push 4</td><td>5, 4</td></tr>
+<tr><td>*</td><td>pop 4,5 &rarr; push 20</td><td>20</td></tr>
+<tr><td>D, E</td><td>push 5, push 1</td><td>20, 5, 1</td></tr>
+<tr><td>-</td><td>pop 1,5 &rarr; push 4</td><td>20, 4</td></tr>
+<tr><td>-</td><td>pop 4,20 &rarr; push 16</td><td>16</td></tr>
+<tr><td>F, G</td><td>push 2, push 1</td><td>16, 2, 1</td></tr>
+<tr><td>+</td><td>pop 1,2 &rarr; push 3</td><td>16, 3</td></tr>
+<tr><td>/</td><td>pop 3,16 &rarr; push 16/3</td><td>5.33</td></tr>
+</tbody>
+</table>
+Result = 16/3 &asymp; 5.33, matching direct evaluation: ((2+3)*4&minus;(5&minus;1))/(2+1) = (20&minus;4)/3 = 16/3.
+</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">7.</span> <span class="marks">[20 marks]</span> For a Library Management System: a) Draw an ER diagram identifying entities, attributes, and relationships. b) Draw a context (level-0) and level-1 DFD. c) Explain 1NF, 2NF, 3NF, and BCNF with a worked normalization example. d) Write SQL for table creation with constraints and a join query with aggregation. e) Explain keys and ACID properties in an RDBMS. f) Explain database security measures. g) Explain disaster recovery mechanisms.</p>
+<details class="ans"><summary>Model answer &mdash; key points</summary>
+<ul>
+<li><strong>a) ER diagram</strong> (Chen notation: rectangle = entity, diamond = relationship, ellipse = attribute; underline = primary key):
+<ul>
+<li><strong>MEMBER</strong> (MemberID <em>PK</em>, Name, Address, Phone) &mdash; <em>BORROWS</em> (1:N) &rarr; <strong>LOAN</strong></li>
+<li><strong>BOOK</strong> (ISBN <em>PK</em>, Title, AuthorID <em>FK</em>, PublisherID <em>FK</em>, CopiesAvailable) &mdash; participates in <em>BORROWS</em> (M:N with MEMBER, resolved via <strong>LOAN</strong> junction entity: LoanID PK, ISBN FK, MemberID FK, IssueDate, DueDate, ReturnDate)</li>
+<li><strong>AUTHOR</strong> (AuthorID PK, Name) &mdash; <em>WRITES</em> (1:N) &rarr; BOOK</li>
+<li><strong>PUBLISHER</strong> (PublisherID PK, Name, Address) &mdash; <em>PUBLISHES</em> (1:N) &rarr; BOOK</li>
+</ul>
+</li>
+<li><strong>b) DFD:</strong> Context diagram &mdash; external entities <em>Member</em> and <em>Librarian</em> exchange data flows (Issue Request, Return Request, Catalog Update) with a single process <em>0: Library System</em>. Level-1 decomposes this into processes <em>1: Manage Membership</em>, <em>2: Issue/Return Book</em>, <em>3: Maintain Catalog</em>, each reading/writing data stores <em>D1: Members</em>, <em>D2: Books</em>, <em>D3: Loans</em>.</li>
+<li><strong>c) Normalization</strong> &mdash; anomalies addressed: insertion, deletion, and update anomalies caused by redundancy.
+<table>
+<thead><tr><th>Stage</th><th>Rule</th><th>Action in example</th></tr></thead>
+<tbody>
+<tr><td>1NF</td><td>Atomic values, no repeating groups</td><td>Split a multi-valued &ldquo;Courses&rdquo; column into one row per (StudentID, CourseID)</td></tr>
+<tr><td>2NF</td><td>1NF + no partial dependency on part of a composite key</td><td>Move StudentName (depends only on StudentID, not on CourseID) into a separate Student table</td></tr>
+<tr><td>3NF</td><td>2NF + no transitive dependency of non-key on non-key</td><td>Move Instructor (depends on CourseID, not directly on the whole key) into a Course table</td></tr>
+<tr><td>BCNF</td><td>For every functional dependency X&rarr;Y, X must be a candidate key</td><td>If CourseID&rarr;Instructor but Instructor is not part of any candidate key situation causing anomalies, split further so every determinant is a key</td></tr>
+</tbody>
+</table>
+</li>
+<li><strong>d) SQL:</strong>
+<ul>
+<li><code>CREATE TABLE BOOK (ISBN CHAR(13) PRIMARY KEY, Title VARCHAR(100) NOT NULL, AuthorID INT, FOREIGN KEY(AuthorID) REFERENCES AUTHOR(AuthorID));</code></li>
+<li><code>SELECT A.Name, COUNT(B.ISBN) AS TotalBooks FROM AUTHOR A JOIN BOOK B ON A.AuthorID = B.AuthorID GROUP BY A.Name HAVING COUNT(B.ISBN) &gt; 5;</code></li>
+<li><code>SELECT Title FROM BOOK WHERE AuthorID IN (SELECT AuthorID FROM AUTHOR WHERE Name = 'Tribhuvan');</code></li>
+</ul>
+</li>
+<li><strong>e) Keys:</strong> Candidate key (minimal uniquely-identifying attribute set), Primary key (chosen candidate key), Composite key (multiple attributes together), Foreign key (references another table&rsquo;s primary key, enforcing referential integrity), Entity integrity (primary key cannot be null). <strong>ACID:</strong> Atomicity (all-or-nothing transaction), Consistency (DB moves between valid states), Isolation (concurrent transactions don&rsquo;t interfere &mdash; enforced via locking/timestamp protocols), Durability (committed changes survive failures, via write-ahead logging).</li>
+<li><strong>f) DB security:</strong> authentication (verifying user identity) and authorization (GRANT/REVOKE privileges, role-based access control); view-based access restriction; encryption of data at rest and in transit; parameterized queries/prepared statements to prevent SQL injection; auditing/logging of access; least-privilege principle.</li>
+<li><strong>g) Disaster recovery:</strong> backup strategies &mdash; full, incremental, and differential backups; RAID levels (RAID 1 mirroring, RAID 5 striping with parity) for disk fault tolerance; database replication (master-slave, log shipping) for a standby copy; defining Recovery Point Objective (RPO &mdash; acceptable data loss) and Recovery Time Objective (RTO &mdash; acceptable downtime); periodic restore testing.</li>
+</ul>
+</details>
+</div>
+<h3>IT Development and National ICT Policy in Nepal</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> <span class="marks">[20 marks]</span> Discuss the present state of Information Technology development in Nepal. Highlight the major issues and challenges hindering IT growth, and suggest measures to overcome them.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li><strong>Framing:</strong> Nepal has moved from isolated automation to a broadband-and-mobile-driven digital economy, but progress is uneven across geography, sector and income group. Answer should balance achievements against structural constraints.</li>
+<li><strong>Achievements / present state:</strong> high mobile and internet penetration (mobile broadband being the dominant access mode); expansion of the Nepal Telecom optical fibre backbone and the Broadband Master Plan; growth of e-banking, mobile wallets and QR payments; emergence of an IT/ITES-BPO export sector; e-Government initiatives (Nagarik App, online PAN/company registration, national ID) and the <em>Digital Nepal Framework (2019)</em>.</li>
+<li><strong>Issues and challenges:</strong>
+<ul>
+<li><strong>Infrastructure:</strong> unreliable electricity (historically load-shedding), the rural–urban digital divide, high cost and last-mile gaps in remote/hill and mountain districts.</li>
+<li><strong>Human capital:</strong> shortage of skilled professionals, brain drain of IT graduates abroad, weak industry–academia linkage, low digital literacy of the general public.</li>
+<li><strong>Policy and legal:</strong> fragmented implementation, weak enforcement, an outdated cyber-law regime (the Electronic Transactions Act, 2063 is now dated) and a pending, contested IT Bill.</li>
+<li><strong>Institutional:</strong> overlapping mandates across ministries/agencies, weak project execution, dependence on donor funding.</li>
+<li><strong>Cybersecurity and trust:</strong> rising cyber-fraud, limited incident-response capacity, weak data-protection framework.</li>
+<li><strong>Financial and market:</strong> limited domestic venture capital, small market size, forex/payment-gateway constraints for exporters and start-ups.</li>
+</ul></li>
+<li><strong>Measures / way forward:</strong> reliable power and universal broadband via the Rural Telecommunication Development Fund; modern data-protection and cyber-security laws; a functional CERT and national data centre; skills development, digital-literacy campaigns and start-up/BPO incentives; genuine interoperable e-Government and Government Enterprise Architecture; public–private partnership and a regulatory sandbox for innovation.</li>
+<li><strong>Conclusion:</strong> IT is a cross-cutting enabler; sustained investment in infrastructure, people and a coherent legal framework is essential to realise the vision of a knowledge-based society.</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">2.</span> <span class="marks">[20 marks]</span> Explain the vision, objectives and key thematic areas of the <strong>National Information and Communication Technology (ICT) Policy of Nepal</strong>. How does the <strong>Digital Nepal Framework</strong> operationalise this policy direction?</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li><strong>Instrument:</strong> The prevailing policy is the <em>National ICT Policy, 2015 (2072 BS)</em>, which succeeded the earlier IT Policy 2000 and IT Policy 2010. <em>(Confirm exact year/edition from official document.)</em></li>
+<li><strong>Vision:</strong> to transform Nepal into an information- and knowledge-based society and economy, using ICT as a driver of good governance, socio-economic development and inclusive growth.</li>
+<li><strong>Objectives (themes):</strong>
+<ul>
+<li>Universal, affordable broadband access and robust ICT infrastructure.</li>
+<li>e-Government and improved public service delivery (transparency, efficiency).</li>
+<li>Promotion of the ICT/ITES industry, exports, employment and entrepreneurship.</li>
+<li>ICT in education, health and agriculture (mainstreaming ICT across sectors).</li>
+<li>Human-resource development and digital literacy.</li>
+<li>Cyber-security, legal framework, data protection and consumer trust.</li>
+<li>Bridging the digital divide (gender, geography, disability, income).</li>
+</ul></li>
+<li><strong>Indicative targets:</strong> broadband penetration goals, raising ICT's contribution to GDP and employment, and expanded e-service coverage. <em>(Confirm specific numeric targets from official document.)</em></li>
+<li><strong>Digital Nepal Framework (2019):</strong> the implementation roadmap that translates policy into concrete initiatives — organised around eight sectors (Digital Foundation, Agriculture, Health, Education, Energy, Tourism, Finance and Urban Infrastructure) with a set of prioritised digital initiatives (commonly cited as ~80). <em>(Confirm exact number of sectors/initiatives from official document.)</em></li>
+<li><strong>Enablers referenced:</strong> Government Enterprise Architecture, national ID, interoperability, national data centre, payment digitisation and PPP.</li>
+<li><strong>Critical appraisal:</strong> strong vision but implementation lags — coordination gaps, funding, and the need to update supporting laws (data protection, cyber-law).</li>
+</ul>
+</details>
+</div>
+
+<h3>Legal Framework for Electronic and Secured Transactions</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> <span class="marks">[20 marks]</span> The <strong>Electronic Transactions Act, 2063</strong> is often described as Nepal's principal "cyber law." Discuss its objectives, salient provisions, institutional machinery and the categories of cyber-offences it addresses. Note any limitations of the Act.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li><strong>Identity and year:</strong> The <em>Electronic Transactions Act, 2063</em> (commonly cited as 2008 AD) is Nepal's foundational statute for electronic records, digital signatures and cyber-offences. It is supported by the Electronic Transactions Rules. <em>(Confirm exact enactment/commencement date from official document.)</em></li>
+<li><strong>Objectives / purpose:</strong>
+<ul>
+<li>Grant legal recognition and validity to electronic records, transactions and digital signatures (functional equivalence with paper and handwritten signatures).</li>
+<li>Ensure reliability, security and authenticity of electronic communication.</li>
+<li>Regulate the generation, authentication and retention of electronic records.</li>
+<li>Prevent and punish computer-related crime.</li>
+</ul></li>
+<li><strong>Salient provisions:</strong>
+<ul>
+<li><strong>Digital signatures</strong> based on asymmetric cryptography / PKI; conditions for a valid digital signature and secure electronic record.</li>
+<li><strong>Certifying Authorities (CAs):</strong> licensing, functions, duties and liabilities; issuance, suspension and revocation of digital certificates.</li>
+<li><strong>Controller of Certifying Authorities (Office of the Controller of Certification):</strong> licenses and supervises CAs and acts as the root of trust / regulator.</li>
+<li>Rules on subscriber duties, retention of records and admissibility of electronic evidence.</li>
+</ul></li>
+<li><strong>Cyber-offences addressed (categories):</strong> unauthorised access / hacking; damaging or altering computer source code and data; publication of illegal or objectionable material in electronic form; breach of confidentiality/privacy; computer fraud and forgery; with prescribed imprisonment and/or fines. <em>(Do not quote specific section numbers unless confirmed from the official text.)</em></li>
+<li><strong>Adjudication machinery:</strong> establishment of an <strong>Information Technology Tribunal</strong> and an <strong>IT Appellate Tribunal</strong> to hear disputes and offences under the Act.</li>
+<li><strong>Limitations / criticism:</strong> drafted before modern social media, cloud, data-protection and fintech realities; the controversial "objectionable material" provision (often cited as Section 47) has been criticised on free-speech grounds; no comprehensive data-protection regime; enforcement and forensic capacity are weak; a replacement IT Bill has long been pending.</li>
+<li><strong>Relevance to banking:</strong> legal basis for e-banking contracts, digital signatures on instructions, and admissibility of electronic transaction records in disputes.</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">2.</span> <span class="marks">[20 marks]</span> Write explanatory notes on the <strong>Secured Transactions Act, 2063</strong>: (a) its purpose and scope; and (b) the role of the electronic secured-transactions (collateral) registry and its significance for the banking sector.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li><strong>Identity and year:</strong> The <em>Secured Transactions Act, 2063</em> (cited as 2006 AD) governs the creation, perfection, priority and enforcement of security interests, chiefly over <strong>movable property</strong>. <em>(Confirm exact enactment/commencement date from official document.)</em></li>
+<li><strong>(a) Purpose and scope:</strong>
+<ul>
+<li>Enable a wide range of movable assets — inventory, receivables, equipment, agricultural produce, intangibles — to be pledged as loan collateral, not just land/buildings.</li>
+<li>Provide a clear legal framework for creating a security interest (security agreement), perfecting it (registration), determining priority among competing creditors, and enforcing it on default.</li>
+<li>Broaden access to credit, especially for SMEs and borrowers lacking real estate.</li>
+</ul></li>
+<li><strong>(b) Electronic collateral registry:</strong>
+<ul>
+<li>The Act underpins a centralised, electronic, notice-based <strong>Secured Transactions Registry</strong> where security interests over movable property are recorded and searched online. <em>(Confirm the operating agency/office from official document.)</em></li>
+<li><strong>Functions:</strong> a public, searchable database that gives constructive notice of existing charges, establishes priority by time of registration, and allows lenders to verify whether an asset is already encumbered.</li>
+</ul></li>
+<li><strong>Significance for banking / IT relevance:</strong>
+<ul>
+<li>Reduces risk of double-financing and fraud on the same collateral.</li>
+<li>Improves credit risk assessment and lowers non-performing loans; complements Credit Information Bureau data.</li>
+<li>An IT-enabled public infrastructure — demonstrates how digital registries support financial-sector efficiency and financial inclusion.</li>
+</ul></li>
+<li><strong>Note:</strong> distinguish clearly from the Electronic Transactions Act — this Act concerns collateral/security law, while the digital registry is the IT dimension examined here.</li>
+</ul>
+</details>
+</div>
+
+<h3>NRB IT Policy, IT Guidelines and IT Governance in Banking</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> <span class="marks">[20 marks]</span> Nepal Rastra Bank (NRB) regulates the use of technology by banks and financial institutions (BFIs). Explain the objectives and major thematic areas of the <strong>NRB IT Policy / IT Guidelines</strong>, and describe how they promote IT governance, information security and business continuity in BFIs.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li><strong>Context:</strong> NRB, as regulator, issues IT-related directives to ensure that BFIs deploy technology safely, that customer data and funds are protected, and that systemic and operational risk is controlled. Relevant instruments include the NRB <em>Information Technology Guidelines</em> (first issued around 2012 and subsequently revised), IT-related provisions in the NRB <strong>Unified Directives</strong>, and cyber-resilience guidance. <em>(Confirm current edition/year from official NRB document.)</em></li>
+<li><strong>Objectives:</strong> establish minimum IT-governance and security standards; protect confidentiality, integrity and availability of information; ensure resilience and continuity of banking services; safeguard consumers; and manage technology and outsourcing risk.</li>
+<li><strong>Major thematic areas:</strong>
+<ul>
+<li><strong>IT governance:</strong> board and senior-management responsibility, an IT steering committee, IT strategy aligned to business, and defined roles (e.g., CISO/IT security function).</li>
+<li><strong>IT operations and risk management:</strong> change management, capacity management, incident management, and an IT risk-assessment framework.</li>
+<li><strong>Information security:</strong> access control, segregation of duties, encryption, patch and vulnerability management, network security, and periodic security audits / penetration testing.</li>
+<li><strong>Business continuity and disaster recovery:</strong> BCP/DR plans, backup, a disaster-recovery site, and defined RTO/RPO with periodic drills.</li>
+<li><strong>Outsourcing and vendor management:</strong> due diligence, contractual controls and monitoring of third parties/cloud.</li>
+<li><strong>Electronic / digital banking:</strong> controls for card, mobile, internet banking and payment channels; customer authentication; fraud monitoring.</li>
+<li><strong>Audit and compliance:</strong> internal IT audit, log management and reporting of major incidents to NRB.</li>
+</ul></li>
+<li><strong>How governance/security/continuity are promoted:</strong> by making the board accountable, mandating a security organisation and controls, requiring independent assurance (audits/VAPT), and enforcing tested BCP/DR so services survive disruption.</li>
+<li><strong>Related regime:</strong> the <em>Payment and Settlement Act, 2075 (2019)</em> and its bylaws, and NRB's Payment Systems Oversight, complement the IT Guidelines for payment-system participants.</li>
+<li><strong>Conclusion:</strong> the guidelines convert good-practice frameworks (ISO 27001, COBIT/ITIL, PCI-DSS concepts) into supervisory requirements tailored to Nepal's BFIs.</li>
+</ul>
+</details>
+</div>
+
+<h3>Payment Systems in Nepal</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> <span class="marks">[20 marks]</span> Describe the electronic payment and settlement infrastructure of Nepal. In your answer, distinguish clearly between <strong>NCHL-ECC (Electronic Cheque Clearing)</strong>, <strong>NCHL-IPS (Interbank Payment System)</strong>, <strong>connectIPS</strong> and <strong>RTGS</strong>, including who operates each and the type of transactions each is suited to.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li><strong>Overview:</strong> Nepal's retail payment infrastructure is largely operated by <strong>Nepal Clearing House Limited (NCHL)</strong> — established in 2008 and promoted by NRB and BFIs — while the large-value system (RTGS) is operated by <strong>NRB</strong>. NRB is the overall regulator and settlement bank.</li>
+<li><strong>NCHL-ECC (Electronic Cheque Clearing):</strong>
+<ul>
+<li>Cheque-truncation / image-based clearing that replaced physical exchange of cheques.</li>
+<li>Uses MICR data and cheque images; operates on a <strong>deferred net settlement</strong> basis in clearing sessions.</li>
+<li>Suited to: paper-cheque based payments cleared electronically.</li>
+</ul></li>
+<li><strong>NCHL-IPS (Interbank Payment System):</strong>
+<ul>
+<li>Account-to-account electronic fund transfer (credit transfers, direct debit, bulk/salary, dividend, government payments).</li>
+<li>Batch / deferred net settlement; not instantaneous.</li>
+<li>Suited to: recurring, bulk and non-urgent account-based transfers.</li>
+</ul></li>
+<li><strong>connectIPS:</strong>
+<ul>
+<li>A consumer-facing e-payment system/app built on NCHL infrastructure that links a customer's bank account(s) directly for near-real-time retail payments (fund transfer, utility, government revenue/taxes, merchant payments).</li>
+<li>Suited to: individual/retail self-service payments without a wallet float.</li>
+</ul></li>
+<li><strong>RTGS (Real Time Gross Settlement):</strong>
+<ul>
+<li>Operated by NRB (launched around September 2019); settles transactions individually and <strong>in real time on a gross basis</strong> in central-bank money.</li>
+<li>Suited to: large-value, high-priority and time-critical interbank and customer payments; final and irrevocable settlement, reducing settlement risk.</li>
+</ul></li>
+<li><strong>Comparison table (indicative):</strong>
+<table>
+<thead><tr><th>System</th><th>Operator</th><th>Settlement</th><th>Best for</th></tr></thead>
+<tbody>
+<tr><td>NCHL-ECC</td><td>NCHL</td><td>Deferred net</td><td>Cheque clearing</td></tr>
+<tr><td>NCHL-IPS</td><td>NCHL</td><td>Deferred net (batch)</td><td>Bulk/recurring A2A transfers</td></tr>
+<tr><td>connectIPS</td><td>NCHL</td><td>Near real-time retail</td><td>Retail self-service payments</td></tr>
+<tr><td>RTGS</td><td>NRB</td><td>Real-time gross</td><td>Large-value, urgent payments</td></tr>
+</tbody>
+</table></li>
+<li><strong>Broader ecosystem:</strong> National Payment Switch / <em>NEPALPAY QR</em> and interoperable QR, card switches, PSPs/PSOs and wallets sit above this backbone. <em>(Confirm launch dates/latest figures from official sources.)</em></li>
+<li><strong>Significance:</strong> reduces cash dependence, cuts cost and float, improves speed and finality, and supports financial inclusion and government digital payments.</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">2.</span> <span class="marks">[20 marks]</span> Answer both parts. (a) What is <strong>SWIFT</strong> and what role does it play in Nepalese banks? (b) Discuss the key threats to <strong>online banking</strong> and the security controls banks should implement, drawing on a relevant Nepalese incident.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li><strong>(a) SWIFT — what it is:</strong>
+<ul>
+<li>Society for Worldwide Interbank Financial Telecommunication — a member-owned cooperative providing a secure, standardised <strong>financial-messaging network</strong> among banks worldwide.</li>
+<li>It carries instructions (MT messages, migrating to ISO 20022 / MX) — it is a <strong>messaging</strong> system, not itself a clearing or settlement system; actual settlement occurs through correspondent/nostro-vostro accounts.</li>
+<li><strong>Role in Nepalese banks:</strong> cross-border remittances, trade finance (letters of credit, guarantees), interbank confirmations and foreign-currency payments; each member has a unique BIC/SWIFT code.</li>
+</ul></li>
+<li><strong>SWIFT security:</strong> the <strong>Customer Security Programme (CSP)</strong> and Customer Security Controls Framework (CSCF) require members to secure their local SWIFT environment (segregation, MFA, hardening, monitoring). The 2016 Bangladesh Bank heist highlighted endpoint compromise as the weak link.</li>
+<li><strong>(b) Online-banking threats:</strong> phishing/social engineering, credential theft, malware/keyloggers, man-in-the-middle and session hijacking, SIM-swap and OTP interception, account-takeover, and insider threats.</li>
+<li><strong>Security controls:</strong>
+<ul>
+<li>Strong <strong>multi-factor authentication</strong> (OTP/token/biometric) and transaction signing/verification.</li>
+<li>End-to-end encryption (TLS/HTTPS), secure session management and timeout, device binding.</li>
+<li>Real-time fraud monitoring, transaction limits and velocity checks, out-of-band confirmation.</li>
+<li>Secure coding, VAPT, patching, WAF, and DDoS protection.</li>
+<li>Customer awareness, and internal controls: least privilege, segregation of duties, logging and 24×7 monitoring (SIEM/SOC).</li>
+</ul></li>
+<li><strong>Nepalese incident:</strong> the <strong>NIC Asia Bank SWIFT breach (2017)</strong>, in which fraudulent SWIFT instructions were used to attempt/transfer several million US dollars abroad, illustrates endpoint-security and access-control failures; most funds were reportedly recovered. <em>(Confirm exact figures/details from official sources.)</em></li>
+<li><strong>Lesson:</strong> perimeter and endpoint hardening, strict access control, dual authorisation and continuous monitoring are essential; the network is secure only if the member's local environment is.</li>
+</ul>
+</details>
+</div>
+
+<h3>Security Technologies and Fintech in Banking</h3>
+
+<div class="q">
+<p class="qtext"><span class="qn">1.</span> <span class="marks">[20 marks]</span> Write short notes on the following security technologies used in the banking sector, explaining the purpose and working of each: (a) SIEM; (b) VPN; (c) Digital Certificate; (d) Digital Signature; (e) PKI.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li><strong>(a) SIEM (Security Information and Event Management):</strong> centralises collection of logs/events from servers, network devices and applications; performs normalisation and <strong>correlation</strong> to detect anomalies; provides real-time alerting, dashboards, incident investigation and compliance reporting. It is the core of a Security Operations Centre (SOC) and supports early detection of intrusions and fraud.</li>
+<li><strong>(b) VPN (Virtual Private Network):</strong> creates an encrypted "tunnel" over a public/untrusted network so data travels confidentially and with integrity. Common forms: <strong>site-to-site</strong> (branch/DR connectivity, often IPsec) and <strong>remote-access</strong> (staff working remotely, often SSL/TLS). Provides confidentiality, integrity and authentication of endpoints.</li>
+<li><strong>(c) Digital Certificate:</strong> an electronic credential (typically <strong>X.509</strong>) issued by a Certifying Authority that <strong>binds a public key to a verified identity</strong> (person, server, or organisation). Contains subject, public key, issuer, validity period and the CA's signature; enables trust in the holder's public key (e.g., TLS server certificates, code signing).</li>
+<li><strong>(d) Digital Signature:</strong> a cryptographic mechanism in which the signer hashes the message and encrypts the hash with their <strong>private key</strong>; the verifier decrypts with the signer's <strong>public key</strong> and compares hashes. Provides <strong>authentication, data integrity and non-repudiation</strong> — legally recognised in Nepal under the Electronic Transactions Act, 2063. (Distinct from an electronic/scanned signature.)</li>
+<li><strong>(e) PKI (Public Key Infrastructure):</strong> the ecosystem of policies, roles and technology that manages asymmetric keys and certificates — comprising the <strong>Certifying Authority (CA)</strong>, Registration Authority (RA), certificate repositories, and revocation services (<strong>CRL/OCSP</strong>). In Nepal the Office of the Controller of Certification acts as the root of trust over licensed CAs. PKI underpins digital signatures, TLS, secure email and strong authentication.</li>
+<li><strong>Linkage:</strong> digital certificates and signatures are products of PKI; VPN and TLS rely on certificates; SIEM monitors the whole environment for misuse — together they support confidentiality, integrity, availability and accountability.</li>
+</ul>
+</details>
+</div>
+
+<div class="q">
+<p class="qtext"><span class="qn">2.</span> <span class="marks">[20 marks]</span> "Fintech is transforming the Nepalese banking sector." Discuss the major fintech products and channels in use, the regulatory framework governing them, and the benefits and challenges of fintech adoption in Nepal.</p>
+<details class="ans"><summary>Model answer — key points</summary>
+<ul>
+<li><strong>Definition/framing:</strong> "Fintech" is the use of technology to deliver and innovate financial services; in Nepal it spans digital payments, digital lending, and technology-enabled distribution of banking services.</li>
+<li><strong>Major products and channels:</strong>
+<ul>
+<li><strong>Digital payments:</strong> mobile banking and internet banking; <strong>digital wallets</strong> (e.g., eSewa, Khalti, IME Pay, Prabhu Pay); <strong>QR payments</strong> and interoperable <em>NEPALPAY QR</em>; payment gateways.</li>
+<li><strong>Retail rails:</strong> connectIPS, card networks and switches, and the National Payment Switch.</li>
+<li><strong>Inclusion channels:</strong> agent/branchless banking, remittance-linked services, and government-to-person (G2P) digital payments.</li>
+<li><strong>Emerging:</strong> digital/nano lending, data-driven credit scoring, API/open-banking and neobank-style services (still nascent).</li>
+</ul></li>
+<li><strong>Regulatory framework:</strong> NRB is the regulator; the <em>Payment and Settlement Act, 2075 (2019)</em> and related bylaws provide the legal basis; NRB licenses <strong>Payment Service Providers (PSPs)</strong> and <strong>Payment System Operators (PSOs)</strong>, sets transaction limits, KYC/AML/CFT and IT-security requirements, and conducts payment-systems oversight. The Electronic Transactions Act, 2063 supplies the e-transaction/e-signature basis. <em>(Confirm bylaw years/latest circulars from official sources.)</em></li>
+<li><strong>Benefits:</strong> financial inclusion and reach into rural/unbanked areas; lower transaction cost and cash-handling; faster, 24×7 services; efficient remittance delivery; transparency and traceability supporting AML and tax; support for e-commerce and the digital economy.</li>
+<li><strong>Challenges:</strong>
+<ul>
+<li>Cybersecurity, fraud and rising consumer-protection issues.</li>
+<li>Interoperability and fragmentation across wallets/switches.</li>
+<li>Digital and financial literacy gaps; connectivity/infrastructure limits in remote areas.</li>
+<li>Regulatory pace — data-protection law, and (as yet limited) regulatory-sandbox mechanisms for innovation.</li>
+<li>Sustainability/consolidation of many small PSPs; forex and cross-border payment constraints.</li>
+</ul></li>
+<li><strong>Way forward:</strong> strengthen interoperability and cyber-resilience, adopt data-protection law, enable a regulatory sandbox and open-banking standards, and expand digital literacy — so fintech deepens inclusion without amplifying risk.</li>
+</ul>
+</details>
+</div>
+
+</section>
+    </div><!-- /body-wrap -->
+    <footer class="doc-foot">Practice questions built from the official RBB syllabus. Model answers are study guides, not official keys — confirm current figures, dates and Act provisions on <strong>nrb.org.np</strong> and <strong>rbb.com.np</strong>. The written exam may be answered in Nepali or English. All the best.</footer>
+  </main>
+</div>
+<button class="totop" id="totop" type="button" aria-label="Back to top">&#8593; Top</button>
+<script>
+(function(){
+  var main=document.getElementById('content');
+  var wrap=main.querySelector('.body-wrap');
+  var each=function(list,fn){Array.prototype.forEach.call(list,fn);};
+
+  /* wrap wide tables */
+  each(wrap.querySelectorAll('table'),function(t){
+    if(t.parentNode.classList.contains('tbl-scroll'))return;
+    var d=document.createElement('div');d.className='tbl-scroll';
+    t.parentNode.insertBefore(d,t);d.appendChild(t);
+  });
+
+  /* mark "Group ..." headings as dividers */
+  each(wrap.querySelectorAll('h3'),function(h){
+    if(!h.classList.contains('groupdiv') && /^group\b/i.test((h.textContent||'').trim())){
+      h.classList.add('groupdiv');
+    }
+  });
+
+  /* build the contents list */
+  var nav=document.getElementById('toc-nav');
+  var used={};
+  function slug(s){
+    s=(s||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,48)||'sec';
+    if(used[s]!=null){used[s]++;s=s+'-'+used[s];}else{used[s]=0;}
+    return s;
+  }
+  var items=[];
+  each(wrap.querySelectorAll('h2, h3'),function(h){
+    if(!h.id)h.id=slug(h.textContent);
+    var a=document.createElement('a');
+    a.href='#'+h.id;
+    a.textContent=(h.textContent||'').replace(/\s+/g,' ').trim();
+    a.className = h.tagName==='H2' ? 'lv2' : (h.classList.contains('groupdiv') ? 'lv3group' : 'lv3');
+    nav.appendChild(a);
+    items.push({a:a,h:h});
+  });
+
+  /* scroll-spy */
+  if('IntersectionObserver' in window){
+    var spy=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){
+          items.forEach(function(it){it.a.classList.toggle('active',it.h===e.target);});
+        }
+      });
+    },{rootMargin:'0px 0px -82% 0px',threshold:0});
+    items.forEach(function(it){spy.observe(it.h);});
+  }
+
+  /* reveal / hide all answers */
+  var ra=document.getElementById('revealAll');
+  var answers=wrap.querySelectorAll('details.ans');
+  if(ra){
+    var shown=false;
+    ra.addEventListener('click',function(){
+      shown=!shown;
+      each(answers,function(d){d.open=shown;});
+      ra.textContent=shown?'Hide all answers':'Reveal all answers';
+    });
+  }
+
+  /* back-to-top */
+  var tt=document.getElementById('totop');
+  window.addEventListener('scroll',function(){tt.classList.toggle('show',window.scrollY>640);},{passive:true});
+  tt.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'});});
+
+  /* light / dark reading mode */
+  var tb=document.getElementById('theme');
+  try{var saved=localStorage.getItem('rbb-theme');if(saved)document.documentElement.setAttribute('data-theme',saved);}catch(e){}
+  tb.addEventListener('click',function(){
+    var cur=document.documentElement.getAttribute('data-theme');
+    var dark=cur?cur==='dark':window.matchMedia('(prefers-color-scheme:dark)').matches;
+    var next=dark?'light':'dark';
+    document.documentElement.setAttribute('data-theme',next);
+    try{localStorage.setItem('rbb-theme',next);}catch(e){}
+  });
+})();
+</script>
+</body>
+</html>

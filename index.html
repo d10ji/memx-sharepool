@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>memex — index</title>
+<script>
+  // Apply saved theme before paint to avoid a flash.
+  try { var t = localStorage.getItem('memex-theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t); } catch (e) {}
+</script>
+<style>
+  /* Palette + type borrowed from the RBB handbooks so the index feels of a piece. */
+  :root{
+    --paper:#f4f3ef; --paper-2:#eceae3; --panel:#faf9f5;
+    --ink:#23262b; --ink-2:#585650; --ink-3:#8c887e;
+    --rule:#d9d5cb; --rule-2:#e7e3d9;
+    --spot:#1f3d6e; --spot-2:#16305a; --spot-tint:#e8ecf3; --on-spot:#ffffff;
+    --serif:"Constantia","Cambria",Georgia,"Palatino Linotype",Palatino,"Times New Roman",serif;
+    --sans:"Segoe UI","Calibri",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+    --mono:"Cascadia Code",Consolas,"SFMono-Regular",Menlo,monospace;
+    --shadow:0 1px 2px rgba(31,45,61,.05), 0 10px 30px rgba(31,45,61,.07);
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --paper:#17191c; --paper-2:#1e2124; --panel:#1c1f22;
+      --ink:#e8e5de; --ink-2:#aca89f; --ink-3:#7e7a72;
+      --rule:#32353a; --rule-2:#3a3e44;
+      --spot:#8fb0e0; --spot-2:#a9c3ea; --spot-tint:#1a2536; --on-spot:#12161f;
+      --shadow:0 10px 30px rgba(0,0,0,.4);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f3ef; --paper-2:#eceae3; --panel:#faf9f5;
+    --ink:#23262b; --ink-2:#585650; --ink-3:#8c887e;
+    --rule:#d9d5cb; --rule-2:#e7e3d9;
+    --spot:#1f3d6e; --spot-2:#16305a; --spot-tint:#e8ecf3; --on-spot:#ffffff;
+    --shadow:0 1px 2px rgba(31,45,61,.05), 0 10px 30px rgba(31,45,61,.07);
+  }
+  :root[data-theme="dark"]{
+    --paper:#17191c; --paper-2:#1e2124; --panel:#1c1f22;
+    --ink:#e8e5de; --ink-2:#aca89f; --ink-3:#7e7a72;
+    --rule:#32353a; --rule-2:#3a3e44;
+    --spot:#8fb0e0; --spot-2:#a9c3ea; --spot-tint:#1a2536; --on-spot:#12161f;
+    --shadow:0 10px 30px rgba(0,0,0,.4);
+  }
+
+  *{box-sizing:border-box}
+  @media (prefers-reduced-motion:reduce){ *{transition:none !important} }
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:var(--serif); -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+  }
+  ::selection{ background:var(--spot-tint) }
+  .wrap{ max-width:1080px; margin:0 auto; padding:clamp(28px,6vw,72px) clamp(18px,5vw,44px) 72px; }
+
+  /* ---------- Masthead ---------- */
+  .masthead{ display:flex; justify-content:space-between; align-items:flex-start; gap:16px; }
+  .kicker{ font-family:var(--sans); font-size:11px; font-weight:600; letter-spacing:.2em;
+    text-transform:uppercase; color:var(--ink-3); margin:0 0 12px; }
+  h1{ font-family:var(--serif); font-weight:700; font-size:clamp(36px,7vw,56px); line-height:.98;
+    letter-spacing:-.02em; margin:0; color:var(--ink); }
+  h1 .dot{ color:var(--spot) }
+  .lead{ font-family:var(--sans); font-size:15px; line-height:1.6; color:var(--ink-2);
+    max-width:54ch; margin:16px 0 0; }
+  .toggle{ flex:none; width:42px; height:42px; border-radius:11px; border:1px solid var(--rule);
+    background:var(--panel); color:var(--ink-2); font-size:17px; cursor:pointer;
+    display:inline-flex; align-items:center; justify-content:center;
+    transition:border-color .15s, color .15s, transform .15s; }
+  .toggle:hover{ border-color:var(--spot); color:var(--spot); }
+  .toggle:active{ transform:scale(.94) }
+
+  .sep{ margin:26px 0 20px; border:0; border-top:4px double var(--rule); }
+
+  /* ---------- Toolbar ---------- */
+  .toolbar{ display:flex; align-items:center; justify-content:space-between; gap:16px;
+    margin-bottom:24px; flex-wrap:wrap; }
+  .count{ font-family:var(--sans); font-size:11px; font-weight:600; letter-spacing:.16em;
+    text-transform:uppercase; color:var(--ink-3); white-space:nowrap; }
+  .search{ display:flex; align-items:center; gap:9px; border-bottom:1.5px solid var(--rule-2);
+    padding:6px 2px; min-width:210px; flex:0 1 300px; transition:border-color .15s; }
+  .search:focus-within{ border-color:var(--spot) }
+  .search svg{ flex:none; opacity:.5 }
+  .search input{ flex:1; min-width:0; border:0; outline:0; background:transparent;
+    font-family:var(--sans); font-size:14.5px; color:var(--ink); }
+
+  /* ---------- Catalog grid ---------- */
+  .grid{ display:grid; gap:16px; grid-template-columns:repeat(auto-fill, minmax(258px, 1fr)); }
+
+  .entry{ position:relative; overflow:hidden; display:flex; flex-direction:column;
+    background:var(--panel); border:1px solid var(--rule); border-radius:11px;
+    padding:18px 18px 16px; text-decoration:none; color:inherit;
+    transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease; }
+  .entry::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:3px;
+    background:var(--spot); transform:scaleX(0); transform-origin:left; transition:transform .18s ease; }
+  .entry:hover, .entry:focus-visible{ transform:translateY(-3px); border-color:var(--rule-2);
+    box-shadow:var(--shadow); outline:none; }
+  .entry:hover::before, .entry:focus-visible::before{ transform:scaleX(1) }
+  .entry:focus-visible{ border-color:var(--spot) }
+
+  .ehead{ display:flex; align-items:center; justify-content:space-between; gap:10px; }
+  .ehead-l{ display:flex; align-items:baseline; gap:10px; min-width:0; }
+  .num{ font-family:var(--mono); font-size:12px; color:var(--ink-3); }
+  .tag{ font-family:var(--sans); font-size:11px; font-weight:600; letter-spacing:.11em;
+    text-transform:uppercase; color:var(--spot); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .kind{ flex:none; font-family:var(--sans); font-size:10px; font-weight:600; letter-spacing:.09em;
+    text-transform:uppercase; color:var(--spot); background:var(--spot-tint);
+    border-radius:999px; padding:3px 10px; }
+
+  .etitle{ font-family:var(--serif); font-size:19.5px; line-height:1.26; letter-spacing:-.005em;
+    color:var(--ink); margin:12px 0 16px; }
+
+  .efoot{ display:flex; align-items:center; justify-content:space-between; gap:10px;
+    margin-top:auto; padding-top:12px; border-top:1px solid var(--rule); }
+  .fname{ font-family:var(--mono); font-size:11.5px; color:var(--ink-3);
+    overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .open{ flex:none; font-family:var(--sans); font-size:12.5px; font-weight:600; color:var(--spot); }
+  .open .arrow{ display:inline-block; transition:transform .18s ease; }
+  .entry:hover .open .arrow{ transform:translateX(4px) }
+
+  /* ---------- States ---------- */
+  .empty{ grid-column:1 / -1; border:1px dashed var(--rule-2); border-radius:12px;
+    padding:46px 24px; text-align:center; font-family:var(--sans); color:var(--ink-2); }
+  .empty p{ margin:0 0 6px }
+  .empty code{ font-family:var(--mono); background:var(--paper-2); border:1px solid var(--rule);
+    border-radius:5px; padding:1px 6px; }
+
+  .foot{ margin-top:40px; padding-top:18px; border-top:1px solid var(--rule);
+    font-family:var(--sans); font-size:12.5px; color:var(--ink-3); }
+  .foot code{ font-family:var(--mono); background:var(--paper-2); border:1px solid var(--rule);
+    border-radius:5px; padding:1px 6px; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="masthead">
+      <div>
+        <p class="kicker">Personal archive · always with me</p>
+        <h1>memex<span class="dot">.</span></h1>
+        <p class="lead">A private index of everything I'm keeping — study notes, practice sets, prep, and whatever comes next. Reachable from any machine.</p>
+      </div>
+      <button id="theme" class="toggle" type="button" aria-label="Toggle theme">☾</button>
+    </header>
+
+    <hr class="sep">
+
+    <div class="toolbar">
+      <span class="count" id="count"></span>
+      <label class="search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input id="q" type="search" placeholder="Filter the index…" autocomplete="off" aria-label="Filter the index">
+      </label>
+    </div>
+
+    <main id="grid" class="grid" aria-live="polite"></main>
+
+    <footer class="foot">
+      Add or edit an <code>.html</code> file and push — this index rebuilds itself. You never touch <code>index.html</code>.
+    </footer>
+  </div>
+
+  <!-- Auto-generated by build.js. Loaded as a plain script (not fetch) so this page
+       also works when opened straight from disk. -->
+  <script src="pages.js"></script>
+  <script>
+    (function () {
+      var grid = document.getElementById('grid');
+      var countEl = document.getElementById('count');
+      var input = document.getElementById('q');
+      var pages = Array.isArray(window.__PAGES__) ? window.__PAGES__ : null;
+
+      // --- Theme toggle ---
+      var rootEl = document.documentElement, tbtn = document.getElementById('theme');
+      function currentTheme() {
+        return rootEl.getAttribute('data-theme') ||
+          (window.matchMedia && window.matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light');
+      }
+      function paintToggle() {
+        var dark = currentTheme() === 'dark';
+        tbtn.textContent = dark ? '☀' : '☾';
+        tbtn.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
+      }
+      tbtn.addEventListener('click', function () {
+        var next = currentTheme() === 'dark' ? 'light' : 'dark';
+        rootEl.setAttribute('data-theme', next);
+        try { localStorage.setItem('memex-theme', next); } catch (e) {}
+        paintToggle();
+      });
+      paintToggle();
+
+      // --- Helpers ---
+      function el(tag, cls, text) {
+        var n = document.createElement(tag);
+        if (cls) n.className = cls;
+        if (text != null) n.textContent = text;
+        return n;
+      }
+      function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+      // Derive a category tag + kind from the filename, purely for display.
+      // Unknown names fall back to their first word — nothing breaks.
+      function deriveMeta(file) {
+        var base = file.replace(/\.html$/i, '');
+        var rbb = base.match(/^RBB[-_ ]*Level[-_ ]*(\d+)[-_ ]*(Notes|Practice)?/i);
+        if (rbb) {
+          var kind = rbb[2] ? rbb[2].charAt(0).toUpperCase() + rbb[2].slice(1).toLowerCase() : '';
+          return { tag: 'RBB · Level ' + rbb[1], kind: kind };
+        }
+        if (/interview/i.test(base)) return { tag: 'Interview', kind: 'Prep' };
+        var first = (base.split(/[-_ ]+/)[0] || base);
+        return { tag: first.charAt(0).toUpperCase() + first.slice(1).toLowerCase(), kind: '' };
+      }
+
+      function entry(p, i) {
+        var m = deriveMeta(p.file);
+        var a = el('a', 'entry'); a.href = p.file;
+
+        var head = el('div', 'ehead');
+        var left = el('div', 'ehead-l');
+        left.appendChild(el('span', 'num', pad(i + 1)));
+        left.appendChild(el('span', 'tag', m.tag));
+        head.appendChild(left);
+        if (m.kind) head.appendChild(el('span', 'kind', m.kind));
+        a.appendChild(head);
+
+        a.appendChild(el('div', 'etitle', p.title || p.file));
+
+        var foot = el('div', 'efoot');
+        foot.appendChild(el('span', 'fname', p.file));
+        var open = el('span', 'open');
+        open.appendChild(document.createTextNode('Open '));
+        open.appendChild(el('span', 'arrow', '→'));
+        foot.appendChild(open);
+        a.appendChild(foot);
+
+        return a;
+      }
+
+      function setCount(shown) {
+        var total = pages ? pages.length : 0;
+        var label = total === 1 ? ' entry' : ' entries';
+        countEl.textContent = (shown === total ? total : shown + ' / ' + total) + label;
+      }
+
+      function render(list) {
+        grid.textContent = '';
+        if (!list.length) {
+          var e = el('div', 'empty');
+          e.appendChild(el('p', null, 'No entries match your filter.'));
+          grid.appendChild(e);
+          setCount(0);
+          return;
+        }
+        list.forEach(function (p, i) { grid.appendChild(entry(p, i)); });
+        setCount(list.length);
+      }
+
+      // --- Initial states ---
+      if (pages === null) {
+        var box = el('div', 'empty');
+        box.appendChild(el('p', null, 'Could not load the index.'));
+        var p2 = el('p', null, 'Run ');
+        p2.appendChild(el('code', null, 'node build.js'));
+        p2.appendChild(document.createTextNode(' to generate pages.js, then reload.'));
+        box.appendChild(p2);
+        grid.appendChild(box);
+        countEl.textContent = '';
+        return;
+      }
+      if (pages.length === 0) {
+        var e0 = el('div', 'empty');
+        e0.appendChild(el('p', null, 'Nothing in the index yet.'));
+        e0.appendChild(el('p', null, 'Drop an .html file in this folder and rebuild.'));
+        grid.appendChild(e0);
+        setCount(0);
+        return;
+      }
+
+      render(pages);
+
+      input.addEventListener('input', function () {
+        var q = input.value.trim().toLowerCase();
+        if (!q) { render(pages); return; }
+        render(pages.filter(function (p) {
+          return ((p.title || '') + ' ' + (p.description || '') + ' ' + (p.file || ''))
+            .toLowerCase().indexOf(q) !== -1;
+        }));
+      });
+    })();
+  </script>
+</body>
+</html>
